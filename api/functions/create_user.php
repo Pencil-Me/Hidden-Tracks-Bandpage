@@ -21,14 +21,13 @@ $user = new User($db);
 // submitted data will be here
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
-$password_hash = password_hash($data->password, PASSWORD_BCRYPT);
 
 // set product property values
 $user->firstname    = $data->firstname;
 $user->lastname     = $data->lastname;
 $user->username     = $data->username;
 $user->email        = $data->email;
-$user->password     = $password_hash;
+$user->password     = $data->password;
 
 // use the create() method here
 // create the user

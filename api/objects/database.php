@@ -1,4 +1,6 @@
 <?php
+include_once '../config/databaseconfig.php';
+
 // used to get mysql database connection
 class Database {
     // specify your own database credentials
