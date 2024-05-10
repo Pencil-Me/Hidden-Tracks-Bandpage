@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  frontend:
+    container_name: hiddentracks-frontend_vue
+    build:
+      context: ./applications/frontend_vue
+      dockerfile: ./Dockerfile
+
+  nginx:
+    container_name: hiddentracks-middlenginx
+    image: nginx:stable-alpine
+    expose:
+      - "80"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.middle.conf:/etc/nginx/conf.d/default.conf:rw
+
+  php_api:
+    container_name: hiddentracks-api_php
+    build:
+      context: ./applications/api_php
+      dockerfile: Dockerfile
+    ports:
+      - "3001:80"
+    volumes:
+      - ./applications/api_php/src:/var/www/html
+
+volumes:
+  mysqldata: {}
+  data:
