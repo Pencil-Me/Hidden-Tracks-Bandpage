@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import { openModal } from '@kolirt/vue-modal'
-import AppModal from '@/components/AppModal.vue'
 import AppModalContact from '@/components/AppModalContact.vue'
 
 export default {
@@ -31,14 +30,6 @@ export default {
   methods: {
     sendMail() {
       openModal(AppModalContact, {})
-        // runs when modal is closed via confirmModal
-        .then((data) => {
-          console.log('success', data)
-        })
-        // runs when modal is closed via closeModal or esc
-        .catch(() => {
-          console.log('catch')
-        })
     }
   }
 }
@@ -46,6 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 .social {
+  pointer-events: none;
   position: fixed;
   left: 0;
   top: 20vh;
@@ -88,6 +80,7 @@ export default {
     }
 
     a {
+      pointer-events: all;
       margin: 0;
       padding: 0;
       color: #fff;
