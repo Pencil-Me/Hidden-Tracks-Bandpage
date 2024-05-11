@@ -1,5 +1,4 @@
-# Pencil&Me Portfolio - Gateway and CRUD RESTful API
-A restless gateway and CRUD API using PHP
+# Hidden Tracks Bandpage - Email API
 
 ## Built With
 
