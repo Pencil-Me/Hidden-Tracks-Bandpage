@@ -63,12 +63,13 @@ export default {
     width: 35px;
     height: 35px;
     margin-right: 5px;
-    background-color: transparent;
+    background-color: rgba(64, 64, 64, 0.4);
     border-radius: 50px;
     border: 2px solid #fff;
     transition: 0.2s;
     text-align: center;
     margin-bottom: 10px;
+    box-shadow: 0 0 10px 1px #404040;
 
     @media (max-width: 546px) {
       width: 45px;
