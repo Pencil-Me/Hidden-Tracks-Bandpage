@@ -87,6 +87,9 @@
     <script>
         var _paq = window._paq = window._paq || [];
         /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+        _paq.push(["setDomains", ["*.hiddentracks-berlin.de","*.www.hiddentracks-berlin.de"]]);
+        _paq.push(["disableCookies"]);
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
         (function() {
@@ -101,6 +104,7 @@
 </head>
 <body>
     <noscript>
+        <p><img referrerpolicy="no-referrer-when-downgrade" src="<%- VITE_TRACKER_URL %>matomo.php?idsite=<%- VITE_SITE_ID %>&amp;rec=1" style="border:0;" alt="" /></p>
         <strong>We're sorry but the webpage of Hidden Tracks doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app">
