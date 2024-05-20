@@ -1,9 +1,7 @@
 import { createApp } from 'vue'
-import { createBootstrap } from 'bootstrap-vue-next'
-import App from './App.vue'
-import store from './store'
-import router from './router'
 
+import { createHead } from '@vueuse/head';
+import { createBootstrap } from 'bootstrap-vue-next'
 import { createModal } from '@kolirt/vue-modal'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -13,12 +11,16 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 library.add(fas, far, fab)
 
+import App from './App.vue'
+import store from './store'
+import router from './router'
+
 const app = createApp(App)
 
-app.use(createBootstrap())
 app.use(store)
 app.use(router)
-app.component('FontAwesomeIcon', FontAwesomeIcon)
+app.use(createBootstrap())
+app.use(createHead());
 app.use(
   createModal({
     transitionTime: 200,
@@ -35,5 +37,6 @@ app.use(
     }
   })
 )
+app.component('FontAwesomeIcon', FontAwesomeIcon)
 
 app.mount('#app')
