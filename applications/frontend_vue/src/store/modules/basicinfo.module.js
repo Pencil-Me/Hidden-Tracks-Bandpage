@@ -45,35 +45,35 @@ export default {
           name: 'Flo',
           instruments: ['E-Gitarre'],
           image: {
-            url: '/imgs/bandmembers/floh.jpg'
+            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/floh.jpg'
           }
         },
         {
           name: 'Mo',
           instruments: ['Leadgesang', 'Percussion', 'Akustikgitarre'],
           image: {
-            url: '/imgs/bandmembers/mo.jpg'
+            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/mo.jpg'
           }
         },
         {
           name: 'Fritz',
           instruments: ['Orgel', 'Keyboard', 'E-Gitarre'],
           image: {
-            url: '/imgs/bandmembers/fritz.jpg'
+            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/fritz.jpg'
           }
         },
         {
           name: 'Joschi',
           instruments: ['Backing Vocals', 'Bass'],
           image: {
-            url: '/imgs/bandmembers/joschi.jpg'
+            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/joschi.jpg'
           }
         },
         {
           name: 'Tanja',
           instruments: ['Backing Vocals', 'Drums'],
           image: {
-            url: '/imgs/bandmembers/tanja.jpg'
+            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/tanja.jpg'
           }
         }
       ])
