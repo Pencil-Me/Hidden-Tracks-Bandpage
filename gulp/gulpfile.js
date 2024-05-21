@@ -1,177 +1,63 @@
-// Packages
-const
-    gulp = require('gulp');
+const gulp = require('gulp');
+const fs = require('fs-extra');
 
-const
-    fs = require('fs'),
-    path = require('path'),
-    merge = require('merge-stream'),
-    rename = require('gulp-rename'),
-    del = require('del');
+// Class to handle image processing tasks
+class ImageProcessor {
+    constructor(srcPath, destPath) {
+        this.srcPath = srcPath;
+        this.destPath = destPath;
+    }
 
-const
-    svgmin = require('gulp-svgmin'),
-    svgstore = require('gulp-svgstore'),
-    imagemin = require('gulp-imagemin'),
-    sharpResponsive = require("gulp-sharp-responsive");
-
-const tar = require('gulp-tar');
-const gzip = require('gulp-gzip');
-
-const
-    lec = require('gulp-line-ending-corrector');
-
-// // import tasks
-// const img = require("./gulp-tasks/images.js");
-
-const
-    paths = {
-        images: {
-            bandmembers: {
-                src: 'vendor/images/bandmembers/**/*.jpg',
-                dest: 'public/img/bandmembers'
-            },
-            breaker: {
-                src: 'vendor/images/breakerimage/**/*.jpg',
-                dest: 'public/img/breakerimage'
-            },
-            gallery: {
-                src: 'vendor/images/gallery/**/*.jpg',
-                dest: 'public/img/gallery/',
-            },
-            homeslider: {
-                src: 'vendor/images/homeslider/**/*.jpg',
-                dest: 'public/img/homeslider'
-            },
-            polaroid: {
-                src: 'vendor/images/polaroid/**/*.jpg',
-                dest: 'public/img/polaroid'
-            },
+    // Ensure destination folder exists or create it
+    async ensureDestFolderExists() {
+        try {
+            await fs.ensureDir(this.destPath);
+            console.log(`Destination folder '${this.destPath}' successfully created or already exists.`);
+        } catch (err) {
+            console.error(`Error while creating destination folder '${this.destPath}':`, err);
         }
-    };
+    }
 
-//CLEAN TASKS
-var clean_images_bandmembers = () => {
-    return del([paths.images.bandmembers.dest]);
-}
-var clean_images_breaker = () => {
-    return del([paths.images.breaker.dest]);
-}
-var clean_images_gallery = () => {
-    return del([paths.images.gallery.dest]);
-}
-var clean_images_homeslider = () => {
-    return del([paths.images.homeslider.dest]);
-}
-var clean_images_polaroid = () => {
-    return del([paths.images.polaroid.dest]);
-}
+    // Optimize images using imagemin plugins
+    async optimizeImages() {
+        // Dynamically import imagemin and its plugins
+        const imagemin = (await import('gulp-imagemin')).default;
+        const mozjpeg = (await import('imagemin-mozjpeg')).default;
+        const optipng = (await import('imagemin-optipng')).default;
 
-var images_bandmembers = () => {
-    return gulp.src(paths.images.bandmembers.src)
-        .pipe(imagemin())
-        .pipe(gulp.dest(paths.images.bandmembers.dest));
-}
-var images_breaker = () => {
-    return gulp.src(paths.images.breaker.src)
-        .pipe(imagemin())
-        .pipe(gulp.dest(paths.images.breaker.dest));
-}
-var images_gallery = () => {
-    return gulp.src(paths.images.gallery.src)
-        .pipe(sharpResponsive({
-            formats: [
-                // jpeg
-                { width: 640, format: "jpeg", rename: { suffix: "-sm" } },
-                { width: 768, format: "jpeg", rename: { suffix: "-md" } },
-                { width: 1024, format: "jpeg", rename: { suffix: "-lg" } },
-                // // webp
-                // { width: 640, format: "webp", rename: { suffix: "-sm" } },
-                // { width: 768, format: "webp", rename: { suffix: "-md" } },
-                // { width: 1024, format: "webp", rename: { suffix: "-lg" } },
-                // // avif
-                // { width: 640, format: "avif", rename: { suffix: "-sm" } },
-                // { width: 768, format: "avif", rename: { suffix: "-md" } },
-                // { width: 1024, format: "avif", rename: { suffix: "-lg" } },
-            ]
-        }))
-        .pipe(imagemin())
-        .pipe(gulp.dest(paths.images.gallery.dest));
-}
-var images_homeslider = () => {
-    return gulp.src(paths.images.homeslider.src)
-        .pipe(imagemin())
-        .pipe(gulp.dest(paths.images.homeslider.dest));
-}
-var images_polaroid = () => {
-    return gulp.src(paths.images.polaroid.src)
-        .pipe(imagemin())
-        .pipe(sharpResponsive({
-            formats: [
-                // jpeg
-                { width: 50, format: "jpeg", rename: { suffix: "-sm" } },
-                { width: 100, format: "jpeg", rename: { suffix: "-md" } },
-                { width: 200, format: "jpeg", rename: { suffix: "-lg" } },
-                // // webp
-                // { width: 640, format: "webp", rename: { suffix: "-sm" } },
-                // { width: 768, format: "webp", rename: { suffix: "-md" } },
-                // { width: 1024, format: "webp", rename: { suffix: "-lg" } },
-                // // avif
-                // { width: 640, format: "avif", rename: { suffix: "-sm" } },
-                // { width: 768, format: "avif", rename: { suffix: "-md" } },
-                // { width: 1024, format: "avif", rename: { suffix: "-lg" } },
-            ]
-        }))
-        .pipe(gulp.dest(paths.images.polaroid.dest));
+        // Optimize images and save them to destination folder
+        return gulp.src(this.srcPath)
+            .pipe(imagemin([
+                mozjpeg(), // MozJPEG plugin for JPEG optimization
+                optipng()  // OptiPNG plugin for PNG optimization
+            ]))
+            .pipe(gulp.dest(this.destPath));
+    }
+
+    // Clean destination folder
+    async cleanDestFolder() {
+        try {
+            await fs.emptyDir(this.destPath);
+            console.log(`Destination folder '${this.destPath}' successfully cleaned.`);
+        } catch (err) {
+            console.error(`Error while cleaning destination folder '${this.destPath}':`, err);
+        }
+    }
 }
 
-var build_svg_optimize = function () {
-    return gulp.src(paths.vendor + 'svg/*.svg')
-        .pipe(svgmin(function (file) {
-            let prefix = path.basename(file.relative, path.extname(file.relative));
-            return {
-                plugins: [{
-                    cleanupIDs: {
-                        prefix: prefix + '-',
-                        minify: true
-                    }
-                }]
-            }
-        }))
-        .pipe(gulp.dest(paths.temp + 'img'));
+// Paths for the images
+const paths = {
+    src: '../vendor/imgs/**/*.{jpg,jpeg,png}',
+    dest: '../applications/frontend_vue/src/assets/imgs'
 };
 
-var move_ReleaseNotes = function() {
-    // return gulp.src(paths.vendor + 'releasenotes.txt')
-    //   .pipe(gulp.dest('_release'))
-    //   .pipe(gulp.dest('_release/Backend'))
-    //   .pipe(gulp.dest('_release/Backend/DB/DB - ' + pckg.version));
+// Create an instance of ImageProcessor with source and destination paths
+const imageProcessor = new ImageProcessor(paths.src, paths.dest);
 
-    const releasenotes = gulp.src(paths.vendor + 'releasenotes.txt')
-        .pipe(lec({verbose:true, eolc: 'LF', encoding:'utf8'}))
-        .pipe(gulp.dest('_release/Backend/DB/DB-' + pckg.dbversion));
+// Define Gulp tasks
+gulp.task('optimizeImages', imageProcessor.optimizeImages.bind(imageProcessor));
+gulp.task('cleanDestFolder', imageProcessor.cleanDestFolder.bind(imageProcessor));
+gulp.task('ensureDestFolderExists', imageProcessor.ensureDestFolderExists.bind(imageProcessor));
 
-    const bundle = gulp.src(paths.vendor + 'releasenotes - bundle.txt')
-        .pipe(lec({verbose:true, eolc: 'LF', encoding:'utf8'}))
-        .pipe(gulp.dest('_release'));
-
-    return merge(releasenotes, bundle);
-};
-
-/*
- * Specify if tasks run in series or parallel using `gulp.series` and `gulp.parallel`
- */
-const build = gulp.series(
-    clean_images_bandmembers, images_bandmembers,
-    clean_images_breaker, images_breaker,
-    clean_images_homeslider, images_homeslider,
-    clean_images_gallery, images_gallery,
-    clean_images_polaroid, images_polaroid
-    /*, gulp.parallel(styles, scripts)*/
-);
-
-
-/*
- * Define default task that can be called by just running `gulp` from cli
- */
-exports.default = build;
+// Default task: clean destination folder, ensure it exists, and then optimize images
+gulp.task('default', gulp.series('cleanDestFolder', 'ensureDestFolderExists', 'optimizeImages'));
