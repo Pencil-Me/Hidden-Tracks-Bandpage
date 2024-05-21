@@ -1,5 +1,10 @@
+# robots.txt for Hidden Tracks
+
+# Allow all robots to crawl the entire site, except specified directories
 User-agent: *
-Disallow: /#/impressum/
-Disallow: /#/datenschutz/
 Disallow: /impressum/
 Disallow: /datenschutz/
+Disallow: /imgs/
+
+# Sitemap location
+Sitemap: https://www.hiddentracks-berlin.de/sitemap.xml

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Homepage -->
+    <url>
+        <loc>https://www.hiddentracks-berlin.de/</loc>
+        <lastmod>2024-05-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Impressum Page -->
+    <url>
+        <loc>https://www.hiddentracks-berlin.de/impressum</loc>
+        <lastmod>2024-05-21</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Datenschutz Page -->
+    <url>
+        <loc>https://www.hiddentracks-berlin.de/datenschutz</loc>
+        <lastmod>2024-05-21</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.8</priority>
+    </url>
+</urlset>
