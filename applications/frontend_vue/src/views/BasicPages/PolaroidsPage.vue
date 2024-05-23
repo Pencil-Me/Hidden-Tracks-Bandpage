@@ -32,7 +32,7 @@ export default {
       let lastPosition = 550
 
       for (let i = 0; i < polaroiddata.length; i++) {
-        let polaroid = { ...polaroidtemplate }
+        let polaroid = structuredClone(polaroidtemplate)
         polaroid.image = polaroiddata[i]
 
         let newPosition =

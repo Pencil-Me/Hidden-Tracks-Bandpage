@@ -74,7 +74,8 @@ export default {
     return {
       slideIndex: 1,
       lastScrollY: 0,
-      right: 6
+      right: 6,
+      scale: .2
     }
   },
   computed: {
@@ -86,7 +87,7 @@ export default {
     computedContainerStyle() {
       const style = {}
       style['right'] = `${this.right}vw`
-      style['transform'] = `scale(${1.1 + this.clamp(this.right / 10, 0, .2)})`
+      style['transform'] = `scale(${1.1 + this.scale})`
       return style
     },
     currentScrollY() {
@@ -104,6 +105,9 @@ export default {
     setInterval(() => {
       this.right *= -1
     }, 20000)
+    setInterval(() => {
+      this.right *= -1
+    }, 15000)
   },
   methods: {
     clamp(num, min, max) {
@@ -120,11 +124,11 @@ export default {
       }
       for (i = 0; i < slides.length; i++) {
         slides[i].style.visibility = 'hidden'
-        slides[i].style.opacity = 0
+        slides[i].style.opacity = '0'
       }
       if (!!slides[this.slideIndex - 1] && !!slides[this.slideIndex - 1].style) {
         slides[this.slideIndex - 1].style.visibility = 'visible'
-        slides[this.slideIndex - 1].style.opacity = 1
+        slides[this.slideIndex - 1].style.opacity = '1'
       }
       if (this.showDots) {
         let dots = this.$refs.dot
