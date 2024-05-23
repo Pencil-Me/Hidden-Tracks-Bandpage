@@ -8,7 +8,13 @@
         :class="animation"
         :key="index"
       >
-        <img :src="image.image" :alt="image.text" />
+        <AppImage
+            :lazy-srcset-large="image.lg"
+            :lazy-srcset-medium="image.md"
+            :lazy-srcset-small="image.sm"
+            :lazy-srcset-thumb="image.thumb"
+            imageAlt="Gallery Image"
+        />
         <div v-if="showText" class="text">{{ image.text }}</div>
       </div>
 
@@ -29,7 +35,10 @@
 </template>
 
 <script>
+import AppImage from "@/components/AppImage.vue";
+
 export default {
+  components: {AppImage},
   props: {
     myImages: {
       type: Array,
@@ -101,7 +110,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .template-carousel {
   position: absolute;
   top: 0;
@@ -109,6 +118,7 @@ export default {
   bottom: 0;
   right: 0;
 }
+
 * {
   box-sizing: border-box;
 }

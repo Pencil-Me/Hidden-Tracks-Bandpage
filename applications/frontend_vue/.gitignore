@@ -34,5 +34,6 @@ coverage
 /src/assets/imgs/gallery/*
 /src/assets/imgs/polaroids/*
 /src/assets/imgs/slider/*
+/src/store/jsons/*
 
 .env

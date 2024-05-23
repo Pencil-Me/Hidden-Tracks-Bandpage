@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
                 targets: [
                     {
                         src: 'src/assets/imgs',
-                        dest: 'imgs'
+                        dest: ''
                     }
                 ]
             })
