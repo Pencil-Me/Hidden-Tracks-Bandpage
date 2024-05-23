@@ -4,7 +4,8 @@
     <form class="vue-form" @submit.prevent="submit" v-if="!submitted">
       <div class="error-message">
         <p v-show="sendError">
-          Das Emailsenden hat einen Fehler verursacht. Bitte überprüfe deine Eingaben und versuche es erneut.
+          Das Emailsenden hat einen Fehler verursacht. Bitte überprüfe deine Eingaben und versuche
+          es erneut.
         </p>
       </div>
 
@@ -174,7 +175,7 @@ export default {
       const emailRegExp =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
       return emailRegExp.test(value)
-    },
+    }
   },
   watch: {
     // watching nested property

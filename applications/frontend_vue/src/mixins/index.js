@@ -24,11 +24,11 @@ export default {
       let parseresponse = JSON.parse(JSON.stringify(response.data))
 
       for (let i = 0; i < parseresponse.images.length; i++) {
-        obj.url = process.env.BASE_URL + '/' + parseresponse.images[i].lg
-        obj.thumb = process.env.BASE_URL + '/' + parseresponse.images[i].thumb
-        obj.lg = process.env.BASE_URL + '/' + parseresponse.images[i].lg
-        obj.md = process.env.BASE_URL + '/' + parseresponse.images[i].md
-        obj.sm = process.env.BASE_URL + '/' + parseresponse.images[i].sm
+        obj.url = `${process.env.BASE_URL}/${parseresponse.images[i].url}`
+        obj.thumb = `${process.env.BASE_URL}/${parseresponse.images[i].thumb}`
+        obj.lg = `${process.env.BASE_URL}/${parseresponse.images[i].lg}`
+        obj.md = `${process.env.BASE_URL}/${parseresponse.images[i].md}`
+        obj.sm = `${process.env.BASE_URL}/${parseresponse.images[i].sm}`
 
         cleanedobj.push(JSON.parse(JSON.stringify(obj)))
       }

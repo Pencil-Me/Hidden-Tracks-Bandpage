@@ -45,35 +45,35 @@ export default {
           name: 'Flo',
           instruments: ['E-Gitarre'],
           image: {
-            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/floh-min.jpg'
+            url: `${import.meta.env.VITE_IMAGE_BASE_URL}/imgs/bandmembers/floh-min.jpg`
           }
         },
         {
           name: 'Mo',
           instruments: ['Leadgesang', 'Percussion', 'Akustikgitarre'],
           image: {
-            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/mo-min.jpg'
+            url: `${import.meta.env.VITE_IMAGE_BASE_URL}/imgs/bandmembers/mo-min.jpg`
           }
         },
         {
           name: 'Fritz',
           instruments: ['Orgel', 'Keyboard', 'E-Gitarre'],
           image: {
-            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/fritz-min.jpg'
+            url: `${import.meta.env.VITE_IMAGE_BASE_URL}/imgs/bandmembers/fritz-min.jpg`
           }
         },
         {
           name: 'Joschi',
           instruments: ['Backing Vocals', 'Bass'],
           image: {
-            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/joschi-min.jpg'
+            url: `${import.meta.env.VITE_IMAGE_BASE_URL}/imgs/bandmembers/joschi-min.jpg`
           }
         },
         {
           name: 'Tanja',
           instruments: ['Backing Vocals', 'Drums'],
           image: {
-            url: import.meta.env.VITE_IMAGE_BASE_URL + '/imgs/bandmembers/tanja-min.jpg'
+            url: `${import.meta.env.VITE_IMAGE_BASE_URL}/imgs/bandmembers/tanja-min.jpg`
           }
         }
       ])

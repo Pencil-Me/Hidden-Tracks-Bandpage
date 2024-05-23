@@ -13,7 +13,7 @@
         </div>
         <ul v-if="!isHidden_menu">
           <li v-for="(point, index) in mainMenu" v-bind:key="index">
-            <a @click="navTo('/#' + point.url)">
+            <a @click="navTo(`/#${point.url}`)">
               {{ point.name }}
             </a>
           </li>
@@ -55,8 +55,7 @@ export default {
   methods: {
     navTo(url: string) {
       const isMobile = this.windowWidth <= 546
-      if (isMobile)
-        this.isHidden_menu = true
+      if (isMobile) this.isHidden_menu = true
       this.$router.push(url)
     },
     resizeHandler(e) {

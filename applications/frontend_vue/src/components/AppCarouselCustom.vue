@@ -8,13 +8,18 @@
         :class="animation"
         :key="index"
       >
-        <AppImage
+        <div
+            class="animation-container"
+            :style="computedContainerStyle">
+          <AppImage
             :lazy-srcset-large="image.lg"
             :lazy-srcset-medium="image.md"
             :lazy-srcset-small="image.sm"
             :lazy-srcset-thumb="image.thumb"
-            imageAlt="Gallery Image"
-        />
+            :imageAlt="`Gallery Image ${index}`"
+            :style="computedSlideStyle"
+          />
+        </div>
         <div v-if="showText" class="text">{{ image.text }}</div>
       </div>
 
@@ -35,10 +40,10 @@
 </template>
 
 <script>
-import AppImage from "@/components/AppImage.vue";
+import AppImage from '@/components/AppImage.vue'
 
 export default {
-  components: {AppImage},
+  components: { AppImage },
   props: {
     myImages: {
       type: Array,
@@ -67,18 +72,43 @@ export default {
   },
   data() {
     return {
-      slideIndex: 1
+      slideIndex: 1,
+      lastScrollY: 0,
+      right: 6
+    }
+  },
+  computed: {
+    computedSlideStyle() {
+      const style = {}
+      style['transform'] = `scale(${this.clamp(1 + this.lastScrollY / 1000, 1, 2)})`
+      return style
+    },
+    computedContainerStyle() {
+      const style = {}
+      style['right'] = `${this.right}vw`
+      style['transform'] = `scale(${1.1 + this.clamp(this.right / 10, 0, .2)})`
+      return style
+    },
+    currentScrollY() {
+      return this.$store.getters['page/currentScrollY']
     }
   },
   mounted() {
     this.showSlides(this.slideIndex)
+    setTimeout(() => (this.right *= -1), 10)
     if (this.timeSlide > 0) {
       setInterval(() => {
         this.showSlides((this.slideIndex += 1))
       }, this.timeSlide)
     }
+    setInterval(() => {
+      this.right *= -1
+    }, 20000)
   },
   methods: {
+    clamp(num, min, max) {
+      return num <= min ? min : num >= max ? max : num
+    },
     showSlides(x) {
       let i
       let slides = this.$refs.slides
@@ -89,9 +119,13 @@ export default {
         this.slideIndex = slides.length
       }
       for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = 'none'
+        slides[i].style.visibility = 'hidden'
+        slides[i].style.opacity = 0
       }
-      slides[this.slideIndex - 1].style.display = 'block'
+      if (!!slides[this.slideIndex - 1] && !!slides[this.slideIndex - 1].style) {
+        slides[this.slideIndex - 1].style.visibility = 'visible'
+        slides[this.slideIndex - 1].style.opacity = 1
+      }
       if (this.showDots) {
         let dots = this.$refs.dot
         for (i = 0; i < dots.length; i++) {
@@ -106,6 +140,11 @@ export default {
     currentSlide(n) {
       this.showSlides((this.slideIndex = n))
     }
+  },
+  watch: {
+    currentScrollY(val) {
+      this.lastScrollY = val
+    }
   }
 }
 </script>
@@ -117,6 +156,7 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
+  overflow: hidden;
 }
 
 * {
@@ -130,10 +170,28 @@ export default {
   margin: auto;
 }
 
+.animation-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition:
+      right 20000ms ease-in-out,
+      transform 15000ms ease-in-out;
+}
+
 .slides {
-  width: 100%;
-  height: 100%;
-  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 1000ms,
+    visibility 250ms;
 }
 
 .slides img {

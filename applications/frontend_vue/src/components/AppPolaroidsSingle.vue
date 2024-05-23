@@ -47,9 +47,9 @@ export default {
     },
     computedStyle() {
       const style = {}
-      style[this.alignment] = this.sideDistance + 'px'
-      style['top'] = this.currentPosition + 'px'
-      style['transform'] = 'rotate(' + this.currentRotation + 'deg)'
+      style[this.alignment] = `${this.sideDistance}px`
+      style['top'] = `${this.currentPosition}px`
+      style['transform'] = `rotate(${this.currentRotation}deg)`
       return style
     },
     currentScrollY() {

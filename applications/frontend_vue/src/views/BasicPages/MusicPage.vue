@@ -3,8 +3,8 @@
     <b-container>
       <b-col>
         <h2>Music</h2>
-        <div class="text">Hier eine kleine Auswahl der von uns neu interpretierten Songs.</div>
-        <ul class="coversongs list">
+        <div>Hier eine kleine Auswahl der von uns neu interpretierten Songs.</div>
+        <ul>
           <li v-for="song in songs" :key="song.id">{{ song.name }} - {{ song.title }}</li>
         </ul>
         <div>Weitere Titel sind ständig in Arbeit...</div>

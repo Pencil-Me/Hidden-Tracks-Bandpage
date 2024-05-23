@@ -1,7 +1,7 @@
 <template>
   <div class="slider">
     <div class="wrapper-single" v-if="sliderImagesExist">
-      <app-carousel :my-images="sliderImages.images" show-text show-dots />
+      <app-carousel :my-images="sliderImages.images" :time-slide="10000" />
     </div>
   </div>
 </template>

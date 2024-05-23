@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 
-import { createHead } from '@vueuse/head';
+import { createHead } from '@vueuse/head'
 import { createBootstrap } from 'bootstrap-vue-next'
 import { createModal } from '@kolirt/vue-modal'
 
@@ -20,7 +20,7 @@ const app = createApp(App)
 app.use(store)
 app.use(router)
 app.use(createBootstrap())
-app.use(createHead());
+app.use(createHead())
 app.use(
   createModal({
     transitionTime: 200,

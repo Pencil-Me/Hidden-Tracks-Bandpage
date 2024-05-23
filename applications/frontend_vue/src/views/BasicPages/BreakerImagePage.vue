@@ -1,6 +1,6 @@
 <template>
   <div v-if="breakerimageurl" class="breakerimagecomponent">
-    <div class="breakerimage" :style="{ 'background-image': 'url(' + breakerimageurl + ')' }"></div>
+    <div class="breakerimage" :style="computedStyle"></div>
   </div>
 </template>
 
@@ -8,6 +8,11 @@
 export default {
   name: 'BreakerImagePage',
   computed: {
+    computedStyle() {
+      const style = {}
+      style['background-image'] = `url(${this.breakerimageurl})`
+      return style
+    },
     breakerimageurl() {
       const breakerimages = this.$store.getters['images/allBreakerimages']
       if (breakerimages?.images?.length <= 0) return null
