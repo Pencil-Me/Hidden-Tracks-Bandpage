@@ -39,7 +39,6 @@ export default {
     mainMenu() {
       return [
         { name: 'About', url: 'about' },
-        // {name: 'Gigs', url: 'gigs'},
         { name: 'Video', url: 'videos' },
         { name: 'Gallery', url: 'gallery' },
         { name: 'Band', url: 'band' },

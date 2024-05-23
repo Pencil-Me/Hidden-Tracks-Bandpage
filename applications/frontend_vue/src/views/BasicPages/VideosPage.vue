@@ -38,7 +38,7 @@ export default {
 <style lang="scss" scoped>
 .videos {
   background: #2e1a06;
-  width:100vw;
+  width: 100vw;
   overflow: hidden;
 }
 </style>

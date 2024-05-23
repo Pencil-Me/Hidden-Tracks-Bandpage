@@ -41,11 +41,8 @@
 </template>
 
 <script>
-import AppImage from '@/components/AppImage.vue'
-
 export default {
   name: 'BandPage',
-  components: { AppImage },
   computed: {
     members() {
       return this.$store.getters['basicInfo/getBandmembers']
@@ -61,7 +58,7 @@ export default {
 <style lang="scss">
 .band {
   background: #2e1a06;
-  width:100vw;
+  width: 100vw;
   overflow: hidden;
 
   .bandmembers {

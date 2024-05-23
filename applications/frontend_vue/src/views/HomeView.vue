@@ -4,8 +4,6 @@
     <HeroCarousel id="home"></HeroCarousel>
     <About id="about"></About>
     <BreakerImage></BreakerImage>
-    <!--    <Gigs v-if="gigs"></Gigs>-->
-    <!--    <BreakerImage v-if="gigs"></BreakerImage>-->
     <Videos id="videos"></Videos>
     <BreakerImage></BreakerImage>
     <Gallery id="gallery"></Gallery>
@@ -22,12 +20,10 @@ import { openModal } from '@kolirt/vue-modal'
 import HeroCarousel from '@/views/BasicPages/HeroCarouselPage.vue'
 import About from '@/views/BasicPages/AboutPage.vue'
 import BreakerImage from '@/views/BasicPages/BreakerImagePage.vue'
-// import Gigs from '@/views/template-gigs.vue';
 import Videos from '@/views/BasicPages/VideosPage.vue'
 import Gallery from '@/views/BasicPages/GalleryPage.vue'
 import Band from '@/views/BasicPages/BandPage.vue'
 import Music from '@/views/BasicPages/MusicPage.vue'
-import AppMainMenu from '@/components/layout/AppMainMenu.vue'
 import AppModal from '@/components/AppModal.vue'
 import Polaroids from '@/views/BasicPages/PolaroidsPage.vue'
 
@@ -37,11 +33,9 @@ export default {
     return {}
   },
   components: {
-    AppMainMenu,
     HeroCarousel,
     BreakerImage,
     About,
-    // Gigs,
     Videos,
     Gallery,
     Band,
@@ -70,7 +64,6 @@ export default {
     }
   },
   mounted() {
-    // this.$store.dispatch("gigs/GET_GIGS");
     this.$store.dispatch('images/GET_BREAKERIMAGES')
   }
 }

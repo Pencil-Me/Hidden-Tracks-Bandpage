@@ -9,7 +9,6 @@ export default {
     },
     cleanObject(response, state) {
       if (response == null && response.length <= 0) return
-      // console.log("cleanObject", state, response.data);
 
       let cleanedobj = []
       let obj = {
@@ -24,11 +23,12 @@ export default {
       let parseresponse = JSON.parse(JSON.stringify(response.data))
 
       for (let i = 0; i < parseresponse.images.length; i++) {
-        obj.url = `${process.env.BASE_URL}/${parseresponse.images[i].url}`
-        obj.thumb = `${process.env.BASE_URL}/${parseresponse.images[i].thumb}`
-        obj.lg = `${process.env.BASE_URL}/${parseresponse.images[i].lg}`
-        obj.md = `${process.env.BASE_URL}/${parseresponse.images[i].md}`
-        obj.sm = `${process.env.BASE_URL}/${parseresponse.images[i].sm}`
+        obj.url = `${import.meta.env.VITE_IMAGE_BASE_URL}/${parseresponse.images[i].url}`
+        obj.thumb = `${import.meta.env.VITE_IMAGE_BASE_URL}/${parseresponse.images[i].thumb}`
+        obj.lg = `${import.meta.env.VITE_IMAGE_BASE_URL}/${parseresponse.images[i].lg}`
+        obj.md = `${import.meta.env.VITE_IMAGE_BASE_URL}/${parseresponse.images[i].md}`
+        obj.sm = `${import.meta.env.VITE_IMAGE_BASE_URL}/${parseresponse.images[i].sm}`
+        obj.lazy = `${import.meta.env.VITE_IMAGE_BASE_URL}/${parseresponse.images[i].lazy}`
 
         cleanedobj.push(JSON.parse(JSON.stringify(obj)))
       }

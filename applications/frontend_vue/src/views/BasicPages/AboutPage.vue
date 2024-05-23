@@ -51,7 +51,7 @@ export default {
 <style scoped>
 .about {
   background: #4a4a4a;
-  width:100vw;
+  width: 100vw;
   overflow: hidden;
 }
 </style>

@@ -45,7 +45,7 @@ export default {
   props: {
     myImages: {
       type: Array,
-      required: false, //true
+      required: false,
       default: () => []
     },
     showText: {

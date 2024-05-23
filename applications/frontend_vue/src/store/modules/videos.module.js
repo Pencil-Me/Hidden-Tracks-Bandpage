@@ -1,5 +1,3 @@
-// import axios from "axios";
-
 const initialState = {
   videos: []
 }
@@ -9,14 +7,11 @@ export default {
   state: initialState,
   getters: {
     allVideos: (state) => {
-      // console.log("allVideos", state.videos);
       return state.videos
     }
   },
   mutations: {
     SET_VIDEOS(state, payload) {
-      // console.log("SET_VIDEOS");
-      // console.log(payload);
       state.videos = payload
     }
   },

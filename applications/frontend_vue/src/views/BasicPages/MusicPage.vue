@@ -21,7 +21,6 @@
 
 <script>
 import mixins from '@/mixins/index'
-import { useMotion } from '@vueuse/motion'
 
 export default {
   name: 'MusicPage',
@@ -41,7 +40,7 @@ export default {
 <style scoped>
 .music {
   background: #2a2a2a;
-  width:100vw;
+  width: 100vw;
   overflow: hidden;
 }
 </style>

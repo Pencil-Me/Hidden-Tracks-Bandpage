@@ -66,10 +66,6 @@ export default {
     }
   },
   mounted() {
-    //this.$el.setAttribute('style', this.style)
-    const setLoadingState = () => {
-      this.loading = false
-    }
     const observer = lozad(this.$el)
     observer.observe()
   }
@@ -97,11 +93,6 @@ export default {
   }
 
   & > img {
-    //position: absolute;
-    //top: 0;
-    //left: 0;
-    //width: 100%;
-    //height: 100%;
     max-width: 100%;
   }
 }

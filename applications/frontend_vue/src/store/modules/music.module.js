@@ -1,5 +1,3 @@
-//import axios from "axios";
-
 const initialState = {
   music: []
 }
@@ -9,7 +7,6 @@ export default {
   state: initialState,
   getters: {
     getSongs(state) {
-      // console.log("getSongs", state.music);
       return state.music
     }
   },
