@@ -2,12 +2,18 @@
   <section id="music" class="music">
     <b-container>
       <b-col>
-        <h2>Music</h2>
-        <div>Hier eine kleine Auswahl der von uns neu interpretierten Songs.</div>
+        <h2 v-motion-slide-visible-once-right :delay="200">Music</h2>
+        <p v-motion-slide-visible-once-left :delay="200">
+          Hier eine kleine Auswahl der von uns neu interpretierten Songs.
+        </p>
         <ul>
-          <li v-for="song in songs" :key="song.id">{{ song.name }} - {{ song.title }}</li>
+          <li v-for="song in songs" :key="song.id" v-motion-slide-visible-once-bottom :delay="200">
+            {{ song.name }} - {{ song.title }}
+          </li>
         </ul>
-        <div>Weitere Titel sind ständig in Arbeit...</div>
+        <p v-motion-slide-visible-once-right :delay="200">
+          Weitere Titel sind ständig in Arbeit...
+        </p>
       </b-col>
     </b-container>
   </section>
@@ -15,6 +21,7 @@
 
 <script>
 import mixins from '@/mixins/index'
+import { useMotion } from '@vueuse/motion'
 
 export default {
   name: 'MusicPage',

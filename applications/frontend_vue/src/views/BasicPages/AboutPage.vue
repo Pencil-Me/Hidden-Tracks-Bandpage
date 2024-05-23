@@ -2,15 +2,17 @@
   <section id="about" class="about">
     <b-container>
       <b-col>
-        <h2>About</h2>
-        <p>We love to rock, we love to roll, with all our hearts and all our soul! Yeeees! :-D</p>
-        <p>
+        <h2 v-motion-slide-visible-once-right :delay="200">About</h2>
+        <p v-motion-slide-visible-once-left :delay="200">
+          We love to rock, we love to roll, with all our hearts and all our soul! Yeeees! :-D
+        </p>
+        <p v-motion-slide-visible-once-right :delay="200">
           Die vielleicht sympathischste Rock-Pop-Coverband aus Berlin (nicht unsere Worte!) setzt
           sich zusammen aus den Vollblut-Gitarristen Fritz und Flo, der schönsten Schlagzeugerin
           Berlins (und weltweit natürlich) Tanja, dem lockigsten Bassisten im Universum Joschi und
           der stimmreichsten und frechen Frontfrau Mo.
         </p>
-        <p>
+        <p v-motion-slide-visible-once-left :delay="200">
           2013 begann die Reise dieser Formierung unter dem Namen “Hidden Tracks”. Seitdem ist viel
           passiert, auf und hinter der Bühne. Inzwischen sind unsere Gitarrenkönige längst Papas
           geworden, gesundheitlich pendeln wir uns alle immer mal wieder neu ein und das alles
@@ -18,12 +20,12 @@
           geworden. Unsere Fans gehören dazu wie unser Equipment. Ohne sie wäre Vieles gar nicht
           möglich gewesen.
         </p>
-        <p>
+        <p v-motion-slide-visible-once-right :delay="200">
           Wir rockten mittlerweile Hochzeiten, Geburtstage, Schulfeste, Vereinsfeiern, Rocknächte
           und Kneipenzusammenkünfte, Akustik-Konzerte, die Fete de la Musique. Ab und an jammen wir
           bei Gelegenheit am Lagerfeuer und werden dabei auch mal ganz melancholisch. :-)
         </p>
-        <p>
+        <p v-motion-slide-visible-once-left :delay="200">
           Was wir uns auf die Fahne geschrieben haben: Wir sind KEINE Partyband. Wir covern Songs,
           die wir geil finden, die gut ankommen, die auch mal nicht so bekannt sind, aber durch uns
           bekannter und beliebter werden ( ;-) ). Wir trauen uns auch an Größen wie Adele, Muse und

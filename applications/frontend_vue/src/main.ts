@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 
 import { createHead } from '@vueuse/head'
+import { MotionPlugin } from '@vueuse/motion'
 import { createBootstrap } from 'bootstrap-vue-next'
 import { createModal } from '@kolirt/vue-modal'
 
@@ -21,12 +22,13 @@ app.use(store)
 app.use(router)
 app.use(createBootstrap())
 app.use(createHead())
+app.use(MotionPlugin)
 app.use(
   createModal({
     transitionTime: 200,
     animationType: 'slideDown',
     modalStyle: {
-      padding: '5rem 2rem',
+      padding: '5rem 1rem',
       align: 'center',
       'z-index': 201
     },

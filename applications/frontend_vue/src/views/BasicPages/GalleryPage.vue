@@ -2,8 +2,8 @@
   <section id="gallery" class="gallery">
     <b-container>
       <b-col>
-        <h2>Gallery</h2>
-        <div class="gallerycontainer col-12">
+        <h2 v-motion-slide-visible-once-right :delay="200">Gallery</h2>
+        <div class="gallerycontainer col-12" v-motion-fade-visible-once :delay="200">
           <div
             class="image"
             @click="openImage(image.url)"
@@ -83,19 +83,25 @@ export default {
       column-count: 2;
     }
 
-    .image picture img {
+    .image {
       position: relative;
-      width: 100%;
-      //margin-bottom: 8px;
-      overflow: hidden;
       cursor: pointer;
-      border: 1px solid #7c654a;
+      overflow: hidden;
+      width: 100%;
+      transition: all 0.5s ease-in-out;
 
       &:hover {
-        transition: all 0.5s ease;
         transform: scale(1.2);
         z-index: 99;
-        border: 1px solid #e0b48a;
+      }
+
+      img {
+        border: 1px solid #7c654a;
+        transition: border 0.5s ease;
+
+        &:hover {
+          border: 1px solid #e0b48a;
+        }
       }
     }
   }

@@ -24,6 +24,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.6",
     "@kolirt/vue-modal": "^1.0.1",
     "@vueuse/head": "^2.0.0",
+    "@vueuse/motion": "^2.1.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",

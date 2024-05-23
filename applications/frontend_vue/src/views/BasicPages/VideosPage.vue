@@ -2,7 +2,7 @@
   <section id="videos" class="videos">
     <b-container>
       <b-col>
-        <h2>Videos</h2>
+        <h2 v-motion-slide-visible-once-right :delay="200">Videos</h2>
         <iframe
           v-for="video in videos"
           :key="video.url"
@@ -12,6 +12,8 @@
           :src="video.url"
           style="height: 48vw; max-height: 645px"
           width="100%"
+          v-motion-slide-visible-once-bottom
+          :delay="200"
         ></iframe>
       </b-col>
     </b-container>
