@@ -7,8 +7,10 @@
   "devDependencies": {
     "fs-extra": "^11.2.0",
     "gulp": "^5.0.0",
+    "gulp-debug": "^5.0.1",
     "gulp-image-resize": "^0.13.1",
     "gulp-imagemin": "^9.1.0",
+    "gulp-newer": "^1.4.0",
     "gulp-sharp-responsive": "^0.4.1",
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0"
