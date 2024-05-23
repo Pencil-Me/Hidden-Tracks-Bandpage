@@ -41,5 +41,7 @@ export default {
 <style scoped>
 .music {
   background: #2a2a2a;
+  width:100vw;
+  overflow: hidden;
 }
 </style>

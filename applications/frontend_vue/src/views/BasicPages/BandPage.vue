@@ -61,6 +61,8 @@ export default {
 <style lang="scss">
 .band {
   background: #2e1a06;
+  width:100vw;
+  overflow: hidden;
 
   .bandmembers {
     display: grid;

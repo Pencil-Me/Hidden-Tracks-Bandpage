@@ -67,7 +67,7 @@ p {
 }
 // variables
 :root {
-  --font-primary: Avenir, Helvetica, Arial, sans-serif;
+  --font-primary: Avenir, Helvetica, Arial;
   --color-gray: #dadce0;
 
   @media (prefers-color-scheme: dark) {
@@ -81,15 +81,15 @@ body {
   line-height: 1.5;
   text-align: left;
   -webkit-text-size-adjust: 100%;
-  font-family: var(--font-primary);
+  font-family: var(--font-primary), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #app {
+  display: block;
   min-width: 100%;
   min-height: 100%;
-  max-width: 100vw;
   color: #fff;
 }
 </style>

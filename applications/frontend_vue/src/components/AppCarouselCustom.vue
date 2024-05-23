@@ -8,9 +8,7 @@
         :class="animation"
         :key="index"
       >
-        <div
-            class="animation-container"
-            :style="computedContainerStyle">
+        <div class="animation-container" :style="computedContainerStyle">
           <AppImage
             :lazy-srcset-large="image.lg"
             :lazy-srcset-medium="image.md"
@@ -75,7 +73,7 @@ export default {
       slideIndex: 1,
       lastScrollY: 0,
       right: 6,
-      scale: .2
+      scale: 0.2
     }
   },
   computed: {
@@ -181,8 +179,8 @@ export default {
   right: 0;
   bottom: 0;
   transition:
-      right 20000ms ease-in-out,
-      transform 15000ms ease-in-out;
+    right 20000ms ease-in-out,
+    transform 15000ms ease-in-out;
 }
 
 .slides {
