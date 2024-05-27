@@ -12,6 +12,10 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 library.add(fas, far, fab)
 
+// Add the necessary CSS
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
+
 import App from './App.vue'
 import store from './store'
 import router from './router'
@@ -20,7 +24,7 @@ const app = createApp(App)
 
 app.use(store)
 app.use(router)
-app.use(createBootstrap())
+app.use(createBootstrap({components: true, directives: true})) // Change this line
 app.use(createHead())
 app.use(MotionPlugin)
 app.use(

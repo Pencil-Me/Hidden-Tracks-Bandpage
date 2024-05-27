@@ -2,7 +2,7 @@
   <div class="template-carousel">
     <div class="slides-container">
       <div
-        v-for="(image, index) in myImages"
+        v-for="(image, index) in images"
         ref="slides"
         class="slides"
         :class="animation"
@@ -43,7 +43,7 @@ import AppImage from '@/components/AppImage.vue'
 export default {
   components: { AppImage },
   props: {
-    myImages: {
+    images: {
       type: Array,
       required: false,
       default: () => []

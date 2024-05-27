@@ -1,18 +1,18 @@
 <template>
   <div class="slider">
     <div class="wrapper-single" v-if="sliderImagesExist">
-      <app-carousel :my-images="sliderImages.images" :time-slide="10000" />
+      <app-carousel-custom :images="sliderImages.images" :time-slide="10000" />
     </div>
   </div>
 </template>
 
 <script>
-import AppCarousel from '@/components/AppCarouselCustom.vue'
+import AppCarouselCustom from '@/components/AppCarouselCustom.vue'
 
 export default {
   name: 'HeroCarouselPage',
   components: {
-    AppCarousel
+    AppCarouselCustom
   },
   computed: {
     sliderImagesExist() {
@@ -21,7 +21,7 @@ export default {
     },
     sliderImages() {
       let sliderimg = this.$store.getters['images/allSliderimages']
-      if (!sliderimg) return []
+       if (!sliderimg) return []
       if (sliderimg.images.length <= 0) return []
       return sliderimg
     }

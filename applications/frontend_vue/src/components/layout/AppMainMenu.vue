@@ -1,28 +1,30 @@
 <template>
-  <header>
-    <div class="app-header" :class="navClass">
-      <nav>
-        <div class="logo">
-          <a @click="navTo('/#home')">
-            <img
-              src="@/assets/Hiddentracks-Logo.svg"
-              style="fill: #fff"
-              alt="Hidden Tracks Berlin"
-            />
-          </a>
-        </div>
-        <ul v-if="!isHidden_menu">
-          <li v-for="(point, index) in mainMenu" v-bind:key="index">
-            <a @click="navTo(`/#${point.url}`)">
-              {{ point.name }}
+  <header class="app-header" :class="navClass">
+    <b-container>
+      <b-col>
+        <nav>
+          <div class="logo">
+            <a @click="navTo('/#home')">
+              <img
+                  src="@/assets/Hiddentracks-Logo.svg"
+                  style="fill: #fff"
+                  alt="Hidden Tracks Berlin"
+              />
             </a>
-          </li>
-        </ul>
-        <a class="burger" @click="isHidden_menu = !isHidden_menu">
-          <font-awesome-icon icon="bars" size="2x" />
-        </a>
-      </nav>
-    </div>
+          </div>
+          <ul v-if="!isHidden_menu">
+            <li v-for="(point, index) in mainMenu" v-bind:key="index">
+              <a @click="navTo(`/#${point.url}`)">
+                {{ point.name }}
+              </a>
+            </li>
+          </ul>
+          <a class="burger" @click="isHidden_menu = !isHidden_menu">
+            <font-awesome-icon icon="bars" size="2x" />
+          </a>
+        </nav>
+      </b-col>
+    </b-container>
   </header>
 </template>
 
@@ -87,9 +89,6 @@ export default {
 
   position: absolute;
   z-index: 99;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #fff;
   background: transparent;
   height: var(--header-height);
@@ -104,10 +103,6 @@ export default {
   }
 
   nav {
-    width: 100%;
-    max-width: 1024px;
-    height: var(--header-height);
-    position: absolute;
     padding: 0 1em;
     display: grid;
     grid-template-columns: 25vw 1fr;

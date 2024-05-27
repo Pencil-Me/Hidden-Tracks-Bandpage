@@ -6,6 +6,9 @@ import vue from '@vitejs/plugin-vue'
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
+import Components from 'unplugin-vue-components/vite'
+import {BootstrapVueNextResolver} from 'unplugin-vue-components/resolvers'
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     process.env = {...process.env, ...loadEnv(mode, process.cwd())};
@@ -29,7 +32,10 @@ export default defineConfig(({ mode }) => {
                         dest: ''
                     }
                 ]
-            })
+            }),
+            Components({
+                resolvers: [BootstrapVueNextResolver()],
+            }),
         ],
         resolve:
             {
