@@ -23,10 +23,10 @@ services:
       context: ./applications/api_php
       dockerfile: Dockerfile
     ports:
-      - "3001:80"
+      - "9001:80"
     volumes:
       - ./applications/api_php/src:/var/www/html
 
 volumes:
-  mysqldata: {}
+  mysqldata: { }
   data:

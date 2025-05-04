@@ -24,7 +24,7 @@ const app = createApp(App)
 
 app.use(store)
 app.use(router)
-app.use(createBootstrap({components: true, directives: true})) // Change this line
+app.use(createBootstrap({ components: true, directives: true })) // Change this line
 app.use(createHead())
 app.use(MotionPlugin)
 app.use(

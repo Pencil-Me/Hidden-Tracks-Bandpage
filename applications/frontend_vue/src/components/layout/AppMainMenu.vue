@@ -6,9 +6,9 @@
           <div class="logo">
             <a @click="navTo('/#home')">
               <img
-                  src="@/assets/Hiddentracks-Logo.svg"
-                  style="fill: #fff"
-                  alt="Hidden Tracks Berlin"
+                src="@/assets/Hiddentracks-Logo.svg"
+                style="fill: #fff"
+                alt="Hidden Tracks Berlin"
               />
             </a>
           </div>

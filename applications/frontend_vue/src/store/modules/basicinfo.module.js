@@ -111,12 +111,12 @@ export default {
           'Tanja Kasten',
           'Alexander Fritz'
         ],
-        street: 'Hönower Str 37',
+        street: 'Hönower Str. 37',
         zip: '10318',
         town: 'Berlin',
         phone: '',
         fax: '',
-        email: 'info@hidden-tracks-berlin.de',
+        email: 'info@hiddentracks-berlin.de',
         umstid: '',
         wirtid: '',
         aufsicht: ''

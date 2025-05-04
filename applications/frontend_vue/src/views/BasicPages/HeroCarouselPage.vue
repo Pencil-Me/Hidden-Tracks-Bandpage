@@ -21,7 +21,7 @@ export default {
     },
     sliderImages() {
       let sliderimg = this.$store.getters['images/allSliderimages']
-       if (!sliderimg) return []
+      if (!sliderimg) return []
       if (sliderimg.images.length <= 0) return []
       return sliderimg
     }

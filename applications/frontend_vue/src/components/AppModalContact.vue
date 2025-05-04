@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Kontakt</h1>
-    <form class="vue-form" @submit.prevent="submit" v-if="!submitted">
+    <form v-if="!submitted" class="vue-form" @submit.prevent="submit">
       <div class="error-message">
         <p v-show="sendError">
           Das Emailsenden hat einen Fehler verursacht. Bitte überprüfe deine Eingaben und versuche
@@ -14,23 +14,23 @@
           <div class="col-md-6">
             <div class="form-group">
               <input
-                type="text"
-                name="txtName"
-                class="form-control"
-                placeholder="Dein Name?"
-                value="''"
                 v-model="name"
+                class="form-control"
+                name="txtName"
+                placeholder="Dein Name?"
+                type="text"
+                value="''"
               />
             </div>
             <div class="form-group">
               <input
-                type="text"
-                name="txtEmail"
-                class="form-control"
-                placeholder="Deine Email?"
-                :class="{ email, error: !email.valid }"
-                value=""
                 v-model="email.value"
+                :class="{ email, error: !email.valid }"
+                class="form-control"
+                name="txtEmail"
+                placeholder="Deine Email?"
+                type="text"
+                value=""
               />
               <p v-show="!email.valid">Die Email ist fehlerhaft.</p>
             </div>
@@ -38,12 +38,12 @@
           <div class="col-md-6">
             <div class="form-group">
               <textarea
-                name="txtMsg"
-                class="form-control"
-                placeholder="Was willst du uns sagen?"
-                style="width: 100%; height: 150px"
                 v-model="message.text"
                 :maxlength="message.maxlength"
+                class="form-control"
+                name="txtMsg"
+                placeholder="Was willst du uns sagen?"
+                style="width: 100%; height: 150px"
               ></textarea>
               <span class="counter">{{ message.text.length }} / {{ message.maxlength }}</span>
             </div>
@@ -51,27 +51,27 @@
         </div>
 
         <input
-          type="checkbox"
-          formControlName="contactByFax"
-          name="contact_me_by_fax_only"
-          value="1"
-          style="display: none !important"
-          tabindex="-1"
           v-model="contactMeByFax"
           autocomplete="off"
+          formControlName="contactByFax"
+          name="contact_me_by_fax_only"
+          style="display: none !important"
+          tabindex="-1"
+          type="checkbox"
+          value="1"
         />
 
         <div class="col-md-12">
           <div class="form-group text-center">
-            <button v-if="!sending" type="submit" name="btnSubmit" class="btn btn-primary">
+            <button v-if="!sending" class="btn btn-primary" name="btnSubmit" type="submit">
               Senden
             </button>
             <button v-if="sending" disabled>Email wird gesendet...</button>
 
             <button
               v-if="!sending"
-              name="btnCancel"
               class="btn btn-secondary"
+              name="btnCancel"
               @click="cancelMail()"
             >
               Cancel
@@ -88,14 +88,14 @@
       </div>
       <div class="col-md-12">
         <div class="form-group text-center">
-          <button name="btnCancel" class="btn btn-secondary" @click="cancelMail()">
+          <button class="btn btn-secondary" name="btnCancel" @click="cancelMail()">
             Schließen
           </button>
         </div>
       </div>
     </div>
 
-    <div class="debug" v-if="debugOn">
+    <div v-if="debugOn" class="debug">
       <pre><code>{{ $data }}</code></pre>
     </div>
   </div>
@@ -103,7 +103,7 @@
 
 <script>
 import { closeModal } from '@kolirt/vue-modal'
-import MailService from '@/services/mail.service.js'
+import MailService from '@/services/mail.service.ts'
 
 export default {
   data() {
