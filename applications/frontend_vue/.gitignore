@@ -20,6 +20,7 @@ coverage
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+.idea/*
 .idea
 *.suo
 *.ntvs*
@@ -28,12 +29,17 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-/.env.production
 /src/assets/imgs/bandmembers/*
 /src/assets/imgs/breakerimage/*
 /src/assets/imgs/gallery/*
 /src/assets/imgs/polaroids/*
 /src/assets/imgs/slider/*
 /src/store/jsons/*
+/src/vendor/imgs/*
+/src/vendor/imgs-org/*
 
 .env
+.env.production
+
+/package.json.bak
+/package-lock.json.bak
