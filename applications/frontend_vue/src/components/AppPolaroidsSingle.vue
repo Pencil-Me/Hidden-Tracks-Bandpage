@@ -12,6 +12,9 @@
 </template>
 
 <script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
 import {computed, ref, watch} from 'vue';
 import {useStore} from 'vuex';
 import {openModal} from '@kolirt/vue-modal';
@@ -19,6 +22,9 @@ import {openModal} from '@kolirt/vue-modal';
 import AppImage from './AppImage.vue';
 import AppModalImage from '@/components/AppModalImage.vue';
 
+/* ─────────────────────────────
+ * Konfiguration
+ * ───────────────────────────── */
 const CONFIG = {
   ALIGNMENT_THRESHOLD: 0.5,
   SIDE_DISTANCE: {BASE: 50, VARIATION: 70},
@@ -27,16 +33,19 @@ const CONFIG = {
   SCROLL_DIVISOR: 4,
   ROTATION_DIVISOR: 5,
   MIN_ROTATION: 1,
+  FULL_ROTATION: 360,
   LEVEL_1: 1,
   LEVEL_2: 2,
   LEVEL_3: 3,
   LEVEL_2_THRESHHOLD: 0.66,
   LEVEL_3_THRESHHOLD: 0.33,
-  FULL_ROTATION: 360,
   DOT_FIVE: 0.5,
   TWO: 2,
 };
 
+/* ─────────────────────────────
+ * Props & Store
+ * ───────────────────────────── */
 const props = defineProps<{
   polaroid: {
     url: string
@@ -50,18 +59,39 @@ const props = defineProps<{
 
 const store = useStore();
 
-// Randomisierte Initialwerte
+/* ─────────────────────────────
+ * Initialisierte Zufallswerte
+ * ───────────────────────────── */
 const rand = Math.random;
+
 const alignment = ref(rand() < CONFIG.ALIGNMENT_THRESHOLD ? 'left' : 'right');
 const sideDistance = ref(CONFIG.SIDE_DISTANCE.BASE - Math.round(rand() * CONFIG.SIDE_DISTANCE.VARIATION));
-const type = ref(randomLevel());
+
+const type = ref(getRandomLevel());
 const currentPosition = ref(props.startPosition ?? 0);
 const currentRotation = ref(Math.round(rand() * CONFIG.ROTATION_MAX));
 const verticalSpeedMod = ref(Math.round(rand() * CONFIG.VERTICAL_SPEED_MAX) || 1);
 const rotateLeft = ref(rand() < CONFIG.DOT_FIVE);
 const lastScrollY = ref(0);
 
-function randomLevel() {
+/* ─────────────────────────────
+ * Computed Styles & Klassen
+ * ───────────────────────────── */
+const polaroidClass = computed(() => ({
+  polaroid: true,
+  [`level${type.value}`]: type.value > 1,
+}));
+
+const style = computed(() => ({
+  [alignment.value]: `${sideDistance.value}px`,
+  top: `${currentPosition.value}px`,
+  transform: `rotate(${currentRotation.value}deg)`
+}));
+
+/* ─────────────────────────────
+ * Methoden
+ * ───────────────────────────── */
+function getRandomLevel(): number {
   const roll = Math.random();
   if (roll < CONFIG.LEVEL_3_THRESHHOLD) return CONFIG.LEVEL_3;
   if (roll < CONFIG.LEVEL_2_THRESHHOLD) return CONFIG.LEVEL_2;
@@ -82,8 +112,8 @@ function applyScrollEffect(newY: number) {
 
   const rotationChange = Math.max(CONFIG.MIN_ROTATION, Math.abs(scrollDiff / rotationFactor));
   currentRotation.value += rotateLeft.value ? -rotationChange : rotationChange;
-
   currentRotation.value = normalizeRotation(currentRotation.value);
+
   lastScrollY.value = newY;
 }
 
@@ -93,17 +123,9 @@ function openImage(url: string) {
   });
 }
 
-const polaroidClass = computed(() => ({
-  polaroid: true,
-  [`level${type.value}`]: type.value > 1
-}));
-
-const style = computed(() => ({
-  [alignment.value]: `${sideDistance.value}px`,
-  top: `${currentPosition.value}px`,
-  transform: `rotate(${currentRotation.value}deg)`
-}));
-
+/* ─────────────────────────────
+ * Reaktive Reaktion
+ * ───────────────────────────── */
 const currentScrollY = computed(() => store.getters['page/currentScrollY']);
 
 watch(currentScrollY, (newY) => {
