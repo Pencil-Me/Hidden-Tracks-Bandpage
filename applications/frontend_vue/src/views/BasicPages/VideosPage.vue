@@ -25,13 +25,13 @@ export default {
   name: 'VideosPage',
   computed: {
     videos() {
-      return this.$store.getters['videos/allVideos']
+      return this.$store.getters['videos/allVideos'];
     }
   },
   mounted() {
-    this.$store.dispatch('videos/GET_VIDEOS')
+    this.$store.dispatch('videos/GET_VIDEOS');
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -1,9 +1,9 @@
 <script lang="ts">
-import AppSocialLinks from '@/components/layout/AppSocialLinks.vue'
-import AppMainMenu from '@/components/layout/AppMainMenu.vue'
-import AppMainFooter from '@/components/layout/AppMainFooter.vue'
-import { ModalTarget } from '@kolirt/vue-modal'
-import { useHead } from '@vueuse/head'
+import AppSocialLinks from '@/components/layout/AppSocialLinks.vue';
+import AppMainMenu from '@/components/layout/AppMainMenu.vue';
+import AppMainFooter from '@/components/layout/AppMainFooter.vue';
+import { ModalTarget } from '@kolirt/vue-modal';
+import { useHead } from '@vueuse/head';
 
 export default {
   name: 'App',
@@ -26,7 +26,7 @@ export default {
             'Die sympathische Rock-Pop-Coverband Hidden Tracks aus Berlin begeistert seit 2013 mit einzigartigen Auftritten und unverwechselbarem Sound. Erlebe leidenschaftliche Performances von Fritz, Flo, Tanja, Joschi und Mo bei Hochzeiten, Geburtstagen und mehr. Lass dich von ihren besonderen Interpretationen von Adele, Muse und Korn überraschen. Komm vorbei und rock mit uns!'
         }
       ]
-    })
+    });
   },
   data() {},
   components: {
@@ -35,7 +35,7 @@ export default {
     AppMainMenu,
     AppMainFooter
   }
-}
+};
 </script>
 
 <template>

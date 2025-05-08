@@ -16,21 +16,21 @@
 </template>
 
 <script>
-import { openModal } from '@kolirt/vue-modal'
-import HeroCarousel from '@/views/BasicPages/HeroCarouselPage.vue'
-import About from '@/views/BasicPages/AboutPage.vue'
-import BreakerImage from '@/views/BasicPages/BreakerImagePage.vue'
-import Videos from '@/views/BasicPages/VideosPage.vue'
-import Gallery from '@/views/BasicPages/GalleryPage.vue'
-import Band from '@/views/BasicPages/BandPage.vue'
-import Music from '@/views/BasicPages/MusicPage.vue'
-import AppModal from '@/components/AppModal.vue'
-import Polaroids from '@/views/BasicPages/PolaroidsPage.vue'
+import {openModal} from '@kolirt/vue-modal';
+import HeroCarousel from '@/views/BasicPages/HeroCarouselPage.vue';
+import About from '@/views/BasicPages/AboutPage.vue';
+import BreakerImage from '@/views/BasicPages/BreakerImagePage.vue';
+import Videos from '@/views/BasicPages/VideosPage.vue';
+import Gallery from '@/views/BasicPages/GalleryPage.vue';
+import Band from '@/views/BasicPages/BandPage.vue';
+import Music from '@/views/BasicPages/MusicPage.vue';
+import AppModal from '@/components/AppModal.vue';
+import Polaroids from '@/views/BasicPages/PolaroidsPage.vue';
 
 export default {
   name: 'HomeView',
   data: () => {
-    return {}
+    return {};
   },
   components: {
     HeroCarousel,
@@ -46,27 +46,27 @@ export default {
     runModal() {
       openModal(AppModal, {
         test: 'some props'
-      })
-        // runs when modal is closed via confirmModal
-        .then((data) => {
-          console.log('success', data)
-        })
-        // runs when modal is closed via closeModal or esc
-        .catch(() => {
-          console.log('catch')
-        })
+      });
+      // runs when modal is closed via confirmModal
+      // .then((data) => {
+      //   console.log('success', data);
+      // })
+      // runs when modal is closed via closeModal or esc
+      // .catch(() => {
+      //   console.log('catch');
+      // });
     }
   },
   computed: {
     gigs() {
-      let temp = this.$store.getters['gigs/getNextGigs']
-      return temp != null && temp.length > 0
+      const temp = this.$store.getters['gigs/getNextGigs'];
+      return temp != null && temp.length > 0;
     }
   },
   mounted() {
-    this.$store.dispatch('images/GET_BREAKERIMAGES')
+    this.$store.dispatch('images/GET_BREAKERIMAGES');
   }
-}
+};
 </script>
 
 <style lang="scss">

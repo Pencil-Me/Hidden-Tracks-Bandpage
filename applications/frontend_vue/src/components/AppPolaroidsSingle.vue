@@ -1,5 +1,5 @@
 <template>
-  <div @click="openImage(polaroid.url)" :class="className" :style="computedStyle">
+  <div :class="polaroidClass" :style="style" @click="openImage(polaroid.url)">
     <AppImage
       v-if="polaroid"
       :lazy-srcset-large="polaroid.lg"
@@ -11,99 +11,122 @@
   </div>
 </template>
 
-<script>
-import AppImage from './AppImage.vue'
-import { openModal } from '@kolirt/vue-modal'
-import AppModalImage from '@/components/AppModalImage.vue'
+<script lang="ts">
+import AppImage from './AppImage.vue';
+import {openModal} from '@kolirt/vue-modal';
+import AppModalImage from '@/components/AppModalImage.vue';
+
+const CONFIG = {
+  ALIGNMENT_THRESHOLD: 0.5,
+  SIDE_DISTANCE: {BASE: 50, VARIATION: 70},
+  ROTATION_MAX: 200,
+  VERTICAL_SPEED_MAX: 3,
+  SCROLL_DIVISOR: 4,
+  ROTATION_DIVISOR: 5,
+  MIN_ROTATION: 1,
+  LEVEL_1: 1,
+  LEVEL_2: 2,
+  LEVEL_3: 3,
+};
 
 export default {
   name: 'PolaroidsSingle',
   props: {
-    polaroid: Object,
-    startPosition: Number
+    polaroid: {type: Object, required: true},
+    startPosition: {type: Number, default: 0}
   },
-  components: {
-    AppImage
-  },
+  components: {AppImage},
   data() {
+    const rand = Math.random;
+    const HALF = 0.5;
     return {
-      alignment: Math.random() < 0.5 ? 'left' : 'right',
-      sideDistance: 50 - Math.round(Math.random() * 70),
-      type: Math.random() < 0.5 ? 3 : Math.random() < 0.5 ? 2 : 1,
+      alignment: rand() < CONFIG.ALIGNMENT_THRESHOLD ? 'left' : 'right',
+      sideDistance: CONFIG.SIDE_DISTANCE.BASE - Math.round(rand() * CONFIG.SIDE_DISTANCE.VARIATION),
+      type: this.randomLevel(),
       currentPosition: this.startPosition,
-      currentRotation: Math.round(Math.random() * 200),
-      verticalSpeedModificator: Math.round(Math.random() * 3),
-      rotateToLeft: Math.round(Math.random()) < 0.5,
+      currentRotation: Math.round(rand() * CONFIG.ROTATION_MAX),
+      verticalSpeedMod: Math.round(rand() * CONFIG.VERTICAL_SPEED_MAX) || 1,
+      rotateLeft: rand() < HALF,
       lastScrollY: 0
-    }
+    };
   },
   computed: {
-    className() {
+    polaroidClass() {
       return {
         polaroid: true,
-        level2: this.type === 3,
-        level3: this.type === 2
-      }
+        [`level${this.type}`]: this.type > 1
+      };
     },
-    computedStyle() {
-      const style = {}
-      style[this.alignment] = `${this.sideDistance}px`
-      style['top'] = `${this.currentPosition}px`
-      style['transform'] = `rotate(${this.currentRotation}deg)`
-      return style
+    style() {
+      return {
+        [this.alignment]: `${this.sideDistance}px`,
+        top: `${this.currentPosition}px`,
+        transform: `rotate(${this.currentRotation}deg)`
+      };
     },
     currentScrollY() {
-      return this.$store.getters['page/currentScrollY']
+      return this.$store.getters['page/currentScrollY'];
     }
   },
   methods: {
+    randomLevel() {
+      const roll = Math.random();
+      const LEVEL_3_THRESHHOLD = 0.33;
+      const LEVEL_2_THRESHHOLD = 0.66;
+
+      if (roll < LEVEL_3_THRESHHOLD) return CONFIG.LEVEL_3;
+      if (roll < LEVEL_2_THRESHHOLD) return CONFIG.LEVEL_2;
+      return CONFIG.LEVEL_1;
+    },
     openImage(url) {
-      this.$store.dispatch('images/setModalImg', url)
-      openModal(AppModalImage, {})
-        // runs when modal is closed via confirmModal
-        .then((data) => {
-          console.log('success', data)
-        })
-        // runs when modal is closed via closeModal or esc
-        .catch(() => {
-          console.log('catch')
-        })
-    }
+      this.$store.dispatch('images/setModalImg', url);
+      openModal(AppModalImage).catch(() => {
+      });
+    },
+    applyScrollEffect(newY) {
+      function normalizeRotation(deg: number): number {
+        const FULL_ROTATION = 360;
+        return (deg + FULL_ROTATION) % FULL_ROTATION;
+      }
+
+      const scrollDiff = this.lastScrollY - newY;
+
+      const HALF_DOUBLE = 2;
+      const positionFactor = CONFIG.SCROLL_DIVISOR * this.type * (this.verticalSpeedMod / HALF_DOUBLE);
+      const rotationFactor = CONFIG.ROTATION_DIVISOR * this.type * HALF_DOUBLE * this.verticalSpeedMod;
+
+      this.currentPosition += scrollDiff / positionFactor;
+
+      const rotationChange = Math.max(CONFIG.MIN_ROTATION, Math.abs(scrollDiff / rotationFactor));
+      this.currentRotation += this.rotateLeft ? -rotationChange : rotationChange;
+
+      this.currentRotation = normalizeRotation(this.currentRotation);
+
+      this.lastScrollY = newY;
+    },
   },
   watch: {
-    currentScrollY(val) {
-      const scrollDiff = this.lastScrollY - val
-
-      const move = scrollDiff / (4 * this.type * (this.verticalSpeedModificator / 2))
-      this.currentPosition += move
-
-      const rotate = scrollDiff / (5 * (this.type * 2) * this.verticalSpeedModificator)
-      this.currentRotation += (this.rotateToLeft ? -1 : 1) * Math.max(1, Math.abs(rotate))
-      this.currentRotation = ((this.currentRotation % 360) + 360) % 360
-
-      this.lastScrollY = val
+    currentScrollY(newY) {
+      this.applyScrollEffect(newY);
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
 .polaroid {
   pointer-events: all;
+  position: absolute;
+  background-color: #000;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: cover;
   z-index: 994;
-  position: absolute;
+  transition: transform 0.3s ease, top 0.3s ease;
   height: 10vw;
   width: 10vw;
   max-height: 85px;
   max-width: 85px;
-  background-color: #000;
-  transition:
-    transform 0.3s ease,
-    top 0.3s ease;
-  object-fit: cover;
 
   @media (min-width: 576px) and (max-width: 991px) {
     height: 7vw;
@@ -113,12 +136,12 @@ export default {
   }
 
   &.level2 {
+    z-index: 995;
+    filter: blur(0.5px);
     height: 11vw;
     width: 11vw;
     max-height: 100px;
     max-width: 100px;
-    filter: blur(0.5px);
-    z-index: 995;
 
     @media (min-width: 576px) and (max-width: 991px) {
       height: 7.5vw;
@@ -129,12 +152,12 @@ export default {
   }
 
   &.level3 {
+    z-index: 996;
+    filter: blur(0.75px);
     height: 12vw;
     width: 12vw;
     max-height: 140px;
     max-width: 140px;
-    filter: blur(0.75px);
-    z-index: 996;
 
     @media (min-width: 576px) and (max-width: 991px) {
       height: 8vw;
@@ -161,7 +184,7 @@ export default {
     z-index: 2;
     height: 100%;
     width: 100%;
-    vertical-align: middle;
+    object-fit: cover;
     border-style: none;
   }
 

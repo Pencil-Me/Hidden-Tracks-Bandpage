@@ -20,20 +20,20 @@
 </template>
 
 <script>
-import mixins from '@/mixins/index'
+import mixins from '@/mixins/index';
 
 export default {
   name: 'MusicPage',
   mixins: [mixins],
   computed: {
     songs() {
-      return this.shuffleArray(this.$store.getters['music/getSongs'])
+      return this.shuffleArray(this.$store.getters['music/getSongs']);
     }
   },
   mounted() {
-    this.$store.dispatch('music/GET_SONGS')
+    this.$store.dispatch('music/GET_SONGS');
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

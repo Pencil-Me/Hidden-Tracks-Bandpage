@@ -1,14 +1,14 @@
 <template>
   <div class="polaroids">
     <template v-for="polaroid in polaroids" :key="polaroid.image">
-      <polaroid :polaroid="polaroid.image" :start-position="polaroid.startPosition" />
+      <polaroid :polaroid="polaroid.image" :start-position="polaroid.startPosition"/>
     </template>
   </div>
 </template>
 
 <script>
-import polaroid from '@/components/AppPolaroidsSingle.vue'
-import mixins from '@/mixins/index'
+import polaroid from '@/components/AppPolaroidsSingle.vue';
+import mixins from '@/mixins/index';
 
 export default {
   name: 'PolaroidsPage',
@@ -18,45 +18,48 @@ export default {
   mixins: [mixins],
   computed: {
     polaroids() {
-      const polaroidimages = this.$store.getters['images/allPolaroidimages']
-      if (!polaroidimages) return []
-      if (polaroidimages.images.length <= 0) return []
+      const polaroidimages = this.$store.getters['images/allPolaroidimages'];
+      if (!polaroidimages) return [];
+      if (polaroidimages.images.length <= 0) return [];
 
-      const polaroiddata = this.shuffleArray(polaroidimages.images)
+      const polaroiddata = this.shuffleArray(polaroidimages.images);
       const polaroidtemplate = {
         image: {},
         startPosition: 0
-      }
-      const polaroids = []
+      };
+      const polaroids = [];
 
-      let lastPosition = 550
+      let lastPosition = 550;
 
       for (let i = 0; i < polaroiddata.length; i++) {
-        let polaroid = structuredClone(polaroidtemplate)
-        polaroid.image = polaroiddata[i]
+        const polaroid = structuredClone(polaroidtemplate);
+        polaroid.image = polaroiddata[i];
 
+        const RANDOM_POSITION_OFFSET = 200;
         let newPosition =
           lastPosition +
-          Math.round(Math.random() * 200) +
-          Math.round(Math.random() * 200) +
-          Math.round(Math.random() * 200)
+          Math.round(Math.random() * RANDOM_POSITION_OFFSET) +
+          Math.round(Math.random() * RANDOM_POSITION_OFFSET) +
+          Math.round(Math.random() * RANDOM_POSITION_OFFSET);
+        const HALF = 0.5;
+        const RANDOM_POSITION_HALF_OFFSET = 50;
         newPosition =
-          Math.random() < 0.5
-            ? newPosition + Math.round(Math.random() * 50)
-            : newPosition + Math.round(Math.random() - 50)
-        polaroid.startPosition = newPosition
-        lastPosition = newPosition
+          Math.random() < HALF
+            ? newPosition + Math.round(Math.random() * RANDOM_POSITION_HALF_OFFSET)
+            : newPosition + Math.round(Math.random() - RANDOM_POSITION_HALF_OFFSET);
+        polaroid.startPosition = newPosition;
+        lastPosition = newPosition;
 
-        polaroids.push(polaroid)
+        polaroids.push(polaroid);
       }
 
-      return polaroids
+      return polaroids;
     }
   },
   mounted() {
-    this.$store.dispatch('images/GET_POLAROIDIMAGES')
+    this.$store.dispatch('images/GET_POLAROIDIMAGES');
   }
-}
+};
 </script>
 
 <style scoped>

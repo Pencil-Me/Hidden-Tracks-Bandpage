@@ -16,16 +16,16 @@ export default {
   name: 'app-main-footer',
   computed: {
     year() {
-      return new Date().getFullYear()
+      return new Date().getFullYear();
     },
     footerMenu() {
       return [
         { name: 'Impressum', url: '/impressum' },
         { name: 'Datenschutz', url: '/datenschutz' }
-      ]
+      ];
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

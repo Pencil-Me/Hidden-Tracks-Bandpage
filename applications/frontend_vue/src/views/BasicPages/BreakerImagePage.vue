@@ -9,19 +9,19 @@ export default {
   name: 'BreakerImagePage',
   computed: {
     computedStyle() {
-      const style = {}
-      style['background-image'] = `url(${this.breakerimageurl})`
-      return style
+      const style = {};
+      style['background-image'] = `url(${this.breakerimageurl})`;
+      return style;
     },
     breakerimageurl() {
-      const breakerimages = this.$store.getters['images/allBreakerimages']
-      if (breakerimages?.images?.length <= 0) return null
+      const breakerimages = this.$store.getters['images/allBreakerimages'];
+      if (breakerimages?.images?.length <= 0) return null;
 
-      const bi = breakerimages.images
-      return bi[Math.floor(Math.random() * bi.length)].url
+      const bi = breakerimages.images;
+      return bi[Math.floor(Math.random() * bi.length)].url;
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

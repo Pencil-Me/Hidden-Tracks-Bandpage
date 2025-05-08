@@ -1,23 +1,23 @@
 const initialState = {
   music: []
-}
+};
 
 export default {
   namespaced: true,
   state: initialState,
   getters: {
     getSongs(state) {
-      return state.music
+      return state.music;
     }
   },
   mutations: {
     SET_SONGS(state, payload) {
-      let cleanedobj = []
+      const cleanedobj = [];
       for (let i = 0; i < payload.length; i++) {
-        payload[i].id = i
-        cleanedobj.push(payload[i])
+        payload[i].id = i;
+        cleanedobj.push(payload[i]);
       }
-      state.music = cleanedobj
+      state.music = cleanedobj;
     }
   },
   actions: {
@@ -104,7 +104,7 @@ export default {
           url: 'img/bandmembers/floh.jpg'
         },
         {
-          name: "K's Choice",
+          name: 'K\'s Choice',
           title: 'Not an addict',
           url: 'img/bandmembers/floh.jpg'
         },
@@ -155,7 +155,7 @@ export default {
         },
         {
           name: 'Joan Jett & the Blackhearts',
-          title: "I love rock 'n' roll",
+          title: 'I love rock \'n\' roll',
           url: 'img/bandmembers/floh.jpg'
         },
         {
@@ -218,7 +218,7 @@ export default {
           title: 'Feeling good',
           url: 'img/bandmembers/floh.jpg'
         }
-      ])
+      ]);
     }
   }
-}
+};

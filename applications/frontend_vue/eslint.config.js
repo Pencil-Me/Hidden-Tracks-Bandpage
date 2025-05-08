@@ -1,34 +1,31 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
-import pluginVue from "eslint-plugin-vue";
-import prettier from "eslint-config-prettier";
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import pluginVue from 'eslint-plugin-vue';
+import prettier from 'eslint-config-prettier';
 import vueParser from 'vue-eslint-parser';
 
 export default [
   {
-    files: ["src/**/*.{js,mjs,cjs,ts,vue}"],
+    files: ['src/**/*.{js,mjs,cjs,ts,vue}'],
     languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.browser,
-        process: "readonly"
+        process: 'readonly'
       }
-    },
-    env: {
-      node: true
     }
   },
   {
-    files: ["src/**/*.js"],
+    files: ['src/**/*.js'],
     languageOptions: {
-      sourceType: "commonjs"
+      sourceType: 'commonjs'
     }
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  ...pluginVue.configs["flat/essential"],
+  ...pluginVue.configs['flat/essential'],
   {
     files: ['src/**/*.vue'],
     languageOptions: {
@@ -45,7 +42,15 @@ export default [
   },
   {
     rules: {
-      ...prettier.rules
+      ...prettier.rules,
+      // 'no-console': ['warn', {allow: ['warn', 'error']}],
+      // 'no-debugger': 'warn',
+      'semi': ['error', 'always'],
+      'quotes': ['error', 'single'],
+      'no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
+      'consistent-return': 'error',
+      'prefer-const': 'error',
+      'no-magic-numbers': ['warn', {ignore: [0, 1]}]
     }
   }
 ];

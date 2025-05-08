@@ -143,11 +143,11 @@ export default {
   methods: {},
   computed: {
     basicinfo() {
-      let impressum = this.$store.getters['basicInfo/getImpressuminfo']
-      return impressum
+      const impressum = this.$store.getters['basicInfo/getImpressuminfo'];
+      return impressum;
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

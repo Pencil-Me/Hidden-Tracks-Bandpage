@@ -2,42 +2,42 @@ const initialState = {
   impressuminfo: {},
   social: [],
   bandmembers: []
-}
+};
 
 export default {
   namespaced: true,
   state: initialState,
   getters: {
     modalImg(state) {
-      return state.modalimg
+      return state.modalimg;
     },
     getImpressuminfo(state) {
-      return state.impressuminfo
+      return state.impressuminfo;
     },
     getBandmembers(state) {
-      return state.bandmembers
+      return state.bandmembers;
     },
     getSocial(state) {
-      return state.social
+      return state.social;
     }
   },
   mutations: {
     setModalImgMutation(state, payload) {
-      state.modalimg = payload
+      state.modalimg = payload;
     },
     SET_MEMBERS(state, payload) {
-      state.bandmembers = payload
+      state.bandmembers = payload;
     },
     SET_SOCIAL(state, payload) {
-      state.social = payload
+      state.social = payload;
     },
     SET_IMPRESSUMINFO(state, payload) {
-      state.impressuminfo = payload
+      state.impressuminfo = payload;
     }
   },
   actions: {
     setModalImg: function (context, url) {
-      context.commit('setModalImgMutation', url)
+      context.commit('setModalImgMutation', url);
     },
     GET_MEMBERS: function ({ commit }) {
       commit('SET_MEMBERS', [
@@ -76,7 +76,7 @@ export default {
             url: `${import.meta.env.VITE_IMAGE_BASE_URL}/imgs/bandmembers/tanja-min.jpg`
           }
         }
-      ])
+      ]);
     },
     GET_SOCIAL: function ({ commit }) {
       commit('SET_SOCIAL', [
@@ -98,7 +98,7 @@ export default {
           type: 'fab',
           icon: 'youtube'
         }
-      ])
+      ]);
     },
     GET_IMPRESSUMINFO: function ({ commit }) {
       commit('SET_IMPRESSUMINFO', {
@@ -120,7 +120,7 @@ export default {
         umstid: '',
         wirtid: '',
         aufsicht: ''
-      })
+      });
     }
   }
-}
+};

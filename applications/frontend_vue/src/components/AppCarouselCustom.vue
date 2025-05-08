@@ -3,18 +3,18 @@
     <div class="slides-container">
       <div
         v-for="(image, index) in images"
-        ref="slides"
-        class="slides"
-        :class="animation"
         :key="index"
+        ref="slides"
+        :class="animation"
+        class="slides"
       >
-        <div class="animation-container" :style="computedContainerStyle">
+        <div :style="computedContainerStyle" class="animation-container">
           <AppImage
+            :imageAlt="`Gallery Image ${index}`"
             :lazy-srcset-large="image.lg"
             :lazy-srcset-medium="image.md"
             :lazy-srcset-small="image.sm"
             :lazy-srcset-thumb="image.thumb"
-            :imageAlt="`Gallery Image ${index}`"
             :style="computedSlideStyle"
           />
         </div>
@@ -28,9 +28,9 @@
     <div v-if="showDots" class="dots">
       <span
         v-for="(_, index) in myImages"
+        :key="index"
         ref="dot"
         class="dot"
-        :key="index"
         @click.prevent="currentSlide(index + 1)"
       ></span>
     </div>
@@ -38,117 +38,129 @@
 </template>
 
 <script>
-import AppImage from '@/components/AppImage.vue'
+import AppImage from '@/components/AppImage.vue';
+import _ from 'lodash';
+
+const SLIDE_STYLE_SCALE = 1000;
+const SLIDE_STYLE_SCALE_MAX = 2;
+const SCALE_MIN = 1.1;
+const SCROLL_INTERVAL_DURATION = 20000;
+const SLIDES_INTERVAL_DURATION = 10;
+const REVERSE_SCROLL_INTERVAL_DURATION = 15000;
+const DEBOUNCE_SCROLL_Y = 50;
 
 export default {
-  components: { AppImage },
+  components: {AppImage},
   props: {
-    images: {
-      type: Array,
-      required: false,
-      default: () => []
-    },
-    showText: {
-      type: Boolean,
-      default: false
-    },
-    showDots: {
-      type: Boolean,
-      default: false
-    },
-    showArrows: {
-      type: Boolean,
-      default: true
-    },
-    timeSlide: {
-      type: Number
-    },
-    animation: {
-      type: String,
-      default: null
-    }
+    images: {type: Array, default: () => []},
+    showText: {type: Boolean, default: false},
+    showDots: {type: Boolean, default: false},
+    showArrows: {type: Boolean, default: true},
+    timeSlide: {type: Number, default: 0},
+    animation: {type: String, default: null}
   },
   data() {
     return {
       slideIndex: 1,
       lastScrollY: 0,
       right: 6,
-      scale: 0.2
-    }
+      scale: 0.2,
+      autoSlideInterval: null,
+      scrollInterval: null,
+      reverseScrollInterval: null
+    };
   },
   computed: {
     computedSlideStyle() {
-      const style = {}
-      style['transform'] = `scale(${this.clamp(1 + this.lastScrollY / 1000, 1, 2)})`
-      return style
+      return {
+        transform: `scale(${this.clamp(1 + this.lastScrollY / SLIDE_STYLE_SCALE, 1, SLIDE_STYLE_SCALE_MAX)})`
+      };
     },
     computedContainerStyle() {
-      const style = {}
-      style['right'] = `${this.right}vw`
-      style['transform'] = `scale(${1.1 + this.scale})`
-      return style
+      return {
+        right: `${this.right}vw`,
+        transform: `scale(${SCALE_MIN + this.scale})`
+      };
     },
-    currentScrollY() {
-      return this.$store.getters['page/currentScrollY']
+    scrollY() {
+      return this.$store.getters['page/currentScrollY'];
     }
   },
   mounted() {
-    this.showSlides(this.slideIndex)
-    setTimeout(() => (this.right *= -1), 10)
-    if (this.timeSlide > 0) {
-      setInterval(() => {
-        this.showSlides((this.slideIndex += 1))
-      }, this.timeSlide)
-    }
-    setInterval(() => {
-      this.right *= -1
-    }, 20000)
-    setInterval(() => {
-      this.right *= -1
-    }, 15000)
+    this.initializeSlides();
+    this.startAutoSlide();
+    this.startScrollAnimation();
+  },
+  beforeUnmount() {
+    this.clearIntervals();
   },
   methods: {
     clamp(num, min, max) {
-      return num <= min ? min : num >= max ? max : num
+      return Math.max(min, Math.min(num, max));
     },
-    showSlides(x) {
-      let i
-      let slides = this.$refs.slides
-      if (x > slides.length) {
-        this.slideIndex = 1
+    initializeSlides() {
+      this.showSlides(this.slideIndex);
+      setTimeout(() => {
+        this.right *= -1;
+      }, SLIDES_INTERVAL_DURATION);
+    },
+    startAutoSlide() {
+      if (this.timeSlide > 0 && !this.autoSlideInterval) {
+        this.autoSlideInterval = setInterval(() => {
+          this.nextSlide(1);
+        }, this.timeSlide);
       }
-      if (x < 1) {
-        this.slideIndex = slides.length
+    },
+    startScrollAnimation() {
+      if (!this.scrollInterval) {
+        this.scrollInterval = setInterval(() => {
+          this.right *= -1;
+        }, SCROLL_INTERVAL_DURATION);
       }
-      for (i = 0; i < slides.length; i++) {
-        slides[i].style.visibility = 'hidden'
-        slides[i].style.opacity = '0'
+      if (!this.reverseScrollInterval) {
+        this.reverseScrollInterval = setInterval(() => {
+          this.right *= -1;
+        }, REVERSE_SCROLL_INTERVAL_DURATION);
       }
-      if (!!slides[this.slideIndex - 1] && !!slides[this.slideIndex - 1].style) {
-        slides[this.slideIndex - 1].style.visibility = 'visible'
-        slides[this.slideIndex - 1].style.opacity = '1'
-      }
-      if (this.showDots) {
-        let dots = this.$refs.dot
-        for (i = 0; i < dots.length; i++) {
-          dots[i].className = dots[i].className.replace(' active', '')
-        }
-        dots[this.slideIndex - 1].className += ' active'
+    },
+    clearIntervals() {
+      clearInterval(this.autoSlideInterval);
+      clearInterval(this.scrollInterval);
+      clearInterval(this.reverseScrollInterval);
+    },
+    showSlides(index) {
+      const slides = this.$refs.slides || [];
+      const totalSlides = slides.length;
+
+      if (index > totalSlides) this.slideIndex = 1;
+      else if (index < 1) this.slideIndex = totalSlides;
+      else this.slideIndex = index;
+
+      slides.forEach((slide, idx) => {
+        const isActive = idx === this.slideIndex - 1;
+        slide.style.visibility = isActive ? 'visible' : 'hidden';
+        slide.style.opacity = isActive ? '1' : '0';
+      });
+
+      if (this.showDots && this.$refs.dot) {
+        this.$refs.dot.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === this.slideIndex - 1);
+        });
       }
     },
     nextSlide(n) {
-      this.showSlides((this.slideIndex += n))
+      this.showSlides(this.slideIndex + n);
     },
     currentSlide(n) {
-      this.showSlides((this.slideIndex = n))
+      this.showSlides(n);
     }
   },
   watch: {
-    currentScrollY(val) {
-      this.lastScrollY = val
-    }
+    scrollY: _.debounce(function (val) {
+      this.lastScrollY = val;
+    }, DEBOUNCE_SCROLL_Y)
   }
-}
+};
 </script>
 
 <style lang="scss">
@@ -178,9 +190,8 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  transition:
-    right 20000ms ease-in-out,
-    transform 15000ms ease-in-out;
+  transition: right 20000ms ease-in-out, transform 15000ms ease-in-out;
+  will-change: right, transform;
 }
 
 .slides {
@@ -191,16 +202,15 @@ export default {
   bottom: 0;
   opacity: 0;
   visibility: hidden;
-  transition:
-    opacity 1000ms,
-    visibility 250ms;
-}
+  transition: opacity 1000ms,
+  visibility 250ms;
 
-.slides img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
 }
 
 .prev,

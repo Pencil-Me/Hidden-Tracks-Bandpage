@@ -1,7 +1,7 @@
-import slider from '../jsons/slider.json'
-import gallery from '../jsons/gallery.json'
-import polaroid from '../jsons/polaroids.json'
-import breaker from '../jsons/breakerimage.json'
+import slider from '../jsons/slider.json';
+import gallery from '../jsons/gallery.json';
+import polaroid from '../jsons/polaroids.json';
+import breaker from '../jsons/breakerimage.json';
 
 const initialState = {
   modalimg: null,
@@ -21,9 +21,9 @@ const initialState = {
     type: 'polaroid',
     images: []
   }
-}
+};
 
-import mixins from '@/mixins/index'
+import mixins from '@/mixins/index';
 
 const convertData = (data) => {
   return data.map((e) => ({
@@ -33,8 +33,8 @@ const convertData = (data) => {
     sm: import.meta.env.VITE_IMAGE_BASE_URL + e.sm,
     thumb: import.meta.env.VITE_IMAGE_BASE_URL + e.thumb,
     lazy: import.meta.env.VITE_IMAGE_BASE_URL + e.lazy
-  }))
-}
+  }));
+};
 
 export default {
   namespaced: true,
@@ -42,69 +42,69 @@ export default {
   mixins: [mixins],
   getters: {
     modalImg(state) {
-      return state.modalimg
+      return state.modalimg;
     },
     allSliderimages: (state) => {
-      return state.sliderimages
+      return state.sliderimages;
     },
     allBreakerimages: (state) => {
-      return state.breakerimages
+      return state.breakerimages;
     },
     allGalleryimages: (state) => {
-      return state.galleryimages
+      return state.galleryimages;
     },
     allPolaroidimages: (state) => {
-      return state.polaroidimages
+      return state.polaroidimages;
     }
   },
   mutations: {
     SET_SLIDERIMAGES(state, payload) {
-      state.sliderimages = payload
+      state.sliderimages = payload;
     },
     SET_BREAKERIMAGES(state, payload) {
-      state.breakerimages = payload
+      state.breakerimages = payload;
     },
     SET_GALLERYIMAGES(state, payload) {
-      state.galleryimages = payload
+      state.galleryimages = payload;
     },
     SET_POLAROIDIMAGES(state, payload) {
-      state.polaroidimages = payload
+      state.polaroidimages = payload;
     },
     setModalImgMutation(state, payload) {
-      state.modalimg = payload
+      state.modalimg = payload;
     }
   },
   actions: {
     setModalImg: function (context, url) {
-      context.commit('setModalImgMutation', url)
+      context.commit('setModalImgMutation', url);
     },
     GET_SLIDERIMAGES({ commit }) {
-      const response = slider
+      const response = slider;
       commit('SET_SLIDERIMAGES', {
         type: 'SLIDER',
         images: convertData(response.data)
-      })
+      });
     },
     GET_BREAKERIMAGES: function ({ commit }) {
-      const response = breaker
+      const response = breaker;
       commit('SET_BREAKERIMAGES', {
         type: 'BREAKERIMAGES',
         images: convertData(response.data)
-      })
+      });
     },
     GET_GALLERYIMAGES: function ({ commit }) {
-      const response = gallery
+      const response = gallery;
       commit('SET_GALLERYIMAGES', {
         type: 'GALLERYIMAGES',
         images: convertData(response.data)
-      })
+      });
     },
     GET_POLAROIDIMAGES: function ({ commit }) {
-      const response = polaroid
+      const response = polaroid;
       commit('SET_POLAROIDIMAGES', {
         type: 'POLAROIDIMAGES',
         images: convertData(response.data)
-      })
+      });
     }
   }
-}
+};

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { closeModal, confirmModal } from '@kolirt/vue-modal'
+import { closeModal, confirmModal } from '@kolirt/vue-modal';
 
 const props = defineProps({
   test: {}
-})
+});
 </script>
 
 <template>

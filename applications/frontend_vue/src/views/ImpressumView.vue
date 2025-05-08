@@ -123,13 +123,13 @@ export default {
   methods: {},
   computed: {
     basicinfo() {
-      return this.$store.getters['basicInfo/getImpressuminfo']
+      return this.$store.getters['basicInfo/getImpressuminfo'];
     }
   },
   mounted() {
-    this.$store.dispatch('basicInfo/GET_IMPRESSUMINFO')
+    this.$store.dispatch('basicInfo/GET_IMPRESSUMINFO');
   }
-}
+};
 </script>
 
 <style lang="scss">

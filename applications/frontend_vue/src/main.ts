@@ -1,32 +1,32 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 
-import { createHead } from '@vueuse/head'
-import { MotionPlugin } from '@vueuse/motion'
-import { createBootstrap } from 'bootstrap-vue-next'
-import { createModal } from '@kolirt/vue-modal'
+import { createHead } from '@vueuse/head';
+import { MotionPlugin } from '@vueuse/motion';
+import { createBootstrap } from 'bootstrap-vue-next';
+import { createModal } from '@kolirt/vue-modal';
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-library.add(fas, far, fab)
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+library.add(fas, far, fab);
 
 // Add the necessary CSS
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
 
-import App from './App.vue'
-import store from './store'
-import router from './router'
+import App from './App.vue';
+import store from './store';
+import router from './router';
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(store)
-app.use(router)
-app.use(createBootstrap({ components: true, directives: true })) // Change this line
-app.use(createHead())
-app.use(MotionPlugin)
+app.use(store);
+app.use(router);
+app.use(createBootstrap({ components: true, directives: true })); // Change this line
+app.use(createHead());
+app.use(MotionPlugin);
 app.use(
   createModal({
     transitionTime: 200,
@@ -42,7 +42,7 @@ app.use(
       'z-index': 200
     }
   })
-)
-app.component('FontAwesomeIcon', FontAwesomeIcon)
+);
+app.component('FontAwesomeIcon', FontAwesomeIcon);
 
-app.mount('#app')
+app.mount('#app');

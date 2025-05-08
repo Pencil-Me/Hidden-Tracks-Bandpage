@@ -5,21 +5,21 @@
 </template>
 
 <script>
-import { closeModal } from '@kolirt/vue-modal'
+import { closeModal } from '@kolirt/vue-modal';
 
 export default {
   name: 'AppModalImage',
   computed: {
     img() {
-      return this.$store.getters['images/modalImg']
+      return this.$store.getters['images/modalImg'];
     }
   },
   methods: {
     closeImageModal() {
-      closeModal()
+      closeModal();
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

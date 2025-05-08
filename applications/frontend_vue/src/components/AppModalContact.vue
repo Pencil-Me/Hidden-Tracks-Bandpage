@@ -102,8 +102,8 @@
 </template>
 
 <script>
-import { closeModal } from '@kolirt/vue-modal'
-import MailService from '@/services/mail.service.ts'
+import { closeModal } from '@kolirt/vue-modal';
+import MailService from '@/services/mail.service.ts';
 
 export default {
   data() {
@@ -122,21 +122,21 @@ export default {
       sending: false,
       sendError: false,
       debugOn: false
-    }
+    };
   },
   components: {},
   methods: {
     cancelMail() {
-      closeModal()
+      closeModal();
     },
     // submit form handler
     submit() {
-      this.sending = true
+      this.sending = true;
 
       if (!this.name || !this.email.valid || !this.email.value || !this.message.text) {
-        this.sendError = true
-        this.sending = false
-        return
+        this.sendError = true;
+        this.sending = false;
+        return;
       }
 
       MailService.sendMail({
@@ -146,61 +146,61 @@ export default {
         contactMeByFax: this.contactMeByFax
       })
         .then((e) => {
-          console.log(e, e.message)
+          console.log(e, e.message);
           switch (e.message) {
             case 'Error':
               // something is wrong submitted
-              this.sendError = true
-              this.sending = false
-              break
+              this.sendError = true;
+              this.sending = false;
+              break;
             case 'Email sent':
-              this.submitted = true
-              break
+              this.submitted = true;
+              break;
             default:
-              this.sendError = true
-              this.sending = false
-              break
+              this.sendError = true;
+              this.sending = false;
+              break;
           }
         })
-        .catch((e) => console.log('catch', e))
+        .catch((e) => console.log('catch', e));
     },
     // validate by type and value
     validate(type, value) {
       if (type === 'email') {
-        this.email.valid = this.isEmail(value)
+        this.email.valid = this.isEmail(value);
       }
     },
     // check for valid email adress
     isEmail(value) {
       const emailRegExp =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-      return emailRegExp.test(value)
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      return emailRegExp.test(value);
     }
   },
   watch: {
     // watching nested property
     'email.value': function (value) {
-      this.validate('email', value)
+      this.validate('email', value);
     }
   },
   computed: {},
   mounted() {
-    this.name = ''
+    this.name = '';
     this.email = {
       value: '',
       valid: true
-    }
+    };
     this.message = {
       text: '',
       maxlength: 255
-    }
-    this.contactMeByFax = false
-    this.submitted = false
-    this.sending = false
-    this.sendError = false
-    this.debugOn = false
+    };
+    this.contactMeByFax = false;
+    this.submitted = false;
+    this.sending = false;
+    this.sendError = false;
+    this.debugOn = false;
   }
-}
+};
 </script>
 
 <style lang="scss">

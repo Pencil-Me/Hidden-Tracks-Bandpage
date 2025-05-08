@@ -1,6 +1,6 @@
 const initialState = {
   currentScrollY: 0
-}
+};
 
 export default {
   namespaced: true,
@@ -10,12 +10,12 @@ export default {
   },
   mutations: {
     setCurrentScrollY(s, { y }) {
-      s.currentScrollY = y
+      s.currentScrollY = y;
     }
   },
   actions: {
     setCurrentScrollY({ commit }, y) {
-      commit('setCurrentScrollY', { y })
+      commit('setCurrentScrollY', { y });
     }
   }
-}
+};

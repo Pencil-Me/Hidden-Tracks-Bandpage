@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import AppCarouselCustom from '@/components/AppCarouselCustom.vue'
+import AppCarouselCustom from '@/components/AppCarouselCustom.vue';
 
 export default {
   name: 'HeroCarouselPage',
@@ -16,20 +16,20 @@ export default {
   },
   computed: {
     sliderImagesExist() {
-      let temp = this.$store.getters['images/allSliderimages']
-      return temp != null && temp.images && temp.images.length > 0
+      const temp = this.$store.getters['images/allSliderimages'];
+      return temp != null && temp.images && temp.images.length > 0;
     },
     sliderImages() {
-      let sliderimg = this.$store.getters['images/allSliderimages']
-      if (!sliderimg) return []
-      if (sliderimg.images.length <= 0) return []
-      return sliderimg
+      const sliderimg = this.$store.getters['images/allSliderimages'];
+      if (!sliderimg) return [];
+      if (sliderimg.images.length <= 0) return [];
+      return sliderimg;
     }
   },
   mounted() {
-    this.$store.dispatch('images/GET_SLIDERIMAGES')
+    this.$store.dispatch('images/GET_SLIDERIMAGES');
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

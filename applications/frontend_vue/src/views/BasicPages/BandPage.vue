@@ -45,13 +45,13 @@ export default {
   name: 'BandPage',
   computed: {
     members() {
-      return this.$store.getters['basicInfo/getBandmembers']
+      return this.$store.getters['basicInfo/getBandmembers'];
     }
   },
   mounted() {
-    this.$store.dispatch('basicInfo/GET_MEMBERS')
+    this.$store.dispatch('basicInfo/GET_MEMBERS');
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

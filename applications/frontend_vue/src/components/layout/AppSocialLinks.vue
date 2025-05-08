@@ -14,25 +14,25 @@
 </template>
 
 <script lang="ts">
-import { openModal } from '@kolirt/vue-modal'
-import AppModalContact from '@/components/AppModalContact.vue'
+import { openModal } from '@kolirt/vue-modal';
+import AppModalContact from '@/components/AppModalContact.vue';
 
 export default {
   name: 'app-social-links',
   computed: {
     social() {
-      return this.$store.getters['basicInfo/getSocial']
+      return this.$store.getters['basicInfo/getSocial'];
     }
   },
   mounted() {
-    this.$store.dispatch('basicInfo/GET_SOCIAL')
+    this.$store.dispatch('basicInfo/GET_SOCIAL');
   },
   methods: {
     sendMail() {
-      openModal(AppModalContact, {})
+      openModal(AppModalContact, {});
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

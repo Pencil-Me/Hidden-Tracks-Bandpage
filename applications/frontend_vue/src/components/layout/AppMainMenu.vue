@@ -1,14 +1,14 @@
 <template>
-  <header class="app-header" :class="navClass">
+  <header :class="navClass" class="app-header">
     <b-container>
       <b-col>
         <nav>
           <div class="logo">
             <a @click="navTo('/#home')">
               <img
+                alt="Hidden Tracks Berlin"
                 src="@/assets/Hiddentracks-Logo.svg"
                 style="fill: #fff"
-                alt="Hidden Tracks Berlin"
               />
             </a>
           </div>
@@ -20,7 +20,7 @@
             </li>
           </ul>
           <a class="burger" @click="isHidden_menu = !isHidden_menu">
-            <font-awesome-icon icon="bars" size="2x" />
+            <font-awesome-icon icon="bars" size="2x"/>
           </a>
         </nav>
       </b-col>
@@ -29,56 +29,59 @@
 </template>
 
 <script lang="ts">
+const SCROLL_Y_FIXED_THRESHOLD = 500;
+const MOBILE_BREAKPOINT = 546;
+
 export default {
   name: 'app-main-menu',
-  data: () => {
-    return {
-      isHidden_menu: true,
-      windowWidth: window.innerWidth
-    }
-  },
+  data: () => ({
+    isHidden_menu: true,
+    windowWidth: window.innerWidth
+  }),
   computed: {
     mainMenu() {
       return [
-        { name: 'About', url: 'about' },
-        { name: 'Video', url: 'videos' },
-        { name: 'Gallery', url: 'gallery' },
-        { name: 'Band', url: 'band' },
-        { name: 'Music', url: 'music' }
-      ]
+        {name: 'About', url: 'about'},
+        {name: 'Video', url: 'videos'},
+        {name: 'Gallery', url: 'gallery'},
+        {name: 'Band', url: 'band'},
+        {name: 'Music', url: 'music'}
+      ];
     },
     navClass(): string {
-      const setToFixed = !!this.$store && this.$store.getters['page/currentScrollY'] > 500
-      const isMobile = this.windowWidth <= 546
-      return setToFixed || isMobile ? 'fixed' : ''
+      const setToFixed = !!this.$store && this.$store.getters['page/currentScrollY'] > SCROLL_Y_FIXED_THRESHOLD;
+      const isMobile = this.windowWidth <= MOBILE_BREAKPOINT;
+      return setToFixed || isMobile ? 'fixed' : '';
     }
   },
   methods: {
     navTo(url: string) {
-      const isMobile = this.windowWidth <= 546
-      if (isMobile) this.isHidden_menu = true
-      this.$router.push(url)
+      const isMobile = this.windowWidth <= MOBILE_BREAKPOINT;
+      if (isMobile) this.isHidden_menu = true;
+      this.$router.push(url);
     },
-    resizeHandler(e) {
-      this.windowWidth = e.target.innerWidth
-      this.isHidden_menu = this.windowWidth <= 546
+    resizeHandler(e: UIEvent) {
+      const target = e.target as Window;
+      this.windowWidth = target.innerWidth;
+      this.isHidden_menu = this.windowWidth <= MOBILE_BREAKPOINT;
     },
     handleScroll() {
-      this.$store.dispatch('page/setCurrentScrollY', window.scrollY)
+      this.$store.dispatch('page/setCurrentScrollY', window.scrollY);
     }
   },
   created() {
-    window.addEventListener('resize', this.resizeHandler)
-    window.addEventListener('scroll', this.handleScroll)
-    window.dispatchEvent(new Event('scroll'))
-    window.dispatchEvent(new Event('resize'))
+    window.addEventListener('resize', this.resizeHandler);
+    window.addEventListener('scroll', this.handleScroll);
+    window.dispatchEvent(new Event('scroll'));
+    window.dispatchEvent(new Event('resize'));
   },
   unmounted() {
-    window.removeEventListener('resize', this.resizeHandler)
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('resize', this.resizeHandler);
+    window.removeEventListener('scroll', this.handleScroll);
   }
-}
+};
 </script>
+
 <style lang="scss" scoped>
 .app-header {
   --header-height: 5.5em;

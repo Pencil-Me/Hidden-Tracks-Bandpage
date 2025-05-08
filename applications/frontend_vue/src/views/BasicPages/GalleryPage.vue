@@ -3,12 +3,12 @@
     <b-container>
       <b-col>
         <h2 v-motion-slide-visible-once-right :delay="200">Gallery</h2>
-        <div class="gallerycontainer col-12" v-motion-fade-visible-once :delay="200">
+        <div v-motion-fade-visible-once :delay="200" class="gallerycontainer col-12">
           <div
-            class="image"
-            @click="openImage(image.url)"
             v-for="image in gallery"
             :key="image.url"
+            class="image"
+            @click="openImage(image.url)"
           >
             <AppImage
               :lazy-srcset-large="image.lg"
@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import AppImage from '@/components/AppImage.vue'
-import mixins from '@/mixins/index'
-import { openModal } from '@kolirt/vue-modal'
-import AppModalImage from '@/components/AppModalImage.vue'
+import AppImage from '@/components/AppImage.vue';
+import mixins from '@/mixins/index';
+import {openModal} from '@kolirt/vue-modal';
+import AppModalImage from '@/components/AppModalImage.vue';
 
 export default {
   name: 'GalleryPage',
@@ -38,32 +38,32 @@ export default {
   mixins: [mixins],
   computed: {
     gallery() {
-      let galleryimages = this.$store.getters['images/allGalleryimages']
-      if (!galleryimages) return []
-      if (galleryimages.images.length <= 0) return []
+      const galleryimages = this.$store.getters['images/allGalleryimages'];
+      if (!galleryimages) return [];
+      if (galleryimages.images.length <= 0) return [];
 
-      let images = galleryimages.images
-      return this.shuffleArray(images)
+      const images = galleryimages.images;
+      return this.shuffleArray(images);
     }
   },
   methods: {
     openImage(url) {
-      this.$store.dispatch('images/setModalImg', url)
-      openModal(AppModalImage, {})
-        // runs when modal is closed via confirmModal
-        .then((data) => {
-          console.log('success', data)
-        })
-        // runs when modal is closed via closeModal or esc
-        .catch(() => {
-          console.log('catch')
-        })
+      this.$store.dispatch('images/setModalImg', url);
+      openModal(AppModalImage, {});
+      // runs when modal is closed via confirmModal
+      // .then((data) => {
+      //   console.log('success', data);
+      // })
+      // runs when modal is closed via closeModal or esc
+      // .catch(() => {
+      //   console.log('catch');
+      // });
     }
   },
   mounted() {
-    this.$store.dispatch('images/GET_GALLERYIMAGES')
+    this.$store.dispatch('images/GET_GALLERYIMAGES');
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
