@@ -11,9 +11,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import AppImage from './AppImage.vue';
+<script lang="ts" setup>
+import {computed, ref, watch} from 'vue';
+import {useStore} from 'vuex';
 import {openModal} from '@kolirt/vue-modal';
+
+import AppImage from './AppImage.vue';
 import AppModalImage from '@/components/AppModalImage.vue';
 
 const CONFIG = {
@@ -27,90 +30,85 @@ const CONFIG = {
   LEVEL_1: 1,
   LEVEL_2: 2,
   LEVEL_3: 3,
+  LEVEL_2_THRESHHOLD: 0.66,
+  LEVEL_3_THRESHHOLD: 0.33,
+  FULL_ROTATION: 360,
+  DOT_FIVE: 0.5,
+  TWO: 2,
 };
 
-export default {
-  name: 'PolaroidsSingle',
-  props: {
-    polaroid: {type: Object, required: true},
-    startPosition: {type: Number, default: 0}
-  },
-  components: {AppImage},
-  data() {
-    const rand = Math.random;
-    const HALF = 0.5;
-    return {
-      alignment: rand() < CONFIG.ALIGNMENT_THRESHOLD ? 'left' : 'right',
-      sideDistance: CONFIG.SIDE_DISTANCE.BASE - Math.round(rand() * CONFIG.SIDE_DISTANCE.VARIATION),
-      type: this.randomLevel(),
-      currentPosition: this.startPosition,
-      currentRotation: Math.round(rand() * CONFIG.ROTATION_MAX),
-      verticalSpeedMod: Math.round(rand() * CONFIG.VERTICAL_SPEED_MAX) || 1,
-      rotateLeft: rand() < HALF,
-      lastScrollY: 0
-    };
-  },
-  computed: {
-    polaroidClass() {
-      return {
-        polaroid: true,
-        [`level${this.type}`]: this.type > 1
-      };
-    },
-    style() {
-      return {
-        [this.alignment]: `${this.sideDistance}px`,
-        top: `${this.currentPosition}px`,
-        transform: `rotate(${this.currentRotation}deg)`
-      };
-    },
-    currentScrollY() {
-      return this.$store.getters['page/currentScrollY'];
-    }
-  },
-  methods: {
-    randomLevel() {
-      const roll = Math.random();
-      const LEVEL_3_THRESHHOLD = 0.33;
-      const LEVEL_2_THRESHHOLD = 0.66;
-
-      if (roll < LEVEL_3_THRESHHOLD) return CONFIG.LEVEL_3;
-      if (roll < LEVEL_2_THRESHHOLD) return CONFIG.LEVEL_2;
-      return CONFIG.LEVEL_1;
-    },
-    openImage(url) {
-      this.$store.dispatch('images/setModalImg', url);
-      openModal(AppModalImage).catch(() => {
-      });
-    },
-    applyScrollEffect(newY) {
-      function normalizeRotation(deg: number): number {
-        const FULL_ROTATION = 360;
-        return (deg + FULL_ROTATION) % FULL_ROTATION;
-      }
-
-      const scrollDiff = this.lastScrollY - newY;
-
-      const HALF_DOUBLE = 2;
-      const positionFactor = CONFIG.SCROLL_DIVISOR * this.type * (this.verticalSpeedMod / HALF_DOUBLE);
-      const rotationFactor = CONFIG.ROTATION_DIVISOR * this.type * HALF_DOUBLE * this.verticalSpeedMod;
-
-      this.currentPosition += scrollDiff / positionFactor;
-
-      const rotationChange = Math.max(CONFIG.MIN_ROTATION, Math.abs(scrollDiff / rotationFactor));
-      this.currentRotation += this.rotateLeft ? -rotationChange : rotationChange;
-
-      this.currentRotation = normalizeRotation(this.currentRotation);
-
-      this.lastScrollY = newY;
-    },
-  },
-  watch: {
-    currentScrollY(newY) {
-      this.applyScrollEffect(newY);
-    }
+const props = defineProps<{
+  polaroid: {
+    url: string
+    lg: string
+    md: string
+    sm: string
+    thumb: string
   }
-};
+  startPosition?: number
+}>();
+
+const store = useStore();
+
+// Randomisierte Initialwerte
+const rand = Math.random;
+const alignment = ref(rand() < CONFIG.ALIGNMENT_THRESHOLD ? 'left' : 'right');
+const sideDistance = ref(CONFIG.SIDE_DISTANCE.BASE - Math.round(rand() * CONFIG.SIDE_DISTANCE.VARIATION));
+const type = ref(randomLevel());
+const currentPosition = ref(props.startPosition ?? 0);
+const currentRotation = ref(Math.round(rand() * CONFIG.ROTATION_MAX));
+const verticalSpeedMod = ref(Math.round(rand() * CONFIG.VERTICAL_SPEED_MAX) || 1);
+const rotateLeft = ref(rand() < CONFIG.DOT_FIVE);
+const lastScrollY = ref(0);
+
+function randomLevel() {
+  const roll = Math.random();
+  if (roll < CONFIG.LEVEL_3_THRESHHOLD) return CONFIG.LEVEL_3;
+  if (roll < CONFIG.LEVEL_2_THRESHHOLD) return CONFIG.LEVEL_2;
+  return CONFIG.LEVEL_1;
+}
+
+function normalizeRotation(deg: number): number {
+  return (deg + CONFIG.FULL_ROTATION) % CONFIG.FULL_ROTATION;
+}
+
+function applyScrollEffect(newY: number) {
+  const scrollDiff = lastScrollY.value - newY;
+
+  const positionFactor = CONFIG.SCROLL_DIVISOR * type.value * (verticalSpeedMod.value / CONFIG.TWO);
+  const rotationFactor = CONFIG.ROTATION_DIVISOR * type.value * CONFIG.TWO * verticalSpeedMod.value;
+
+  currentPosition.value += scrollDiff / positionFactor;
+
+  const rotationChange = Math.max(CONFIG.MIN_ROTATION, Math.abs(scrollDiff / rotationFactor));
+  currentRotation.value += rotateLeft.value ? -rotationChange : rotationChange;
+
+  currentRotation.value = normalizeRotation(currentRotation.value);
+  lastScrollY.value = newY;
+}
+
+function openImage(url: string) {
+  store.dispatch('images/setModalImg', url);
+  openModal(AppModalImage).catch(() => {
+  });
+}
+
+const polaroidClass = computed(() => ({
+  polaroid: true,
+  [`level${type.value}`]: type.value > 1
+}));
+
+const style = computed(() => ({
+  [alignment.value]: `${sideDistance.value}px`,
+  top: `${currentPosition.value}px`,
+  transform: `rotate(${currentRotation.value}deg)`
+}));
+
+const currentScrollY = computed(() => store.getters['page/currentScrollY']);
+
+watch(currentScrollY, (newY) => {
+  applyScrollEffect(newY);
+});
 </script>
 
 <style lang="scss">
