@@ -8,159 +8,160 @@
         :class="animation"
         class="slides"
       >
-        <div :style="computedContainerStyle" class="animation-container">
+        <div :style="containerStyle" class="animation-container">
           <AppImage
             :imageAlt="`Gallery Image ${index}`"
             :lazy-srcset-large="image.lg"
             :lazy-srcset-medium="image.md"
             :lazy-srcset-small="image.sm"
             :lazy-srcset-thumb="image.thumb"
-            :style="computedSlideStyle"
+            :style="slideStyle"
           />
         </div>
         <div v-if="showText" class="text">{{ image.text }}</div>
       </div>
 
-      <a v-if="showArrows" class="prev" @click.prevent="nextSlide(-1)">&#10094;</a>
-      <a v-if="showArrows" class="next" @click.prevent="nextSlide(1)">&#10095;</a>
+      <a v-if="showArrows" class="prev" @click.prevent="changeSlide(-1)">&#10094;</a>
+      <a v-if="showArrows" class="next" @click.prevent="changeSlide(1)">&#10095;</a>
     </div>
 
     <div v-if="showDots" class="dots">
       <span
-        v-for="(_, index) in myImages"
+        v-for="(_, index) in images"
         :key="index"
         ref="dot"
+        :class="{ active: index === currentIndex }"
         class="dot"
-        @click.prevent="currentSlide(index + 1)"
+        @click.prevent="goToSlide(index)"
       ></span>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import AppImage from '@/components/AppImage.vue';
+import {useStore} from 'vuex';
 import _ from 'lodash';
 
-const SLIDE_STYLE_SCALE = 1000;
-const SLIDE_STYLE_SCALE_MAX = 2;
-const SCALE_MIN = 1.1;
-const SCROLL_INTERVAL_DURATION = 20000;
-const SLIDES_INTERVAL_DURATION = 10;
-const REVERSE_SCROLL_INTERVAL_DURATION = 15000;
-const DEBOUNCE_SCROLL_Y = 50;
-
-export default {
-  components: {AppImage},
-  props: {
-    images: {type: Array, default: () => []},
-    showText: {type: Boolean, default: false},
-    showDots: {type: Boolean, default: false},
-    showArrows: {type: Boolean, default: true},
-    timeSlide: {type: Number, default: 0},
-    animation: {type: String, default: null}
-  },
-  data() {
-    return {
-      slideIndex: 1,
-      lastScrollY: 0,
-      right: 6,
-      scale: 0.2,
-      autoSlideInterval: null,
-      scrollInterval: null,
-      reverseScrollInterval: null
-    };
-  },
-  computed: {
-    computedSlideStyle() {
-      return {
-        transform: `scale(${this.clamp(1 + this.lastScrollY / SLIDE_STYLE_SCALE, 1, SLIDE_STYLE_SCALE_MAX)})`
-      };
-    },
-    computedContainerStyle() {
-      return {
-        right: `${this.right}vw`,
-        transform: `scale(${SCALE_MIN + this.scale})`
-      };
-    },
-    scrollY() {
-      return this.$store.getters['page/currentScrollY'];
-    }
-  },
-  mounted() {
-    this.initializeSlides();
-    this.startAutoSlide();
-    this.startScrollAnimation();
-  },
-  beforeUnmount() {
-    this.clearIntervals();
-  },
-  methods: {
-    clamp(num, min, max) {
-      return Math.max(min, Math.min(num, max));
-    },
-    initializeSlides() {
-      this.showSlides(this.slideIndex);
-      setTimeout(() => {
-        this.right *= -1;
-      }, SLIDES_INTERVAL_DURATION);
-    },
-    startAutoSlide() {
-      if (this.timeSlide > 0 && !this.autoSlideInterval) {
-        this.autoSlideInterval = setInterval(() => {
-          this.nextSlide(1);
-        }, this.timeSlide);
-      }
-    },
-    startScrollAnimation() {
-      if (!this.scrollInterval) {
-        this.scrollInterval = setInterval(() => {
-          this.right *= -1;
-        }, SCROLL_INTERVAL_DURATION);
-      }
-      if (!this.reverseScrollInterval) {
-        this.reverseScrollInterval = setInterval(() => {
-          this.right *= -1;
-        }, REVERSE_SCROLL_INTERVAL_DURATION);
-      }
-    },
-    clearIntervals() {
-      clearInterval(this.autoSlideInterval);
-      clearInterval(this.scrollInterval);
-      clearInterval(this.reverseScrollInterval);
-    },
-    showSlides(index) {
-      const slides = this.$refs.slides || [];
-      const totalSlides = slides.length;
-
-      if (index > totalSlides) this.slideIndex = 1;
-      else if (index < 1) this.slideIndex = totalSlides;
-      else this.slideIndex = index;
-
-      slides.forEach((slide, idx) => {
-        const isActive = idx === this.slideIndex - 1;
-        slide.style.visibility = isActive ? 'visible' : 'hidden';
-        slide.style.opacity = isActive ? '1' : '0';
-      });
-
-      if (this.showDots && this.$refs.dot) {
-        this.$refs.dot.forEach((dot, idx) => {
-          dot.classList.toggle('active', idx === this.slideIndex - 1);
-        });
-      }
-    },
-    nextSlide(n) {
-      this.showSlides(this.slideIndex + n);
-    },
-    currentSlide(n) {
-      this.showSlides(n);
-    }
-  },
-  watch: {
-    scrollY: _.debounce(function (val) {
-      this.lastScrollY = val;
-    }, DEBOUNCE_SCROLL_Y)
-  }
+/* ─────────────────────────────
+ * Konfiguration
+ * ───────────────────────────── */
+const CONFIG = {
+  SCALE_MIN: 1.1,
+  SCALE_MAX: 2,
+  SLIDE_SCALE_DIVISOR: 1000,
+  INTERVAL_AUTO_SLIDE: 0,
+  INTERVAL_SCROLL: 20000,
+  INTERVAL_REVERSE: 15000,
+  SCROLL_Y_DEBOUNCE: 50,
+  DEFAULT_DIRECTION: 6,
+  DEFAULT_SCALE_FACTOR: 0.2
 };
+
+/* ─────────────────────────────
+ * Props & Store
+ * ───────────────────────────── */
+const props = withDefaults(defineProps<{
+  images: Array<unknown>,
+  showText?: boolean,
+  showDots?: boolean,
+  showArrows?: boolean,
+  timeSlide?: number,
+  animation?: string
+}>(), {
+  showText: false,
+  showDots: false,
+  showArrows: false,
+  timeSlide: 0,
+  animation: 'fade'
+});
+
+const slides = ref<HTMLElement[]>([]);
+const currentIndex = ref(0);
+const lastScrollY = ref(0);
+const direction = ref(CONFIG.DEFAULT_DIRECTION);
+const scaleFactor = ref(CONFIG.DEFAULT_SCALE_FACTOR);
+const autoSlideInterval = ref<ReturnType<typeof setInterval> | null>(null);
+const scrollInterval = ref<ReturnType<typeof setInterval> | null>(null);
+const reverseScrollInterval = ref<ReturnType<typeof setInterval> | null>(null);
+const store = useStore();
+
+/* ─────────────────────────────
+ * Computed Styles & Klassen
+ * ───────────────────────────── */
+const scrollY = computed(() => store.getters['page/currentScrollY']);
+
+const slideStyle = computed(() => ({
+  transform: `scale(${clamp(1 + lastScrollY.value / CONFIG.SLIDE_SCALE_DIVISOR, 1, CONFIG.SCALE_MAX)})`,
+}));
+
+const containerStyle = computed(() => ({
+  right: `${direction.value}vw`,
+  transform: `scale(${CONFIG.SCALE_MIN + scaleFactor.value})`,
+}));
+
+/* ─────────────────────────────
+ * Methoden
+ * ───────────────────────────── */
+function clamp(val: number, min: number, max: number): number {
+  return Math.min(Math.max(val, min), max);
+}
+
+function toggleDirection() {
+  direction.value *= -1;
+}
+
+function showSlide(index: number) {
+  const total = props.images.length;
+  currentIndex.value = (index + total) % total;
+
+  slides.value.forEach((el, i) => {
+    el.style.visibility = i === currentIndex.value ? 'visible' : 'hidden';
+    el.style.opacity = i === currentIndex.value ? '1' : '0';
+  });
+}
+
+function changeSlide(step: number) {
+  showSlide(currentIndex.value + step);
+}
+
+function goToSlide(index: number) {
+  showSlide(index);
+}
+
+function clearIfSet(intervalRef: ref<ReturnType<typeof setInterval> | null>) {
+  if (intervalRef.value) clearInterval(intervalRef.value);
+}
+
+/* ─────────────────────────────
+ * Reaktive Reaktion
+ * ───────────────────────────── */
+watch(scrollY, _.debounce((val) => {
+  lastScrollY.value = val;
+}, CONFIG.SCROLL_Y_DEBOUNCE));
+
+/* ─────────────────────────────
+ * Lifecycle
+ * ───────────────────────────── */
+onMounted(() => {
+  showSlide(currentIndex.value);
+  toggleDirection(CONFIG.SCROLL_Y_DEBOUNCE);
+
+  if (props.timeSlide) {
+    autoSlideInterval.value = setInterval(() => changeSlide(1), props.timeSlide);
+  }
+
+  scrollInterval.value = setInterval(toggleDirection, CONFIG.INTERVAL_SCROLL);
+  reverseScrollInterval.value = setInterval(toggleDirection, CONFIG.INTERVAL_REVERSE);
+});
+
+onBeforeUnmount(() => {
+  [autoSlideInterval, scrollInterval, reverseScrollInterval].forEach(clearIfSet);
+});
 </script>
 
 <style lang="scss">
