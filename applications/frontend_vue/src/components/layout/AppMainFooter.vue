@@ -4,28 +4,28 @@
       <p>Hidden Tracks &#169; {{ year }}</p>
     </div>
     <ul>
-      <li v-for="point in footerMenu" v-bind:categorie="point" v-bind:key="point.name">
+      <li v-for="point in footerMenu" :key="point.name">
         <router-link v-bind:to="point.url">{{ point.name }}</router-link>
       </li>
     </ul>
   </footer>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'app-main-footer',
-  computed: {
-    year() {
-      return new Date().getFullYear();
-    },
-    footerMenu() {
-      return [
-        { name: 'Impressum', url: '/impressum' },
-        { name: 'Datenschutz', url: '/datenschutz' }
-      ];
-    }
-  }
-};
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import {computed} from 'vue';
+
+/* ─────────────────────────────
+ * Computed Properties
+ * ───────────────────────────── */
+const year = computed(() => new Date().getFullYear());
+
+const footerMenu = computed(() => [
+  {name: 'Impressum', url: '/impressum'},
+  {name: 'Datenschutz', url: '/datenschutz'}
+]);
 </script>
 
 <style lang="scss" scoped>

@@ -1,11 +1,10 @@
 <template>
   <div>
     <h1>Kontakt</h1>
-    <form v-if="!submitted" class="vue-form" @submit.prevent="submit">
-      <div class="error-message">
-        <p v-show="sendError">
-          Das Emailsenden hat einen Fehler verursacht. Bitte überprüfe deine Eingaben und versuche
-          es erneut.
+    <form v-if="!form.submitted" class="vue-form" @submit.prevent="submit">
+      <div v-if="form.sendError" class="error-message">
+        <p>
+          Das Emailsenden hat einen Fehler verursacht. Bitte überprüfe deine Eingaben und versuche es erneut.
         </p>
       </div>
 
@@ -14,193 +13,154 @@
           <div class="col-md-6">
             <div class="form-group">
               <input
-                v-model="name"
+                v-model="form.name"
                 class="form-control"
                 name="txtName"
                 placeholder="Dein Name?"
                 type="text"
-                value="''"
               />
             </div>
             <div class="form-group">
               <input
-                v-model="email.value"
-                :class="{ email, error: !email.valid }"
+                v-model="form.email"
+                :class="{ error: !emailIsValid }"
                 class="form-control"
                 name="txtEmail"
                 placeholder="Deine Email?"
                 type="text"
-                value=""
               />
-              <p v-show="!email.valid">Die Email ist fehlerhaft.</p>
+              <p v-if="!emailIsValid">Die Email ist fehlerhaft.</p>
             </div>
           </div>
+
           <div class="col-md-6">
             <div class="form-group">
               <textarea
-                v-model="message.text"
-                :maxlength="message.maxlength"
+                v-model="form.message"
+                :maxlength="MAX_MESSAGE_LENGTH"
                 class="form-control"
                 name="txtMsg"
                 placeholder="Was willst du uns sagen?"
                 style="width: 100%; height: 150px"
               ></textarea>
-              <span class="counter">{{ message.text.length }} / {{ message.maxlength }}</span>
+              <span class="counter">{{ form.message.length }} / {{ MAX_MESSAGE_LENGTH }}</span>
             </div>
           </div>
         </div>
 
         <input
-          v-model="contactMeByFax"
-          autocomplete="off"
-          formControlName="contactByFax"
+          v-model="form.contactByFax"
           name="contact_me_by_fax_only"
           style="display: none !important"
           tabindex="-1"
           type="checkbox"
-          value="1"
         />
 
-        <div class="col-md-12">
-          <div class="form-group text-center">
-            <button v-if="!sending" class="btn btn-primary" name="btnSubmit" type="submit">
-              Senden
-            </button>
-            <button v-if="sending" disabled>Email wird gesendet...</button>
-
-            <button
-              v-if="!sending"
-              class="btn btn-secondary"
-              name="btnCancel"
-              @click="cancelMail()"
-            >
-              Cancel
-            </button>
-          </div>
+        <div class="col-md-12 text-center">
+          <button v-if="!form.sending" class="btn btn-primary" type="submit">Senden</button>
+          <button v-if="form.sending" class="btn" disabled>Email wird gesendet...</button>
+          <button v-if="!form.sending" class="btn btn-secondary" @click="cancelMail">Cancel</button>
         </div>
       </fieldset>
     </form>
 
-    <div v-if="submitted">
+    <div v-else>
       <div class="col-md-12">
         <p>Email gesendet.</p>
-        <p>Vielen Dank für deine Nachricht wir melden uns bald möglichst bei dir.</p>
+        <p>Vielen Dank für deine Nachricht. Wir melden uns bald möglichst bei dir.</p>
       </div>
-      <div class="col-md-12">
-        <div class="form-group text-center">
-          <button class="btn btn-secondary" name="btnCancel" @click="cancelMail()">
-            Schließen
-          </button>
-        </div>
+      <div class="col-md-12 text-center">
+        <button class="btn btn-secondary" @click="cancelMail">Schließen</button>
       </div>
     </div>
 
-    <div v-if="debugOn" class="debug">
-      <pre><code>{{ $data }}</code></pre>
+    <div v-if="form.debug" class="debug">
+      <pre><code>{{ form }}</code></pre>
     </div>
   </div>
 </template>
 
-<script>
-import { closeModal } from '@kolirt/vue-modal';
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import {computed, reactive} from 'vue';
+import {closeModal} from '@kolirt/vue-modal';
 import MailService from '@/services/mail.service.ts';
 
-export default {
-  data() {
-    return {
-      name: '',
-      email: {
-        value: '',
-        valid: true
-      },
-      message: {
-        text: '',
-        maxlength: 255
-      },
-      contactMeByFax: false,
-      submitted: false,
-      sending: false,
-      sendError: false,
-      debugOn: false
-    };
-  },
-  components: {},
-  methods: {
-    cancelMail() {
-      closeModal();
-    },
-    // submit form handler
-    submit() {
-      this.sending = true;
+/* ─────────────────────────────
+ * Konfiguration
+ * ───────────────────────────── */
+const MAX_MESSAGE_LENGTH = 255;
 
-      if (!this.name || !this.email.valid || !this.email.value || !this.message.text) {
-        this.sendError = true;
-        this.sending = false;
-        return;
-      }
+/* ─────────────────────────────
+ * Computed Styles & Klassen
+ * ───────────────────────────── */
+const form = reactive({
+  name: '',
+  email: '',
+  message: '',
+  contactByFax: false,
+  submitted: false,
+  sending: false,
+  sendError: false,
+  debug: false
+});
 
-      MailService.sendMail({
-        name: this.name,
-        email: this.email.value,
-        message: this.message.text,
-        contactMeByFax: this.contactMeByFax
-      })
-        .then((e) => {
-          console.log(e, e.message);
-          switch (e.message) {
-            case 'Error':
-              // something is wrong submitted
-              this.sendError = true;
-              this.sending = false;
-              break;
-            case 'Email sent':
-              this.submitted = true;
-              break;
-            default:
-              this.sendError = true;
-              this.sending = false;
-              break;
-          }
-        })
-        .catch((e) => console.log('catch', e));
-    },
-    // validate by type and value
-    validate(type, value) {
-      if (type === 'email') {
-        this.email.valid = this.isEmail(value);
-      }
-    },
-    // check for valid email adress
-    isEmail(value) {
-      const emailRegExp =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-      return emailRegExp.test(value);
-    }
-  },
-  watch: {
-    // watching nested property
-    'email.value': function (value) {
-      this.validate('email', value);
-    }
-  },
-  computed: {},
-  mounted() {
-    this.name = '';
-    this.email = {
-      value: '',
-      valid: true
-    };
-    this.message = {
-      text: '',
-      maxlength: 255
-    };
-    this.contactMeByFax = false;
-    this.submitted = false;
-    this.sending = false;
-    this.sendError = false;
-    this.debugOn = false;
+const emailIsValid = computed(() => {
+  const emailRegExp =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegExp.test(form.email);
+});
+
+/* ─────────────────────────────
+ * Methoden
+ * ───────────────────────────── */
+function resetForm() {
+  form.name = '';
+  form.email = '';
+  form.message = '';
+  form.contactByFax = false;
+  form.submitted = false;
+  form.sending = false;
+  form.sendError = false;
+}
+
+function cancelMail() {
+  closeModal();
+  resetForm();
+}
+
+async function submit() {
+  form.sendError = false;
+
+  if (!form.name || !form.email || !form.message || !emailIsValid.value) {
+    form.sendError = true;
+    return;
   }
-};
+
+  form.sending = true;
+
+  try {
+    const res = await MailService.sendMail({
+      name: form.name,
+      email: form.email,
+      message: form.message,
+      contactMeByFax: form.contactByFax
+    });
+
+    if (res.message === 'Email sent') {
+      form.submitted = true;
+    } else {
+      form.sendError = true;
+    }
+  } catch (err) {
+    console.error('catch', err);
+    form.sendError = true;
+  } finally {
+    form.sending = false;
+  }
+}
 </script>
 
 <style lang="scss">

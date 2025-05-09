@@ -4,7 +4,7 @@
       <b-col>
         <nav>
           <div class="logo">
-            <a @click="navTo('/#home')">
+            <a @click="navigateTo('/#home')">
               <img
                 alt="Hidden Tracks Berlin"
                 src="@/assets/Hiddentracks-Logo.svg"
@@ -12,14 +12,14 @@
               />
             </a>
           </div>
-          <ul v-if="!isHidden_menu">
-            <li v-for="(point, index) in mainMenu" v-bind:key="index">
-              <a @click="navTo(`/#${point.url}`)">
+          <ul v-if="!isMenuHidden">
+            <li v-for="(point, index) in mainMenu" :key="index">
+              <a @click="navigateTo(`/#${point.url}`)">
                 {{ point.name }}
               </a>
             </li>
           </ul>
-          <a class="burger" @click="isHidden_menu = !isHidden_menu">
+          <a class="burger" @click="toggleMenuVisibility">
             <font-awesome-icon icon="bars" size="2x"/>
           </a>
         </nav>
@@ -28,58 +28,89 @@
   </header>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+import {useRouter} from 'vue-router';
+import {useStore} from 'vuex';
+
+/* ─────────────────────────────
+ * Konfiguration
+ * ───────────────────────────── */
 const SCROLL_Y_FIXED_THRESHOLD = 500;
 const MOBILE_BREAKPOINT = 546;
 
-export default {
-  name: 'app-main-menu',
-  data: () => ({
-    isHidden_menu: true,
-    windowWidth: window.innerWidth
-  }),
-  computed: {
-    mainMenu() {
-      return [
-        {name: 'About', url: 'about'},
-        {name: 'Video', url: 'videos'},
-        {name: 'Gallery', url: 'gallery'},
-        {name: 'Band', url: 'band'},
-        {name: 'Music', url: 'music'}
-      ];
-    },
-    navClass(): string {
-      const setToFixed = !!this.$store && this.$store.getters['page/currentScrollY'] > SCROLL_Y_FIXED_THRESHOLD;
-      const isMobile = this.windowWidth <= MOBILE_BREAKPOINT;
-      return setToFixed || isMobile ? 'fixed' : '';
-    }
-  },
-  methods: {
-    navTo(url: string) {
-      const isMobile = this.windowWidth <= MOBILE_BREAKPOINT;
-      if (isMobile) this.isHidden_menu = true;
-      this.$router.push(url);
-    },
-    resizeHandler(e: UIEvent) {
-      const target = e.target as Window;
-      this.windowWidth = target.innerWidth;
-      this.isHidden_menu = this.windowWidth <= MOBILE_BREAKPOINT;
-    },
-    handleScroll() {
-      this.$store.dispatch('page/setCurrentScrollY', window.scrollY);
-    }
-  },
-  created() {
-    window.addEventListener('resize', this.resizeHandler);
-    window.addEventListener('scroll', this.handleScroll);
-    window.dispatchEvent(new Event('scroll'));
-    window.dispatchEvent(new Event('resize'));
-  },
-  unmounted() {
-    window.removeEventListener('resize', this.resizeHandler);
-    window.removeEventListener('scroll', this.handleScroll);
+/* ─────────────────────────────
+ * Constants
+ * ───────────────────────────── */
+const router = useRouter();
+const store = useStore();
+
+/* ─────────────────────────────
+ * Reactive State
+ * ───────────────────────────── */
+const isMenuHidden = ref(true);
+const windowWidth = ref(window.innerWidth);
+const scrollY = ref(0);
+
+/* ─────────────────────────────
+ * Computed Properties
+ * ───────────────────────────── */
+const mainMenu = computed(() => [
+  {name: 'About', url: 'about'},
+  {name: 'Video', url: 'videos'},
+  {name: 'Gallery', url: 'gallery'},
+  {name: 'Band', url: 'band'},
+  {name: 'Music', url: 'music'}
+]);
+
+const navClass = computed(() => {
+  const isScrolledPastThreshold = scrollY.value > SCROLL_Y_FIXED_THRESHOLD;
+  const isMobile = windowWidth.value <= MOBILE_BREAKPOINT;
+  return isScrolledPastThreshold || isMobile ? 'fixed' : '';
+});
+
+/* ─────────────────────────────
+ * Methods
+ * ───────────────────────────── */
+const navigateTo = (url: string) => {
+  if (windowWidth.value <= MOBILE_BREAKPOINT) {
+    isMenuHidden.value = true;
   }
+  router.push(url);
 };
+
+const toggleMenuVisibility = () => {
+  isMenuHidden.value = !isMenuHidden.value;
+};
+
+const handleResize = (event: UIEvent) => {
+  const target = event.target as Window;
+  windowWidth.value = target.innerWidth;
+  isMenuHidden.value = windowWidth.value <= MOBILE_BREAKPOINT;
+};
+
+const handleScroll = () => {
+  scrollY.value = window.scrollY;
+  store.dispatch('page/setCurrentScrollY', window.scrollY);
+};
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+  window.addEventListener('scroll', handleScroll);
+  window.dispatchEvent(new Event('scroll'));
+  window.dispatchEvent(new Event('resize'));
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <style lang="scss" scoped>

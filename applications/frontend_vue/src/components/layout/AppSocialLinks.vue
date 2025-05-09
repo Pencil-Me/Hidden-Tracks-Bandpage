@@ -1,38 +1,51 @@
 <template>
   <ul class="social">
-    <li v-for="point in social" v-bind:key="point.name">
-      <a v-bind:href="point.url" target="_blank" rel="noopener" v-bind:id="point.name">
-        <font-awesome-icon v-bind:icon="[point.type, point.icon]" size="1x" />
+    <li v-for="point in social" :key="point.name">
+      <a :id="point.name" :href="point.url" rel="noopener" target="_blank">
+        <font-awesome-icon :icon="[point.type, point.icon]" size="1x"/>
       </a>
     </li>
     <li>
-      <a @click="sendMail()" id="mail">
-        <font-awesome-icon icon="envelope" size="1x" />
+      <a id="mail" @click="sendMail">
+        <font-awesome-icon icon="envelope" size="1x"/>
       </a>
     </li>
   </ul>
 </template>
 
-<script lang="ts">
-import { openModal } from '@kolirt/vue-modal';
+
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import {computed, onMounted} from 'vue';
+import {useStore} from 'vuex';
+import {openModal} from '@kolirt/vue-modal';
 import AppModalContact from '@/components/AppModalContact.vue';
 
-export default {
-  name: 'app-social-links',
-  computed: {
-    social() {
-      return this.$store.getters['basicInfo/getSocial'];
-    }
-  },
-  mounted() {
-    this.$store.dispatch('basicInfo/GET_SOCIAL');
-  },
-  methods: {
-    sendMail() {
-      openModal(AppModalContact, {});
-    }
-  }
+/* ─────────────────────────────
+ * Store Setup
+ * ───────────────────────────── */
+const store = useStore();
+
+/* ─────────────────────────────
+ * Computed Styles & Klassen
+ * ───────────────────────────── */
+const social = computed(() => store.getters['basicInfo/getSocial']);
+
+/* ─────────────────────────────
+ * Methoden
+ * ───────────────────────────── */
+const sendMail = () => {
+  openModal(AppModalContact, {});
 };
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  store.dispatch('basicInfo/GET_SOCIAL');
+});
 </script>
 
 <style lang="scss" scoped>

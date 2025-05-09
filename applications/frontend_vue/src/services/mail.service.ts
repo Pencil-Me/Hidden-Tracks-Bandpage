@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY;
-
 class MailService {
+  API_URL = import.meta.env.VITE_API_URL;
+  API_KEY = import.meta.env.VITE_API_KEY;
+
   axiosInstance = axios.create({
-    baseURL: API_URL,
+    baseURL: this.API_URL,
     headers: {
-      'API-Key': API_KEY,
+      'API-Key': this.API_KEY,
       'Content-Type': 'application/json'
     }
   });
@@ -57,16 +57,32 @@ class MailService {
     location.href = this.decryptString(s, OFFSET);
   }
 
-  async sendMail(data) {
-    const sendObject = {
-      name: data.name,
-      email: data.email,
-      message: data.message,
-      contactMeByFax: data.contactMeByFax
-    };
-    return await this.axiosInstance.post('send_email', sendObject).then((response) => {
-      return response.data;
-    });
+  async sendMail(data: {
+    name: string;
+    email: string;
+    message: string;
+    contactMeByFax?: boolean;
+  }): Promise<{ success: boolean; data?: unknown; error?: string }> {
+    try {
+      const response = await this.axiosInstance.post('/send_email', {
+        name: data.name,
+        email: data.email,
+        message: data.message,
+        contactMeByFax: data.contactMeByFax || false
+      });
+
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error: unknown) {
+      console.error('Fehler beim Senden der E-Mail:', error);
+
+      return {
+        success: false,
+        error: error?.response?.data?.message || error.message || 'Unbekannter Fehler'
+      };
+    }
   }
 }
 

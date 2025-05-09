@@ -1,20 +1,17 @@
-<script setup lang="ts">
-import { closeModal, confirmModal } from '@kolirt/vue-modal';
-
-const props = defineProps({
-  test: {}
-});
-</script>
-
 <template>
-  <SimpleModal title="Test modal" size="sm">
-    <pre>props: {{ props }}</pre>
-
+  <SimpleModal size="sm" title="Test modal">
     <template #footer>
-      <button @click="confirmModal({ value: 'some values' })" class="btn btn-primary">
+      <button class="btn btn-primary" @click="confirmModal({ value: 'some values' })">
         Confirm
       </button>
-      <button @click="closeModal()" class="btn btn-primary">Close</button>
+      <button class="btn btn-primary" @click="closeModal()">Close</button>
     </template>
   </SimpleModal>
 </template>
+
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import {closeModal, confirmModal, SimpleModal} from '@kolirt/vue-modal';
+</script>
