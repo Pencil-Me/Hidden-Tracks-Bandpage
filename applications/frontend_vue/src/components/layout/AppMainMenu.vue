@@ -35,6 +35,7 @@
 import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {useStore} from 'vuex';
+import {BCol, BContainer} from 'bootstrap-vue-next';
 
 /* ─────────────────────────────
  * Konfiguration
