@@ -1,55 +1,38 @@
-<script lang="ts">
+<template>
+  <AppSocialLinks />
+  <AppMainMenu />
+  <router-view class="content" />
+  <AppMainFooter />
+  <ModalTarget />
+</template>
+
+<script lang="ts" setup>
 import AppSocialLinks from '@/components/layout/AppSocialLinks.vue';
 import AppMainMenu from '@/components/layout/AppMainMenu.vue';
 import AppMainFooter from '@/components/layout/AppMainFooter.vue';
 import { ModalTarget } from '@kolirt/vue-modal';
 import { useHead } from '@vueuse/head';
 
-export default {
-  name: 'App',
-  setup() {
-    useHead({
-      title: 'HIDDEN TRACKS - Coverband aus Berlin',
-      meta: [
-        {
-          name: 'description',
-          content:
-            'Die sympathische Rock-Pop-Coverband Hidden Tracks aus Berlin begeistert seit 2013 mit einzigartigen Auftritten und unverwechselbarem Sound. Erlebe leidenschaftliche Performances von Fritz, Flo, Tanja, Joschi und Mo bei Hochzeiten, Geburtstagen und mehr. Lass dich von ihren besonderen Interpretationen von Adele, Muse und Korn überraschen. Komm vorbei und rock mit uns!'
-        },
-        {
-          property: 'og:title',
-          content: 'HIDDEN TRACKS - Coverband aus Berlin'
-        },
-        {
-          property: 'og:description',
-          content:
-            'Die sympathische Rock-Pop-Coverband Hidden Tracks aus Berlin begeistert seit 2013 mit einzigartigen Auftritten und unverwechselbarem Sound. Erlebe leidenschaftliche Performances von Fritz, Flo, Tanja, Joschi und Mo bei Hochzeiten, Geburtstagen und mehr. Lass dich von ihren besonderen Interpretationen von Adele, Muse und Korn überraschen. Komm vorbei und rock mit uns!'
-        }
-      ]
-    });
-  },
-  data() {},
-  components: {
-    ModalTarget,
-    AppSocialLinks,
-    AppMainMenu,
-    AppMainFooter
-  }
-};
+useHead({
+  title: 'HIDDEN TRACKS - Coverband aus Berlin',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'Die sympathische Rock-Pop-Coverband Hidden Tracks aus Berlin begeistert seit 2013 mit einzigartigen Auftritten und unverwechselbarem Sound. Erlebe leidenschaftliche Performances von Fritz, Flo, Tanja, Joschi und Mo bei Hochzeiten, Geburtstagen und mehr. Lass dich von ihren besonderen Interpretationen von Adele, Muse und Korn überraschen. Komm vorbei und rock mit uns!'
+    },
+    {
+      property: 'og:title',
+      content: 'HIDDEN TRACKS - Coverband aus Berlin'
+    },
+    {
+      property: 'og:description',
+      content:
+        'Die sympathische Rock-Pop-Coverband Hidden Tracks aus Berlin begeistert seit 2013 mit einzigartigen Auftritten und unverwechselbarem Sound. Erlebe leidenschaftliche Performances von Fritz, Flo, Tanja, Joschi und Mo bei Hochzeiten, Geburtstagen und mehr. Lass dich von ihren besonderen Interpretationen von Adele, Muse und Korn überraschen. Komm vorbei und rock mit uns!'
+    }
+  ]
+});
 </script>
-
-<template>
-  <AppSocialLinks />
-
-  <AppMainMenu />
-
-  <router-view class="content" />
-
-  <AppMainFooter />
-
-  <!-- The modal -->
-  <ModalTarget />
-</template>
 
 <style lang="scss">
 //resets
@@ -58,6 +41,7 @@ export default {
 *::before {
   box-sizing: border-box;
 }
+
 body,
 h1,
 h2,
@@ -65,6 +49,7 @@ h3,
 p {
   margin: 0;
 }
+
 // variables
 :root {
   --font-primary: Avenir, Helvetica, Arial;

@@ -1,42 +1,52 @@
 <template>
   <div class="slider">
-    <div class="wrapper-single" v-if="sliderImagesExist">
-      <app-carousel-custom :images="sliderImages.images" :time-slide="10000" />
+    <div v-if="sliderImagesExist" class="wrapper-single">
+      <AppCarouselCustom :images="sliderImages.images" :time-slide="10000" />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed, onMounted } from 'vue';
 import AppCarouselCustom from '@/components/AppCarouselCustom.vue';
+import { useImagesStore } from '@/store/images.module';
 
-export default {
-  name: 'HeroCarouselPage',
-  components: {
-    AppCarouselCustom
-  },
-  computed: {
-    sliderImagesExist() {
-      const temp = this.$store.getters['images/allSliderimages'];
-      return temp != null && temp.images && temp.images.length > 0;
-    },
-    sliderImages() {
-      const sliderimg = this.$store.getters['images/allSliderimages'];
-      if (!sliderimg) return [];
-      if (sliderimg.images.length <= 0) return [];
-      return sliderimg;
-    }
-  },
-  mounted() {
-    this.$store.dispatch('images/GET_SLIDERIMAGES');
+/* ─────────────────────────────
+ * Props & Store
+ * ───────────────────────────── */
+const store = useImagesStore();
+
+/* ─────────────────────────────
+ * Computed
+ * ───────────────────────────── */
+const sliderImages = computed(() => {
+  const images = store.allSliderimages;
+  if (!images || !images.images || images.images.length <= 0) {
+    return { images: [] };
   }
-};
+  return images;
+});
+
+const sliderImagesExist = computed(() => {
+  return sliderImages.value.images.length > 0;
+});
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  store.GET_SLIDERIMAGES();
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 #home div {
   padding: 0;
 }
+
 .slider {
   background: #4a4a4a;
   position: relative;

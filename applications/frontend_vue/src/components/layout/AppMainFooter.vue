@@ -15,7 +15,7 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed} from 'vue';
+import { computed } from 'vue';
 
 /* ─────────────────────────────
  * Computed Properties
@@ -23,8 +23,8 @@ import {computed} from 'vue';
 const year = computed(() => new Date().getFullYear());
 
 const footerMenu = computed(() => [
-  {name: 'Impressum', url: '/impressum'},
-  {name: 'Datenschutz', url: '/datenschutz'}
+  { name: 'Impressum', url: '/impressum' },
+  { name: 'Datenschutz', url: '/datenschutz' }
 ]);
 </script>
 

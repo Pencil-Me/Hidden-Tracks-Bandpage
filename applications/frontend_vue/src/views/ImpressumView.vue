@@ -109,27 +109,38 @@
     </p>
     <br />
     Impressum vom
-    <a target="_blank" href="https://www.impressum-generator.de">Impressum Generator</a> der
+    <a href="https://www.impressum-generator.de" target="_blank">Impressum Generator</a> der
     <a href="https://www.kanzlei-hasselbach.de/"
       >Kanzlei Hasselbach, Rechtsanwälte für Arbeitsrecht und Familienrecht</a
     >
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ImpressumView',
-  components: {},
-  methods: {},
-  computed: {
-    basicinfo() {
-      return this.$store.getters['basicInfo/getImpressuminfo'];
-    }
-  },
-  mounted() {
-    this.$store.dispatch('basicInfo/GET_IMPRESSUMINFO');
-  }
-};
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed, onMounted } from 'vue';
+import { useBandStore } from '@/store/basicinfo.module';
+
+/* ─────────────────────────────
+ * Setup: Store und Mixins
+ * ───────────────────────────── */
+const store = useBandStore();
+
+/* ─────────────────────────────
+ * Computed Properties
+ * ───────────────────────────── */
+const basicinfo = computed(() => {
+  return store.getImpressuminfo;
+});
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  store.GET_IMPRESSUMINFO();
+});
 </script>
 
 <style lang="scss">
@@ -157,9 +168,11 @@ export default {
       text-overflow: ellipsis;
     }
   }
+
   p {
     font-style: normal;
   }
+
   ul.nolist {
     list-style: none;
     padding: 0;

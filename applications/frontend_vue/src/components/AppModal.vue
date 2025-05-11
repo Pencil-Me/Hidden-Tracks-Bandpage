@@ -13,5 +13,5 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {closeModal, confirmModal, SimpleModal} from '@kolirt/vue-modal';
+import { closeModal, confirmModal, SimpleModal } from '@kolirt/vue-modal';
 </script>

@@ -19,28 +19,47 @@
   </section>
 </template>
 
-<script>
-import mixins from '@/mixins/index';
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed, onMounted } from 'vue';
+import { shuffleArray } from '@/mixins';
+import { BCol, BContainer } from 'bootstrap-vue-next';
+import { useMusicStore } from '@/store/music.module';
 
-export default {
-  name: 'MusicPage',
-  mixins: [mixins],
-  computed: {
-    songs() {
-      return this.shuffleArray(this.$store.getters['music/getSongs']);
-    }
-  },
-  mounted() {
-    this.$store.dispatch('music/GET_SONGS');
-  }
-};
+/* ─────────────────────────────
+ * Store Access
+ * ───────────────────────────── */
+const store = useMusicStore();
+
+/* ─────────────────────────────
+ * Computed Properties
+ * ───────────────────────────── */
+const songs = computed(() => {
+  const list = store.getSongs;
+  return list ? shuffleArray(list) : [];
+});
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  store.GET_SONGS();
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .music {
   background: #2a2a2a;
   width: 100vw;
   overflow: hidden;
+
+  @media only screen and (min-width: 640px) {
+    ul {
+      column-count: 2;
+      column-gap: 5rem;
+    }
+  }
 }
 </style>

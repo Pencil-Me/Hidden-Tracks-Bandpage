@@ -1,11 +1,13 @@
-version: '3'
-
 services:
   frontend:
     container_name: hiddentracks-frontend_vue
+    environment:
+      - VUE_APP_API_URL=${VUE_APP_API_URL}
     build:
       context: ./applications/frontend_vue
       dockerfile: ./Dockerfile
+      cache_from:
+        - "node:16-alpine"
 
   nginx:
     container_name: hiddentracks-middlenginx
@@ -16,9 +18,12 @@ services:
       - "8080:80"
     volumes:
       - ./nginx.middle.conf:/etc/nginx/conf.d/default.conf:rw
+      - ./nginx_logs:/var/log/nginx:rw
 
   php_api:
     container_name: hiddentracks-api_php
+    environment:
+      - PHP_ENV=${PHP_ENV}
     build:
       context: ./applications/api_php
       dockerfile: Dockerfile
@@ -26,7 +31,22 @@ services:
       - "9001:80"
     volumes:
       - ./applications/api_php/src:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    container_name: hiddentracks-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: hiddentracks_db
+    volumes:
+      - mysqldata:/var/lib/mysql
 
 volumes:
   mysqldata: { }
   data:
+    
+networks:
+  default:
+    driver: bridge

@@ -1,18 +1,28 @@
 <template>
   <section id="gigs" class="gigs">
     <b-container>
-      <b-col> </b-col>
+      <b-col>{{ props.msg }}</b-col>
     </b-container>
   </section>
 </template>
 
-<script>
-export default {
-  name: 'GigsPage',
-  props: {
-    msg: String
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { BCol, BContainer } from 'bootstrap-vue-next';
+
+/* ─────────────────────────────
+ * Props & Store
+ * ───────────────────────────── */
+const props = withDefaults(
+  defineProps<{
+    msg?: string
+  }>(),
+  {
+    msg: ''
   }
-};
+);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

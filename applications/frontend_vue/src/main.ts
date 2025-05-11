@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
 import { createHead } from '@vueuse/head';
 import { MotionPlugin } from '@vueuse/motion';
@@ -10,23 +11,34 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-library.add(fas, far, fab);
 
-// Add the necessary CSS
+// Add necessary CSS
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
 
 import App from './App.vue';
-import store from './store';
 import router from './router';
+
+// Add Font Awesome icons to the library
+library.add(fas, far, fab);
 
 const app = createApp(App);
 
-app.use(store);
+// Initialize Pinia store
+const pinia = createPinia();
+app.use(pinia);
+
+// Use router for navigation
 app.use(router);
-app.use(createBootstrap({ components: true, directives: true })); // Change this line
+
+// Initialize Bootstrap components
+app.use(createBootstrap());
+
+// Initialize other plugins
 app.use(createHead());
 app.use(MotionPlugin);
+
+// Initialize Modal plugin with custom settings
 app.use(
   createModal({
     transitionTime: 200,
@@ -43,6 +55,9 @@ app.use(
     }
   })
 );
+
+// Register FontAwesomeIcon component globally
 app.component('FontAwesomeIcon', FontAwesomeIcon);
 
+// Mount the app
 app.mount('#app');

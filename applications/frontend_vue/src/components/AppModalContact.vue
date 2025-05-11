@@ -4,7 +4,8 @@
     <form v-if="!form.submitted" class="vue-form" @submit.prevent="submit">
       <div v-if="form.sendError" class="error-message">
         <p>
-          Das Emailsenden hat einen Fehler verursacht. Bitte überprüfe deine Eingaben und versuche es erneut.
+          Das Emailsenden hat einen Fehler verursacht. Bitte überprüfe deine Eingaben und versuche
+          es erneut.
         </p>
       </div>
 
@@ -84,8 +85,8 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, reactive} from 'vue';
-import {closeModal} from '@kolirt/vue-modal';
+import { computed, reactive } from 'vue';
+import { closeModal } from '@kolirt/vue-modal';
 import MailService from '@/services/mail.service.ts';
 
 /* ─────────────────────────────

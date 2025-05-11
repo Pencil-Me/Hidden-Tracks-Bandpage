@@ -14,14 +14,14 @@
       </b-col>
       <b-col class="bandmembers">
         <div
-          class="carot-container"
-          v-motion-fade-visible-once
-          :delay="200"
           v-for="member in members"
           :key="member.name"
+          v-motion-fade-visible-once
+          :delay="200"
+          class="carot-container"
         >
           <div class="carot">
-            <img :src="member.image.url" :alt="member.name" />
+            <img :alt="member.name" :src="member.image.url" />
             <div class="overlay"></div>
             <div class="bandtext">
               <div class="bandtextholder">
@@ -40,18 +40,32 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'BandPage',
-  computed: {
-    members() {
-      return this.$store.getters['basicInfo/getBandmembers'];
-    }
-  },
-  mounted() {
-    this.$store.dispatch('basicInfo/GET_MEMBERS');
-  }
-};
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed, onMounted } from 'vue';
+import { BCol, BContainer } from 'bootstrap-vue-next';
+import { useBandStore } from '@/store/basicinfo.module';
+
+/* ─────────────────────────────
+ * Store und Data Setup
+ * ───────────────────────────── */
+const store = useBandStore();
+
+/* ─────────────────────────────
+ * Computed Properties
+ * ───────────────────────────── */
+const members = computed(() => {
+  return store.getBandmembers;
+});
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  store.GET_MEMBERS();
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

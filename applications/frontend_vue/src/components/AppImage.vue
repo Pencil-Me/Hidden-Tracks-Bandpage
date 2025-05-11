@@ -1,14 +1,10 @@
 <template>
-  <picture
-    :data-alt="imageAlt"
-    :data-iesrc="lazySrcsetMedium"
-    class="lozad lazy-image"
-  >
-    <source v-if="lazySrcsetLarge" :srcset="lazySrcsetLarge" media="(min-width: 1280px)"/>
-    <source v-if="lazySrcsetMedium" :srcset="lazySrcsetMedium" media="(min-width: 980px)"/>
-    <source v-if="lazySrcsetSmall" :srcset="lazySrcsetSmall" media="(min-width: 320px)"/>
-    <source v-if="lazySrcsetThumb" :srcset="lazySrcsetThumb" media="(max-width: 319px)"/>
-    <img :alt="imageAlt" :src="imgSrc"/>
+  <picture :data-alt="imageAlt" :data-iesrc="lazySrcsetMedium" class="lozad lazy-image">
+    <source v-if="lazySrcsetLarge" :srcset="lazySrcsetLarge" media="(min-width: 1280px)" />
+    <source v-if="lazySrcsetMedium" :srcset="lazySrcsetMedium" media="(min-width: 980px)" />
+    <source v-if="lazySrcsetSmall" :srcset="lazySrcsetSmall" media="(min-width: 320px)" />
+    <source v-if="lazySrcsetThumb" :srcset="lazySrcsetThumb" media="(max-width: 319px)" />
+    <img :alt="imageAlt" :src="imgSrc" />
   </picture>
 </template>
 
@@ -16,7 +12,7 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onMounted} from 'vue';
+import { computed, onMounted } from 'vue';
 import lozad from 'lozad';
 
 /* ─────────────────────────────
@@ -26,13 +22,16 @@ import lozad from 'lozad';
 /* ─────────────────────────────
  * Props & Store
  * ───────────────────────────── */
-const props = withDefaults(defineProps<{
-  lazySrcsetSmall?: string | null;
-  lazySrcsetMedium?: string | null;
-  lazySrcsetLarge?: string | null;
-  lazySrcsetThumb?: string | null;
-  imageAlt?: string | null;
-}>(), {});
+const props = withDefaults(
+  defineProps<{
+    lazySrcsetSmall?: string | null
+    lazySrcsetMedium?: string | null
+    lazySrcsetLarge?: string | null
+    lazySrcsetThumb?: string | null
+    imageAlt?: string | null
+  }>(),
+  {}
+);
 
 /* ─────────────────────────────
  * Computed Styles & Klassen

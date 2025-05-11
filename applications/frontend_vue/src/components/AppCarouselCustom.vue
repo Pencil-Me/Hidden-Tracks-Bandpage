@@ -42,10 +42,10 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import AppImage from '@/components/AppImage.vue';
-import {useStore} from 'vuex';
 import _ from 'lodash';
+import { useScrollStore } from '@/store/page.module';
 
 /* ─────────────────────────────
  * Konfiguration
@@ -65,20 +65,23 @@ const CONFIG = {
 /* ─────────────────────────────
  * Props & Store
  * ───────────────────────────── */
-const props = withDefaults(defineProps<{
-  images: Array<unknown>,
-  showText?: boolean,
-  showDots?: boolean,
-  showArrows?: boolean,
-  timeSlide?: number,
-  animation?: string
-}>(), {
-  showText: false,
-  showDots: false,
-  showArrows: false,
-  timeSlide: 0,
-  animation: 'fade'
-});
+const props = withDefaults(
+  defineProps<{
+    images: Array<unknown>
+    showText?: boolean
+    showDots?: boolean
+    showArrows?: boolean
+    timeSlide?: number
+    animation?: string
+  }>(),
+  {
+    showText: false,
+    showDots: false,
+    showArrows: false,
+    timeSlide: 0,
+    animation: 'fade'
+  }
+);
 
 const slides = ref<HTMLElement[]>([]);
 const currentIndex = ref(0);
@@ -88,20 +91,20 @@ const scaleFactor = ref(CONFIG.DEFAULT_SCALE_FACTOR);
 const autoSlideInterval = ref<ReturnType<typeof setInterval> | null>(null);
 const scrollInterval = ref<ReturnType<typeof setInterval> | null>(null);
 const reverseScrollInterval = ref<ReturnType<typeof setInterval> | null>(null);
-const store = useStore();
+const scrollStore = useScrollStore();
 
 /* ─────────────────────────────
  * Computed Styles & Klassen
  * ───────────────────────────── */
-const scrollY = computed(() => store.getters['page/currentScrollY']);
+const scrollY = computed(() => scrollStore.currentScrollY);
 
 const slideStyle = computed(() => ({
-  transform: `scale(${clamp(1 + lastScrollY.value / CONFIG.SLIDE_SCALE_DIVISOR, 1, CONFIG.SCALE_MAX)})`,
+  transform: `scale(${clamp(1 + lastScrollY.value / CONFIG.SLIDE_SCALE_DIVISOR, 1, CONFIG.SCALE_MAX)})`
 }));
 
 const containerStyle = computed(() => ({
   right: `${direction.value}vw`,
-  transform: `scale(${CONFIG.SCALE_MIN + scaleFactor.value})`,
+  transform: `scale(${CONFIG.SCALE_MIN + scaleFactor.value})`
 }));
 
 /* ─────────────────────────────
@@ -140,16 +143,19 @@ function clearIfSet(intervalRef: ref<ReturnType<typeof setInterval> | null>) {
 /* ─────────────────────────────
  * Reaktive Reaktion
  * ───────────────────────────── */
-watch(scrollY, _.debounce((val) => {
-  lastScrollY.value = val;
-}, CONFIG.SCROLL_Y_DEBOUNCE));
+watch(
+  scrollY,
+  _.debounce((val: number) => {
+    lastScrollY.value = val;
+  }, CONFIG.SCROLL_Y_DEBOUNCE)
+);
 
 /* ─────────────────────────────
  * Lifecycle
  * ───────────────────────────── */
 onMounted(() => {
   showSlide(currentIndex.value);
-  toggleDirection(CONFIG.SCROLL_Y_DEBOUNCE);
+  toggleDirection();
 
   if (props.timeSlide) {
     autoSlideInterval.value = setInterval(() => changeSlide(1), props.timeSlide);
@@ -160,7 +166,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  [autoSlideInterval, scrollInterval, reverseScrollInterval].forEach(clearIfSet);
+  ;[autoSlideInterval, scrollInterval, reverseScrollInterval].forEach(clearIfSet);
 });
 </script>
 
@@ -191,7 +197,9 @@ onBeforeUnmount(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  transition: right 20000ms ease-in-out, transform 15000ms ease-in-out;
+  transition:
+    right 20000ms ease-in-out,
+    transform 15000ms ease-in-out;
   will-change: right, transform;
 }
 
@@ -203,8 +211,9 @@ onBeforeUnmount(() => {
   bottom: 0;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1000ms,
-  visibility 250ms;
+  transition:
+    opacity 1000ms,
+    visibility 250ms;
 
   img {
     width: 100%;

@@ -24,49 +24,49 @@
   </section>
 </template>
 
-<script>
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed, onMounted } from 'vue';
+import { openModal } from '@kolirt/vue-modal';
 import AppImage from '@/components/AppImage.vue';
-import mixins from '@/mixins/index';
-import {openModal} from '@kolirt/vue-modal';
 import AppModalImage from '@/components/AppModalImage.vue';
+import { shuffleArray } from '@/mixins';
+import { BCol, BContainer } from 'bootstrap-vue-next';
+import { useImagesStore } from '@/store/images.module';
 
-export default {
-  name: 'GalleryPage',
-  components: {
-    AppImage
-  },
-  mixins: [mixins],
-  computed: {
-    gallery() {
-      const galleryimages = this.$store.getters['images/allGalleryimages'];
-      if (!galleryimages) return [];
-      if (galleryimages.images.length <= 0) return [];
+/* ─────────────────────────────
+ * Setup: Store und Mixins
+ * ───────────────────────────── */
+const store = useImagesStore();
 
-      const images = galleryimages.images;
-      return this.shuffleArray(images);
-    }
-  },
-  methods: {
-    openImage(url) {
-      this.$store.dispatch('images/setModalImg', url);
-      openModal(AppModalImage, {});
-      // runs when modal is closed via confirmModal
-      // .then((data) => {
-      //   console.log('success', data);
-      // })
-      // runs when modal is closed via closeModal or esc
-      // .catch(() => {
-      //   console.log('catch');
-      // });
-    }
-  },
-  mounted() {
-    this.$store.dispatch('images/GET_GALLERYIMAGES');
-  }
+/* ─────────────────────────────
+ * Computed Properties
+ * ───────────────────────────── */
+const gallery = computed(() => {
+  const galleryImages = store.allGalleryimages;
+  if (!galleryImages || galleryImages.images.length <= 0) return [];
+  return shuffleArray(galleryImages.images);
+});
+
+/* ─────────────────────────────
+ * Methoden
+ * ───────────────────────────── */
+const openImage = (url: string) => {
+  store.setModalImg(url);
+  openModal(AppModalImage, { img: url });
+  // Modal handling (optional: then/catch for confirm/close logic)
 };
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  store.GET_GALLERYIMAGES();
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 .gallery {
   background: #4a4a4a;

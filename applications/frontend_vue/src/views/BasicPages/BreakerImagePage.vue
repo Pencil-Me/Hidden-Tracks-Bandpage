@@ -1,27 +1,36 @@
 <template>
   <div v-if="breakerimageurl" class="breakerimagecomponent">
-    <div class="breakerimage" :style="computedStyle"></div>
+    <div :style="computedStyle" class="breakerimage"></div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'BreakerImagePage',
-  computed: {
-    computedStyle() {
-      const style = {};
-      style['background-image'] = `url(${this.breakerimageurl})`;
-      return style;
-    },
-    breakerimageurl() {
-      const breakerimages = this.$store.getters['images/allBreakerimages'];
-      if (breakerimages?.images?.length <= 0) return null;
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed } from 'vue';
+import { useImagesStore } from '@/store/images.module';
 
-      const bi = breakerimages.images;
-      return bi[Math.floor(Math.random() * bi.length)].url;
-    }
-  }
-};
+/* ─────────────────────────────
+ * Store und Data Setup
+ * ───────────────────────────── */
+const store = useImagesStore();
+
+/* ─────────────────────────────
+ * Computed Properties
+ * ───────────────────────────── */
+const computedStyle = computed(() => {
+  const style = {};
+  style['background-image'] = `url(${breakerimageurl.value})`;
+  return style;
+});
+const breakerimageurl = computed(() => {
+  const breakerimages = store.allBreakerimages;
+  if (breakerimages?.images?.length <= 0) return null;
+
+  const bi = breakerimages.images;
+  return bi[Math.floor(Math.random() * bi.length)].url;
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

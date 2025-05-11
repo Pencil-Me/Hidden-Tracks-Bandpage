@@ -1,9 +1,11 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import ImpressumView from '@/views/ImpressumView.vue';
 import DatenschutzView from '@/views/DatenschutzView.vue';
 
-const routes = [
+// Route Configuration
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
@@ -21,16 +23,18 @@ const routes = [
   }
 ];
 
+// Create Router
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes,
+  routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition;
-    }
-    if (to.hash) {
-      return {el: to.hash, behavior: 'smooth'};
-    }
+    // Restore scroll position
+    if (savedPosition) return savedPosition;
+
+    // Scroll to hash
+    if (to.hash) return { el: to.hash, behavior: 'smooth' };
+
+    // Scroll to top
     window.scrollTo(0, 0);
     return {};
   }

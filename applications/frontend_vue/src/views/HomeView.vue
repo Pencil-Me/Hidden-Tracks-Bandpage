@@ -15,8 +15,10 @@
   </div>
 </template>
 
-<script>
-import {openModal} from '@kolirt/vue-modal';
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
 import HeroCarousel from '@/views/BasicPages/HeroCarouselPage.vue';
 import About from '@/views/BasicPages/AboutPage.vue';
 import BreakerImage from '@/views/BasicPages/BreakerImagePage.vue';
@@ -24,49 +26,31 @@ import Videos from '@/views/BasicPages/VideosPage.vue';
 import Gallery from '@/views/BasicPages/GalleryPage.vue';
 import Band from '@/views/BasicPages/BandPage.vue';
 import Music from '@/views/BasicPages/MusicPage.vue';
-import AppModal from '@/components/AppModal.vue';
 import Polaroids from '@/views/BasicPages/PolaroidsPage.vue';
+import { onMounted } from 'vue';
+// import {useGigsStore} from '@/store/gigs.module';
+import { useImagesStore } from '@/store/images.module';
 
-export default {
-  name: 'HomeView',
-  data: () => {
-    return {};
-  },
-  components: {
-    HeroCarousel,
-    BreakerImage,
-    About,
-    Videos,
-    Gallery,
-    Band,
-    Music,
-    Polaroids
-  },
-  methods: {
-    runModal() {
-      openModal(AppModal, {
-        test: 'some props'
-      });
-      // runs when modal is closed via confirmModal
-      // .then((data) => {
-      //   console.log('success', data);
-      // })
-      // runs when modal is closed via closeModal or esc
-      // .catch(() => {
-      //   console.log('catch');
-      // });
-    }
-  },
-  computed: {
-    gigs() {
-      const temp = this.$store.getters['gigs/getNextGigs'];
-      return temp != null && temp.length > 0;
-    }
-  },
-  mounted() {
-    this.$store.dispatch('images/GET_BREAKERIMAGES');
-  }
-};
+/* ─────────────────────────────
+ * Setup: Store und Mixins
+ * ───────────────────────────── */
+// const gigsStore = useGigsStore();
+const imageStore = useImagesStore();
+
+/* ─────────────────────────────
+ * Computed Properties
+ * ───────────────────────────── */
+// const gigs = computed(() => {
+//   const temp = gigsStore.getNextGigs();
+//   return temp != null && temp.length > 0;
+// });
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  imageStore.GET_BREAKERIMAGES();
+});
 </script>
 
 <style lang="scss">

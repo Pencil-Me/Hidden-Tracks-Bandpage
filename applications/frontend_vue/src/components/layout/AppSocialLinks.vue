@@ -2,36 +2,35 @@
   <ul class="social">
     <li v-for="point in social" :key="point.name">
       <a :id="point.name" :href="point.url" rel="noopener" target="_blank">
-        <font-awesome-icon :icon="[point.type, point.icon]" size="1x"/>
+        <font-awesome-icon :icon="[point.type, point.icon]" size="1x" />
       </a>
     </li>
     <li>
       <a id="mail" @click="sendMail">
-        <font-awesome-icon icon="envelope" size="1x"/>
+        <font-awesome-icon icon="envelope" size="1x" />
       </a>
     </li>
   </ul>
 </template>
 
-
 <script lang="ts" setup>
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onMounted} from 'vue';
-import {useStore} from 'vuex';
-import {openModal} from '@kolirt/vue-modal';
+import { computed, onMounted } from 'vue';
+import { openModal } from '@kolirt/vue-modal';
 import AppModalContact from '@/components/AppModalContact.vue';
+import { useBandStore } from '@/store/basicinfo.module';
 
 /* ─────────────────────────────
  * Store Setup
  * ───────────────────────────── */
-const store = useStore();
+const store = useBandStore();
 
 /* ─────────────────────────────
  * Computed Styles & Klassen
  * ───────────────────────────── */
-const social = computed(() => store.getters['basicInfo/getSocial']);
+const social = computed(() => store.getSocial);
 
 /* ─────────────────────────────
  * Methoden
@@ -44,7 +43,7 @@ const sendMail = () => {
  * Lifecycle Hooks
  * ───────────────────────────── */
 onMounted(() => {
-  store.dispatch('basicInfo/GET_SOCIAL');
+  store.GET_SOCIAL();
 });
 </script>
 

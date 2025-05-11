@@ -136,18 +136,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'DatenschutzView',
-  components: {},
-  methods: {},
-  computed: {
-    basicinfo() {
-      const impressum = this.$store.getters['basicInfo/getImpressuminfo'];
-      return impressum;
-    }
-  }
-};
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed } from 'vue';
+import { useBandStore } from '@/store/basicinfo.module';
+
+/* ─────────────────────────────
+ * Store
+ * ───────────────────────────── */
+const store = useBandStore();
+
+/* ─────────────────────────────
+ * Computed Logic
+ * ───────────────────────────── */
+const basicinfo = computed(() => {
+  return store.getImpressuminfo;
+});
 </script>
 
 <style lang="scss">
@@ -175,9 +181,11 @@ export default {
       text-overflow: ellipsis;
     }
   }
+
   p {
     font-style: normal;
   }
+
   ul.nolist {
     list-style: none;
     padding: 0;

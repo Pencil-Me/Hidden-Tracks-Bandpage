@@ -20,7 +20,7 @@
             </li>
           </ul>
           <a class="burger" @click="toggleMenuVisibility">
-            <font-awesome-icon icon="bars" size="2x"/>
+            <font-awesome-icon icon="bars" size="2x" />
           </a>
         </nav>
       </b-col>
@@ -32,10 +32,10 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
-import {useRouter} from 'vue-router';
-import {useStore} from 'vuex';
-import {BCol, BContainer} from 'bootstrap-vue-next';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { BCol, BContainer } from 'bootstrap-vue-next';
+import { useScrollStore } from '@/store/page.module';
 
 /* ─────────────────────────────
  * Konfiguration
@@ -47,7 +47,7 @@ const MOBILE_BREAKPOINT = 546;
  * Constants
  * ───────────────────────────── */
 const router = useRouter();
-const store = useStore();
+const scrollStore = useScrollStore();
 
 /* ─────────────────────────────
  * Reactive State
@@ -60,11 +60,11 @@ const scrollY = ref(0);
  * Computed Properties
  * ───────────────────────────── */
 const mainMenu = computed(() => [
-  {name: 'About', url: 'about'},
-  {name: 'Video', url: 'videos'},
-  {name: 'Gallery', url: 'gallery'},
-  {name: 'Band', url: 'band'},
-  {name: 'Music', url: 'music'}
+  { name: 'About', url: 'about' },
+  { name: 'Video', url: 'videos' },
+  { name: 'Gallery', url: 'gallery' },
+  { name: 'Band', url: 'band' },
+  { name: 'Music', url: 'music' }
 ]);
 
 const navClass = computed(() => {
@@ -95,7 +95,7 @@ const handleResize = (event: UIEvent) => {
 
 const handleScroll = () => {
   scrollY.value = window.scrollY;
-  store.dispatch('page/setCurrentScrollY', window.scrollY);
+  scrollStore.setCurrentScrollY(window.scrollY);
 };
 
 /* ─────────────────────────────

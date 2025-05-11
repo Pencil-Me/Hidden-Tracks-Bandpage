@@ -1,65 +1,76 @@
 <template>
   <div class="polaroids">
-    <template v-for="polaroid in polaroids" :key="polaroid.image">
-      <polaroid :polaroid="polaroid.image" :start-position="polaroid.startPosition"/>
-    </template>
+    <polaroid
+      v-for="polaroid in polaroids"
+      :key="polaroid.image.url"
+      :polaroid="polaroid.image"
+      :start-position="polaroid.startPosition"
+    />
   </div>
 </template>
 
-<script>
-import polaroid from '@/components/AppPolaroidsSingle.vue';
-import mixins from '@/mixins/index';
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed, onMounted } from 'vue';
+import Polaroid from '@/components/AppPolaroidsSingle.vue';
+import { shuffleArray } from '@/mixins';
+import { useImagesStore } from '@/store/images.module';
 
-export default {
-  name: 'PolaroidsPage',
-  components: {
-    polaroid
-  },
-  mixins: [mixins],
-  computed: {
-    polaroids() {
-      const polaroidimages = this.$store.getters['images/allPolaroidimages'];
-      if (!polaroidimages) return [];
-      if (polaroidimages.images.length <= 0) return [];
+/* ─────────────────────────────
+ * Store
+ * ───────────────────────────── */
+const store = useImagesStore();
 
-      const polaroiddata = this.shuffleArray(polaroidimages.images);
-      const polaroidtemplate = {
-        image: {},
-        startPosition: 0
-      };
-      const polaroids = [];
+/* ─────────────────────────────
+ * Computed Logic
+ * ───────────────────────────── */
+const polaroids = computed(() => {
+  const polaroidImages = store.allPolaroidimages;
 
-      let lastPosition = 550;
-
-      for (let i = 0; i < polaroiddata.length; i++) {
-        const polaroid = structuredClone(polaroidtemplate);
-        polaroid.image = polaroiddata[i];
-
-        const RANDOM_POSITION_OFFSET = 200;
-        let newPosition =
-          lastPosition +
-          Math.round(Math.random() * RANDOM_POSITION_OFFSET) +
-          Math.round(Math.random() * RANDOM_POSITION_OFFSET) +
-          Math.round(Math.random() * RANDOM_POSITION_OFFSET);
-        const HALF = 0.5;
-        const RANDOM_POSITION_HALF_OFFSET = 50;
-        newPosition =
-          Math.random() < HALF
-            ? newPosition + Math.round(Math.random() * RANDOM_POSITION_HALF_OFFSET)
-            : newPosition + Math.round(Math.random() - RANDOM_POSITION_HALF_OFFSET);
-        polaroid.startPosition = newPosition;
-        lastPosition = newPosition;
-
-        polaroids.push(polaroid);
-      }
-
-      return polaroids;
-    }
-  },
-  mounted() {
-    this.$store.dispatch('images/GET_POLAROIDIMAGES');
+  if (!polaroidImages || polaroidImages.images.length <= 0) {
+    return [];
   }
-};
+
+  const shuffled = shuffleArray(polaroidImages.images);
+  const result: { image: unknown; startPosition: number }[] = [];
+
+  let lastPosition = 550;
+
+  for (const image of shuffled) {
+    const RANDOM_POSITION_OFFSET = 200;
+    const RANDOM_POSITION_HALF_OFFSET = 50;
+    const HALF = 0.5;
+
+    let newPosition =
+      lastPosition +
+      Math.round(Math.random() * RANDOM_POSITION_OFFSET) +
+      Math.round(Math.random() * RANDOM_POSITION_OFFSET) +
+      Math.round(Math.random() * RANDOM_POSITION_OFFSET);
+
+    newPosition +=
+      Math.random() < HALF
+        ? Math.round(Math.random() * RANDOM_POSITION_HALF_OFFSET)
+        : -Math.round(Math.random() * RANDOM_POSITION_HALF_OFFSET);
+
+    result.push({
+      image,
+      startPosition: newPosition
+    });
+
+    lastPosition = newPosition;
+  }
+
+  return result;
+});
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  store.GET_POLAROIDIMAGES();
+});
 </script>
 
 <style scoped>

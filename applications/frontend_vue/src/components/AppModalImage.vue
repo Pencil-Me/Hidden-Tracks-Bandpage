@@ -1,6 +1,6 @@
 <template>
   <div aria-modal="true" class="modal-image" role="dialog" @click="closeImageModal">
-    <img v-if="img" :src="img" alt="Vollbilddarstellung"/>
+    <img v-if="img" :src="img" alt="Vollbilddarstellung" />
     <p v-else class="modal-fallback">Bild konnte nicht geladen werden.</p>
   </div>
 </template>
@@ -9,14 +9,14 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {closeModal} from '@kolirt/vue-modal';
-import {onMounted, onUnmounted, ref} from 'vue';
+import { closeModal } from '@kolirt/vue-modal';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 /* ─────────────────────────────
  * Props & Store
  * ───────────────────────────── */
 const props = defineProps<{
-  img: string;
+  img: string
 }>();
 
 const img = ref(props.img);
@@ -61,7 +61,8 @@ onUnmounted(() => {
     max-width: 90vw;
     max-height: 90vh;
     object-fit: contain;
-    filter: drop-shadow(0 -1em 0 white) drop-shadow(0 2em 0 white) drop-shadow(-1em 0 0 white) drop-shadow(1em 0 0 white);
+    filter: drop-shadow(0 -1em 0 white) drop-shadow(0 2em 0 white) drop-shadow(-1em 0 0 white)
+      drop-shadow(1em 0 0 white);
     transition: transform 0.3s ease;
   }
 

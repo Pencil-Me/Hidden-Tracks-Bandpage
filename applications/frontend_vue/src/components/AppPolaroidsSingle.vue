@@ -15,19 +15,20 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, ref, watch} from 'vue';
-import {useStore} from 'vuex';
-import {openModal} from '@kolirt/vue-modal';
+import { computed, ref, watch } from 'vue';
+import { openModal } from '@kolirt/vue-modal';
 
 import AppImage from './AppImage.vue';
 import AppModalImage from '@/components/AppModalImage.vue';
+import { useImagesStore } from '@/store/images.module';
+import { useScrollStore } from '@/store/page.module';
 
 /* ─────────────────────────────
  * Konfiguration
  * ───────────────────────────── */
 const CONFIG = {
   ALIGNMENT_THRESHOLD: 0.5,
-  SIDE_DISTANCE: {BASE: 50, VARIATION: 70},
+  SIDE_DISTANCE: { BASE: 50, VARIATION: 70 },
   ROTATION_MAX: 200,
   VERTICAL_SPEED_MAX: 3,
   SCROLL_DIVISOR: 4,
@@ -40,7 +41,7 @@ const CONFIG = {
   LEVEL_2_THRESHHOLD: 0.66,
   LEVEL_3_THRESHHOLD: 0.33,
   DOT_FIVE: 0.5,
-  TWO: 2,
+  TWO: 2
 };
 
 /* ─────────────────────────────
@@ -57,7 +58,8 @@ const props = defineProps<{
   startPosition?: number
 }>();
 
-const store = useStore();
+const imageStore = useImagesStore();
+const scrollStore = useScrollStore();
 
 /* ─────────────────────────────
  * Initialisierte Zufallswerte
@@ -65,7 +67,9 @@ const store = useStore();
 const rand = Math.random;
 
 const alignment = ref(rand() < CONFIG.ALIGNMENT_THRESHOLD ? 'left' : 'right');
-const sideDistance = ref(CONFIG.SIDE_DISTANCE.BASE - Math.round(rand() * CONFIG.SIDE_DISTANCE.VARIATION));
+const sideDistance = ref(
+  CONFIG.SIDE_DISTANCE.BASE - Math.round(rand() * CONFIG.SIDE_DISTANCE.VARIATION)
+);
 
 const type = ref(getRandomLevel());
 const currentPosition = ref(props.startPosition ?? 0);
@@ -79,7 +83,7 @@ const lastScrollY = ref(0);
  * ───────────────────────────── */
 const polaroidClass = computed(() => ({
   polaroid: true,
-  [`level${type.value}`]: type.value > 1,
+  [`level${type.value}`]: type.value > 1
 }));
 
 const style = computed(() => ({
@@ -118,15 +122,14 @@ function applyScrollEffect(newY: number) {
 }
 
 function openImage(url: string) {
-  store.dispatch('images/setModalImg', url);
-  openModal(AppModalImage).catch(() => {
-  });
+  imageStore.setModalImg(url);
+  openModal(AppModalImage, { img: url });
 }
 
 /* ─────────────────────────────
  * Reaktive Reaktion
  * ───────────────────────────── */
-const currentScrollY = computed(() => store.getters['page/currentScrollY']);
+const currentScrollY = computed(() => scrollStore.currentScrollY);
 
 watch(currentScrollY, (newY) => {
   applyScrollEffect(newY);
@@ -142,7 +145,9 @@ watch(currentScrollY, (newY) => {
   background-position: 50% 50%;
   background-size: cover;
   z-index: 994;
-  transition: transform 0.3s ease, top 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    top 0.3s ease;
   height: 10vw;
   width: 10vw;
   max-height: 85px;

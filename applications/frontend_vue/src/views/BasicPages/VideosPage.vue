@@ -6,35 +6,46 @@
         <iframe
           v-for="video in videos"
           :key="video.url"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen=""
-          frameborder="0"
-          :src="video.url"
-          style="height: 48vw; max-height: 645px"
-          width="100%"
           v-motion-slide-visible-once-bottom
           :delay="200"
+          :src="video.url"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          frameborder="0"
+          style="height: 48vw; max-height: 645px"
+          width="100%"
         ></iframe>
       </b-col>
     </b-container>
   </section>
 </template>
 
-<script>
-export default {
-  name: 'VideosPage',
-  computed: {
-    videos() {
-      return this.$store.getters['videos/allVideos'];
-    }
-  },
-  mounted() {
-    this.$store.dispatch('videos/GET_VIDEOS');
-  }
-};
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { computed, onMounted } from 'vue';
+import { BCol, BContainer } from 'bootstrap-vue-next';
+import { useVideoStore } from '@/store/videos.module';
+
+/* ─────────────────────────────
+ * Store
+ * ───────────────────────────── */
+const store = useVideoStore();
+
+/* ─────────────────────────────
+ * Computed
+ * ───────────────────────────── */
+const videos = computed(() => store.allVideos || []);
+
+/* ─────────────────────────────
+ * Lifecycle Hooks
+ * ───────────────────────────── */
+onMounted(() => {
+  store.GET_VIDEOS();
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .videos {
   background: #2e1a06;

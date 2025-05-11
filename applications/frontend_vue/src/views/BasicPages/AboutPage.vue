@@ -41,10 +41,11 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'AboutPage'
-};
+<script lang="ts" setup>
+/* ─────────────────────────────
+ * Imports
+ * ───────────────────────────── */
+import { BCol, BContainer } from 'bootstrap-vue-next';
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
