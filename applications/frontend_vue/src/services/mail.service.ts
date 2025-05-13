@@ -1,4 +1,4 @@
-import type { AxiosError, AxiosInstance } from 'axios';
+import type {AxiosError, AxiosInstance} from 'axios';
 import axios from 'axios';
 
 class MailService {
@@ -32,9 +32,9 @@ class MailService {
     email: string
     message: string
     contactMeByFax?: boolean
-  }): Promise<{ success: boolean; data?: unknown; error?: string }> {
+  }): Promise<{ success: boolean; data?: { message: string }; error?: string }> {
     try {
-      const response = await this.axiosInstance.post('/send_email', {
+      const res = await this.axiosInstance.post('/send_email', {
         name: data.name,
         email: data.email,
         message: data.message,
@@ -43,7 +43,7 @@ class MailService {
 
       return {
         success: true,
-        data: response.data
+        data: res.data
       };
     } catch (error: unknown) {
       const errorTyp = error as AxiosError;

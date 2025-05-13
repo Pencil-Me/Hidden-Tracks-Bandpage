@@ -17,8 +17,6 @@ declare module 'vue' {
     AppModalImage: typeof import('./src/components/AppModalImage.vue')['default']
     AppPolaroidsSingle: typeof import('./src/components/AppPolaroidsSingle.vue')['default']
     AppSocialLinks: typeof import('./src/components/layout/AppSocialLinks.vue')['default']
-    BCol: typeof import('bootstrap-vue-next')['BCol']
-    BContainer: typeof import('bootstrap-vue-next')['BContainer']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

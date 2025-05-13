@@ -85,8 +85,9 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import { computed, reactive } from 'vue';
-import { closeModal } from '@kolirt/vue-modal';
+import {computed, reactive} from 'vue';
+import {closeModal} from '@kolirt/vue-modal';
+
 import MailService from '@/services/mail.service.ts';
 
 /* ─────────────────────────────
@@ -143,18 +144,18 @@ async function submit() {
   form.sending = true;
 
   try {
-    const res = await MailService.sendMail({
+    await MailService.sendMail({
       name: form.name,
       email: form.email,
       message: form.message,
       contactMeByFax: form.contactByFax
+    }).then((res) => {
+      if (res.data.message === 'Email sent') {
+        form.submitted = true;
+      } else {
+        form.sendError = true;
+      }
     });
-
-    if (res.message === 'Email sent') {
-      form.submitted = true;
-    } else {
-      form.sendError = true;
-    }
   } catch (err) {
     console.error('catch', err);
     form.sendError = true;
