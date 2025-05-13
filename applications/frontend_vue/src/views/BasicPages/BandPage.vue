@@ -2,12 +2,12 @@
   <section id="band" class="band">
     <b-container>
       <b-col>
-        <h2 v-motion-slide-visible-once-right :delay="200">Band</h2>
-        <p v-motion-slide-visible-once-left :delay="200">
+        <h2 v-motion="slideRight">Band</h2>
+        <p v-motion="slideLeft">
           Fünf Multitalente formten eine Band die auf den kleinsten und größten Bühnen zu Hause ist
           und jedes Publikum mit ihrer ansteckender Spielfreude begeistert.
         </p>
-        <p v-motion-slide-visible-once-right :delay="200">
+        <p v-motion="slideRight">
           Voll Leidenschaft, Spielwitz und Spontanität nehmen wir Euch mit auf eine musikalische
           Reise durch die verschiedenen Musikgenres der Jahrzehnte.
         </p>
@@ -16,12 +16,11 @@
         <div
           v-for="member in members"
           :key="member.name"
-          v-motion-fade-visible-once
-          :delay="200"
+          v-motion="fadeIn"
           class="carot-container"
         >
           <div class="carot">
-            <img :alt="member.name" :src="member.image.url" />
+            <img :alt="member.name" :src="member.image.url"/>
             <div class="overlay"></div>
             <div class="bandtext">
               <div class="bandtextholder">
@@ -44,9 +43,10 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import { computed, onMounted } from 'vue';
-import { BCol, BContainer } from 'bootstrap-vue-next';
-import { useBandStore } from '@/store/basicinfo.module';
+import {computed, onMounted} from 'vue';
+import {BCol, BContainer} from 'bootstrap-vue-next';
+
+import {useBandStore} from '@/store/basicinfo.module';
 
 /* ─────────────────────────────
  * Store und Data Setup
@@ -54,11 +54,32 @@ import { useBandStore } from '@/store/basicinfo.module';
 const store = useBandStore();
 
 /* ─────────────────────────────
+ * Motion Variants
+ * ───────────────────────────── */
+const delay = 0.2;
+
+const slideLeft = {
+  initial: {opacity: 0, x: -100},
+  visible: {opacity: 1, x: 0},
+  transition: {delay}
+};
+
+const slideRight = {
+  initial: {opacity: 0, x: 100},
+  visible: {opacity: 1, x: 0},
+  transition: {delay}
+};
+
+const fadeIn = {
+  initial: {opacity: 0},
+  visible: {opacity: 1},
+  transition: {delay}
+};
+
+/* ─────────────────────────────
  * Computed Properties
  * ───────────────────────────── */
-const members = computed(() => {
-  return store.getBandmembers;
-});
+const members = computed(() => store.getBandmembers);
 
 /* ─────────────────────────────
  * Lifecycle Hooks

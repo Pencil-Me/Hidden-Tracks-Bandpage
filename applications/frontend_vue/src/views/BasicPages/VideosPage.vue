@@ -2,12 +2,11 @@
   <section id="videos" class="videos">
     <b-container>
       <b-col>
-        <h2 v-motion-slide-visible-once-right :delay="200">Videos</h2>
+        <h2 v-motion="slideRight">Videos</h2>
         <iframe
           v-for="video in videos"
           :key="video.url"
-          v-motion-slide-visible-once-bottom
-          :delay="200"
+          v-motion="slideUp"
           :src="video.url"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
@@ -24,14 +23,32 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import { computed, onMounted } from 'vue';
-import { BCol, BContainer } from 'bootstrap-vue-next';
-import { useVideoStore } from '@/store/videos.module';
+import {computed, onMounted} from 'vue';
+import {BCol, BContainer} from 'bootstrap-vue-next';
+
+import {useVideoStore} from '@/store/videos.module';
 
 /* ─────────────────────────────
  * Store
  * ───────────────────────────── */
 const store = useVideoStore();
+
+/* ─────────────────────────────
+ * Motion Variants
+ * ───────────────────────────── */
+const delay = 0.2;
+
+const slideRight = {
+  initial: {opacity: 0, x: 100},
+  visible: {opacity: 1, x: 0},
+  transition: {delay}
+};
+
+const slideUp = {
+  initial: {opacity: 0, y: 50},
+  visible: {opacity: 1, y: 0},
+  transition: {delay}
+};
 
 /* ─────────────────────────────
  * Computed

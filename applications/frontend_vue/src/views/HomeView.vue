@@ -19,6 +19,8 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
+import {onMounted} from 'vue';
+
 import HeroCarousel from '@/views/BasicPages/HeroCarouselPage.vue';
 import About from '@/views/BasicPages/AboutPage.vue';
 import BreakerImage from '@/views/BasicPages/BreakerImagePage.vue';
@@ -27,9 +29,9 @@ import Gallery from '@/views/BasicPages/GalleryPage.vue';
 import Band from '@/views/BasicPages/BandPage.vue';
 import Music from '@/views/BasicPages/MusicPage.vue';
 import Polaroids from '@/views/BasicPages/PolaroidsPage.vue';
-import { onMounted } from 'vue';
+
 // import {useGigsStore} from '@/store/gigs.module';
-import { useImagesStore } from '@/store/images.module';
+import {useImagesStore} from '@/store/images.module';
 
 /* ─────────────────────────────
  * Setup: Store und Mixins

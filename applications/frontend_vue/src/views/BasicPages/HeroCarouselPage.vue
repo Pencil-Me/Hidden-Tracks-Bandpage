@@ -1,7 +1,7 @@
 <template>
   <div class="slider">
     <div v-if="sliderImagesExist" class="wrapper-single">
-      <AppCarouselCustom :images="sliderImages.images" :time-slide="10000" />
+      <AppCarouselCustom :images="sliderImages.images" :time-slide="10000"/>
     </div>
   </div>
 </template>
@@ -10,9 +10,11 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import { computed, onMounted } from 'vue';
+import {computed, onMounted} from 'vue';
+
+import {useImagesStore} from '@/store/images.module';
+
 import AppCarouselCustom from '@/components/AppCarouselCustom.vue';
-import { useImagesStore } from '@/store/images.module';
 
 /* ─────────────────────────────
  * Props & Store
@@ -25,7 +27,7 @@ const store = useImagesStore();
 const sliderImages = computed(() => {
   const images = store.allSliderimages;
   if (!images || !images.images || images.images.length <= 0) {
-    return { images: [] };
+    return {images: []};
   }
   return images;
 });

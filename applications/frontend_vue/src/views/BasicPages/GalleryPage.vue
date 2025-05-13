@@ -2,8 +2,8 @@
   <section id="gallery" class="gallery">
     <b-container>
       <b-col>
-        <h2 v-motion-slide-visible-once-right :delay="200">Gallery</h2>
-        <div v-motion-fade-visible-once :delay="200" class="gallerycontainer col-12">
+        <h2 v-motion="slideRight">Gallery</h2>
+        <div v-motion="fadeIn" class="gallerycontainer col-12">
           <div
             v-for="image in gallery"
             :key="image.url"
@@ -28,18 +28,38 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import { computed, onMounted } from 'vue';
-import { openModal } from '@kolirt/vue-modal';
+import {computed, onMounted} from 'vue';
+import {BCol, BContainer} from 'bootstrap-vue-next';
+import {openModal} from '@kolirt/vue-modal';
+
+import {shuffleArray} from '@/mixins';
+
 import AppImage from '@/components/AppImage.vue';
 import AppModalImage from '@/components/AppModalImage.vue';
-import { shuffleArray } from '@/mixins';
-import { BCol, BContainer } from 'bootstrap-vue-next';
-import { useImagesStore } from '@/store/images.module';
+
+import {useImagesStore} from '@/store/images.module';
 
 /* ─────────────────────────────
  * Setup: Store und Mixins
  * ───────────────────────────── */
 const store = useImagesStore();
+
+/* ─────────────────────────────
+ * Motion Variants
+ * ───────────────────────────── */
+const delay = 0.2;
+
+const slideRight = {
+  initial: {opacity: 0, x: 100},
+  visible: {opacity: 1, x: 0},
+  transition: {delay}
+};
+
+const fadeIn = {
+  initial: {opacity: 0},
+  visible: {opacity: 1},
+  transition: {delay}
+};
 
 /* ─────────────────────────────
  * Computed Properties
@@ -55,7 +75,7 @@ const gallery = computed(() => {
  * ───────────────────────────── */
 const openImage = (url: string) => {
   store.setModalImg(url);
-  openModal(AppModalImage, { img: url });
+  openModal(AppModalImage, {img: url});
   // Modal handling (optional: then/catch for confirm/close logic)
 };
 

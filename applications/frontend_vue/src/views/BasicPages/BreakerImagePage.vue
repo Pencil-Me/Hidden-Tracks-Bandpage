@@ -8,8 +8,9 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import { computed } from 'vue';
-import { useImagesStore } from '@/store/images.module';
+import {computed} from 'vue';
+
+import {useImagesStore} from '@/store/images.module';
 
 /* ─────────────────────────────
  * Store und Data Setup
