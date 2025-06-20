@@ -23,10 +23,10 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onMounted} from 'vue';
-import {BCol, BContainer} from 'bootstrap-vue-next';
+import { computed, onMounted } from 'vue';
+import { BCol, BContainer } from 'bootstrap-vue-next';
 
-import {useVideoStore} from '@/store/videos.module';
+import { useVideoStore } from '@/store/videos.module';
 
 /* ─────────────────────────────
  * Store
@@ -39,15 +39,15 @@ const store = useVideoStore();
 const delay = 0.2;
 
 const slideRight = {
-  initial: {opacity: 0, x: 100},
-  visible: {opacity: 1, x: 0},
-  transition: {delay}
+  initial: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0 },
+  transition: { delay }
 };
 
 const slideUp = {
-  initial: {opacity: 0, y: 50},
-  visible: {opacity: 1, y: 0},
-  transition: {delay}
+  initial: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0 },
+  transition: { delay }
 };
 
 /* ─────────────────────────────

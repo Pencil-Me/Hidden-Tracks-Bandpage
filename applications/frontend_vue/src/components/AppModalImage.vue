@@ -16,7 +16,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
  * Props & Store
  * ───────────────────────────── */
 const props = defineProps<{
-  img: string
+  img: string;
 }>();
 
 const img = ref(props.img);

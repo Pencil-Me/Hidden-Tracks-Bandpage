@@ -3,7 +3,7 @@ export default {
     const TIMEOUT = 100;
 
     const loadImage = () => {
-      const imageElement = Array.from(el.children).find((child) => child.nodeName === 'IMG') as
+      const imageElement = Array.from(el.children).find(child => child.nodeName === 'IMG') as
         | HTMLImageElement
         | undefined;
 
@@ -26,7 +26,7 @@ export default {
       entries: IntersectionObserverEntry[],
       observer: IntersectionObserver
     ) => {
-      entries.forEach((entry) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           loadImage();
           observer.unobserve(el);

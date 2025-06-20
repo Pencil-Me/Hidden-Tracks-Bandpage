@@ -13,14 +13,9 @@
         </p>
       </b-col>
       <b-col class="bandmembers">
-        <div
-          v-for="member in members"
-          :key="member.name"
-          v-motion="fadeIn"
-          class="carot-container"
-        >
+        <div v-for="member in members" :key="member.name" v-motion="fadeIn" class="carot-container">
           <div class="carot">
-            <img :alt="member.name" :src="member.image.url"/>
+            <img :alt="member.name" :src="member.image.url" />
             <div class="overlay"></div>
             <div class="bandtext">
               <div class="bandtextholder">
@@ -43,10 +38,10 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onMounted} from 'vue';
-import {BCol, BContainer} from 'bootstrap-vue-next';
+import { computed, onMounted } from 'vue';
+import { BCol, BContainer } from 'bootstrap-vue-next';
 
-import {useBandStore} from '@/store/basicinfo.module';
+import { useBandStore } from '@/store/basicinfo.module';
 
 /* ─────────────────────────────
  * Store und Data Setup
@@ -59,21 +54,21 @@ const store = useBandStore();
 const delay = 0.2;
 
 const slideLeft = {
-  initial: {opacity: 0, x: -100},
-  visible: {opacity: 1, x: 0},
-  transition: {delay}
+  initial: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0 },
+  transition: { delay }
 };
 
 const slideRight = {
-  initial: {opacity: 0, x: 100},
-  visible: {opacity: 1, x: 0},
-  transition: {delay}
+  initial: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0 },
+  transition: { delay }
 };
 
 const fadeIn = {
-  initial: {opacity: 0},
-  visible: {opacity: 1},
-  transition: {delay}
+  initial: { opacity: 0 },
+  visible: { opacity: 1 },
+  transition: { delay }
 };
 
 /* ─────────────────────────────

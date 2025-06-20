@@ -1,17 +1,17 @@
 <template>
-  <AppSocialLinks/>
-  <AppMainMenu/>
-  <router-view class="content"/>
-  <AppMainFooter/>
-  <ModalTarget/>
+  <AppSocialLinks />
+  <AppMainMenu />
+  <router-view class="content" />
+  <AppMainFooter />
+  <ModalTarget />
 </template>
 
 <script lang="ts" setup>
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {ModalTarget} from '@kolirt/vue-modal';
-import {useHead} from '@vueuse/head';
+import { ModalTarget } from '@kolirt/vue-modal';
+import { useHead } from '@vueuse/head';
 
 import AppSocialLinks from '@/components/layout/AppSocialLinks.vue';
 import AppMainMenu from '@/components/layout/AppMainMenu.vue';

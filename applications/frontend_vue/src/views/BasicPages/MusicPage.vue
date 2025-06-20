@@ -3,17 +3,13 @@
     <b-container>
       <b-col>
         <h2 v-motion="slideRight">Music</h2>
-        <p v-motion="slideLeft">
-          Hier eine kleine Auswahl der von uns neu interpretierten Songs.
-        </p>
+        <p v-motion="slideLeft">Hier eine kleine Auswahl der von uns neu interpretierten Songs.</p>
         <ul>
           <li v-for="song in songs" :key="song.id" v-motion="slideUp">
             {{ song.name }} - {{ song.title }}
           </li>
         </ul>
-        <p v-motion="slideRight">
-          Weitere Titel sind ständig in Arbeit...
-        </p>
+        <p v-motion="slideRight">Weitere Titel sind ständig in Arbeit...</p>
       </b-col>
     </b-container>
   </section>
@@ -23,12 +19,12 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onMounted} from 'vue';
-import {BCol, BContainer} from 'bootstrap-vue-next';
+import { computed, onMounted } from 'vue';
+import { BCol, BContainer } from 'bootstrap-vue-next';
 
-import {shuffleArray} from '@/mixins';
+import { shuffleArray } from '@/mixins';
 
-import {useMusicStore} from '@/store/music.module';
+import { useMusicStore } from '@/store/music.module';
 
 /* ─────────────────────────────
  * Store Access
@@ -41,21 +37,21 @@ const store = useMusicStore();
 const delay = 0.2;
 
 const slideLeft = {
-  initial: {opacity: 0, x: -100},
-  visible: {opacity: 1, x: 0},
-  transition: {delay}
+  initial: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0 },
+  transition: { delay }
 };
 
 const slideRight = {
-  initial: {opacity: 0, x: 100},
-  visible: {opacity: 1, x: 0},
-  transition: {delay}
+  initial: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0 },
+  transition: { delay }
 };
 
 const slideUp = {
-  initial: {opacity: 0, y: 50},
-  visible: {opacity: 1, y: 0},
-  transition: {delay}
+  initial: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0 },
+  transition: { delay }
 };
 
 /* ─────────────────────────────

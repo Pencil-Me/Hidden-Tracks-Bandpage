@@ -2,8 +2,8 @@ import { defineStore } from 'pinia';
 import videolist from './jsons/videos.json';
 
 interface Video {
-  url: string
-  caption: string
+  url: string;
+  caption: string;
 }
 
 export const useVideoStore = defineStore('videos', {
@@ -11,7 +11,7 @@ export const useVideoStore = defineStore('videos', {
     videos: [] as Video[]
   }),
   getters: {
-    allVideos: (state) => state.videos
+    allVideos: state => state.videos
   },
   actions: {
     GET_VIDEOS() {

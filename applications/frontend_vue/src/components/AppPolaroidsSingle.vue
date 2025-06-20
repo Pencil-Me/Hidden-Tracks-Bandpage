@@ -49,13 +49,13 @@ const CONFIG = {
  * ───────────────────────────── */
 const props = defineProps<{
   polaroid: {
-    url: string
-    lg: string
-    md: string
-    sm: string
-    thumb: string
-  }
-  startPosition?: number
+    url: string;
+    lg: string;
+    md: string;
+    sm: string;
+    thumb: string;
+  };
+  startPosition?: number;
 }>();
 
 const imageStore = useImagesStore();
@@ -131,7 +131,7 @@ function openImage(url: string) {
  * ───────────────────────────── */
 const currentScrollY = computed(() => scrollStore.currentScrollY);
 
-watch(currentScrollY, (newY) => {
+watch(currentScrollY, newY => {
   applyScrollEffect(newY);
 });
 </script>

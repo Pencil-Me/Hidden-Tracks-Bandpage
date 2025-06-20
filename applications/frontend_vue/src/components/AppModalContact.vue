@@ -85,8 +85,8 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, reactive} from 'vue';
-import {closeModal} from '@kolirt/vue-modal';
+import { computed, reactive } from 'vue';
+import { closeModal } from '@kolirt/vue-modal';
 
 import MailService from '@/services/mail.service.ts';
 
@@ -149,7 +149,7 @@ async function submit() {
       email: form.email,
       message: form.message,
       contactMeByFax: form.contactByFax
-    }).then((res) => {
+    }).then(res => {
       if (res.data.message === 'Email sent') {
         form.submitted = true;
       } else {

@@ -13,13 +13,13 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onMounted} from 'vue';
+import { computed, onMounted } from 'vue';
 
-import {shuffleArray} from '@/mixins';
+import { shuffleArray } from '@/mixins';
 
 import Polaroid from '@/components/AppPolaroidsSingle.vue';
 
-import {useImagesStore} from '@/store/images.module';
+import { useImagesStore } from '@/store/images.module';
 
 /* ─────────────────────────────
  * Store

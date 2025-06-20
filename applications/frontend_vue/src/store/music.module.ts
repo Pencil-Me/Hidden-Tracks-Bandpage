@@ -2,14 +2,14 @@ import { defineStore } from 'pinia';
 import songlist from './jsons/music.json';
 
 interface Song {
-  id: number
-  name: string
-  title: string
-  url: string
+  id: number;
+  name: string;
+  title: string;
+  url: string;
 }
 
 interface MusicState {
-  music: Song[]
+  music: Song[];
 }
 
 export const useMusicStore = defineStore('music', {
@@ -18,7 +18,7 @@ export const useMusicStore = defineStore('music', {
   }),
 
   getters: {
-    getSongs: (state) => state.music
+    getSongs: state => state.music
   },
 
   actions: {

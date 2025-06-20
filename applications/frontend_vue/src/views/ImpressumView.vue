@@ -18,34 +18,34 @@
       </ul>
     </div>
     <p v-if="basicinfo?.inhaber">
-      <strong>Vertreten durch: </strong><br/>
-      {{ basicinfo.inhaber }}<br/>
+      <strong>Vertreten durch: </strong><br />
+      {{ basicinfo.inhaber }}<br />
     </p>
     <p v-if="basicinfo?.inhaber">
-      <strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV: </strong><br/>
-      {{ basicinfo.inhaber }}<br/>
+      <strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV: </strong><br />
+      {{ basicinfo.inhaber }}<br />
     </p>
     <p v-if="basicinfo?.phone || basicinfo?.fax || basicinfo?.email">
-      <strong>Kontakt:</strong> <br/>
-      <var v-if="basicinfo.phone">Telefon: {{ basicinfo.phone }}<br/></var>
-      <var v-if="basicinfo.fax">Fax: {{ basicinfo.fax }}<br/></var>
+      <strong>Kontakt:</strong> <br />
+      <var v-if="basicinfo.phone">Telefon: {{ basicinfo.phone }}<br /></var>
+      <var v-if="basicinfo.fax">Fax: {{ basicinfo.fax }}<br /></var>
       <var v-if="basicinfo.email">E-Mail: {{ basicinfo.email }}</var>
     </p>
     <p v-if="basicinfo?.umstid">
-      <strong>Umsatzsteuer-ID: </strong> <br/>
+      <strong>Umsatzsteuer-ID: </strong> <br />
       Umsatzsteuer-Identifikationsnummer gemäß §27a Umsatzsteuergesetz: {{ basicinfo.umstid }}.
     </p>
     <p v-if="basicinfo?.wirtid">
-      <strong>Wirtschafts-ID: </strong><br/>
+      <strong>Wirtschafts-ID: </strong><br />
       {{ basicinfo.wirtid }}
     </p>
     <p v-if="basicinfo?.aufsicht">
-      <strong>Aufsichtsbehörde:</strong><br/>
-      {{ basicinfo.aufsicht }}<br/>
+      <strong>Aufsichtsbehörde:</strong><br />
+      {{ basicinfo.aufsicht }}<br />
     </p>
     <p>
-      <strong>Haftungsausschluss: </strong><br/><br/>
-      <strong>Haftung für Inhalte</strong><br/><br/>
+      <strong>Haftungsausschluss: </strong><br /><br />
+      <strong>Haftung für Inhalte</strong><br /><br />
       Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
       Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als
       Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den
@@ -55,8 +55,8 @@
       zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen
       bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der
       Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden
-      Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.<br/><br/>
-      <strong>Haftung für Links</strong><br/><br/>
+      Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.<br /><br />
+      <strong>Haftung für Links</strong><br /><br />
       Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen
       Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für
       die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten
@@ -64,8 +64,8 @@
       Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht
       erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne
       konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von
-      Rechtsverletzungen werden wir derartige Links umgehend entfernen.<br/><br/>
-      <strong>Urheberrecht</strong><br/><br/>
+      Rechtsverletzungen werden wir derartige Links umgehend entfernen.<br /><br />
+      <strong>Urheberrecht</strong><br /><br />
       Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem
       deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
       Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des
@@ -74,22 +74,22 @@
       vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden
       Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine
       Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei
-      Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.<br/><br/>
-      <strong>Datenschutz</strong><br/><br/>
+      Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.<br /><br />
+      <strong>Datenschutz</strong><br /><br />
       Die Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten möglich.
       Soweit auf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder
       eMail-Adressen) erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis.
-      Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben.<br/>
+      Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben.<br />
       Wir weisen darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per
       E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff
-      durch Dritte ist nicht möglich.<br/>
+      durch Dritte ist nicht möglich.<br />
       Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur
       Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird
       hiermit ausdrücklich widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich
       rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch
-      Spam-Mails, vor.<br/>
-      <br/><br/>
-      <strong>Google Analytics</strong><br/><br/>
+      Spam-Mails, vor.<br />
+      <br /><br />
+      <strong>Google Analytics</strong><br /><br />
       Diese Website benutzt Google Analytics, einen Webanalysedienst der Google Inc. (''Google'').
       Google Analytics verwendet sog. ''Cookies'', Textdateien, die auf Ihrem Computer gespeichert
       werden und die eine Analyse der Benutzung der Website durch Sie ermöglicht. Die durch den
@@ -107,11 +107,11 @@
       Website erklären Sie sich mit der Bearbeitung der über Sie erhobenen Daten durch Google in der
       zuvor beschriebenen Art und Weise und zu dem zuvor benannten Zweck einverstanden.
     </p>
-    <br/>
+    <br />
     Impressum vom
     <a href="https://www.impressum-generator.de" target="_blank">Impressum Generator</a> der
     <a href="https://www.kanzlei-hasselbach.de/"
-    >Kanzlei Hasselbach, Rechtsanwälte für Arbeitsrecht und Familienrecht</a
+      >Kanzlei Hasselbach, Rechtsanwälte für Arbeitsrecht und Familienrecht</a
     >
   </div>
 </template>
@@ -120,9 +120,9 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onMounted} from 'vue';
+import { computed, onMounted } from 'vue';
 
-import {useBandStore} from '@/store/basicinfo.module';
+import { useBandStore } from '@/store/basicinfo.module';
 
 /* ─────────────────────────────
  * Setup: Store und Mixins

@@ -67,12 +67,12 @@ const CONFIG = {
  * ───────────────────────────── */
 const props = withDefaults(
   defineProps<{
-    images: Array<unknown>
-    showText?: boolean
-    showDots?: boolean
-    showArrows?: boolean
-    timeSlide?: number
-    animation?: string
+    images: Array<unknown>;
+    showText?: boolean;
+    showDots?: boolean;
+    showArrows?: boolean;
+    timeSlide?: number;
+    animation?: string;
   }>(),
   {
     showText: false,
@@ -166,7 +166,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  ;[autoSlideInterval, scrollInterval, reverseScrollInterval].forEach(clearIfSet);
+  [autoSlideInterval, scrollInterval, reverseScrollInterval].forEach(clearIfSet);
 });
 </script>
 

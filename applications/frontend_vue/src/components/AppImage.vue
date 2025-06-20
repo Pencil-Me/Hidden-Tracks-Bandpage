@@ -24,11 +24,11 @@ import lozad from 'lozad';
  * ───────────────────────────── */
 const props = withDefaults(
   defineProps<{
-    lazySrcsetSmall?: string | null
-    lazySrcsetMedium?: string | null
-    lazySrcsetLarge?: string | null
-    lazySrcsetThumb?: string | null
-    imageAlt?: string | null
+    lazySrcsetSmall?: string | null;
+    lazySrcsetMedium?: string | null;
+    lazySrcsetLarge?: string | null;
+    lazySrcsetThumb?: string | null;
+    imageAlt?: string | null;
   }>(),
   {}
 );

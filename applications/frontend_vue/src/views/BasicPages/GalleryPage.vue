@@ -28,16 +28,16 @@
 /* ─────────────────────────────
  * Imports
  * ───────────────────────────── */
-import {computed, onMounted} from 'vue';
-import {BCol, BContainer} from 'bootstrap-vue-next';
-import {openModal} from '@kolirt/vue-modal';
+import { computed, onMounted } from 'vue';
+import { BCol, BContainer } from 'bootstrap-vue-next';
+import { openModal } from '@kolirt/vue-modal';
 
-import {shuffleArray} from '@/mixins';
+import { shuffleArray } from '@/mixins';
 
 import AppImage from '@/components/AppImage.vue';
 import AppModalImage from '@/components/AppModalImage.vue';
 
-import {useImagesStore} from '@/store/images.module';
+import { useImagesStore } from '@/store/images.module';
 
 /* ─────────────────────────────
  * Setup: Store und Mixins
@@ -50,15 +50,15 @@ const store = useImagesStore();
 const delay = 0.2;
 
 const slideRight = {
-  initial: {opacity: 0, x: 100},
-  visible: {opacity: 1, x: 0},
-  transition: {delay}
+  initial: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0 },
+  transition: { delay }
 };
 
 const fadeIn = {
-  initial: {opacity: 0},
-  visible: {opacity: 1},
-  transition: {delay}
+  initial: { opacity: 0 },
+  visible: { opacity: 1 },
+  transition: { delay }
 };
 
 /* ─────────────────────────────
@@ -75,7 +75,7 @@ const gallery = computed(() => {
  * ───────────────────────────── */
 const openImage = (url: string) => {
   store.setModalImg(url);
-  openModal(AppModalImage, {img: url});
+  openModal(AppModalImage, { img: url });
   // Modal handling (optional: then/catch for confirm/close logic)
 };
 

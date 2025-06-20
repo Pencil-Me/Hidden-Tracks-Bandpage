@@ -5,7 +5,7 @@ export const useScrollStore = defineStore('scroll', {
     currentScrollY: 0
   }),
   getters: {
-    getCurrentScrollY: (state) => state.currentScrollY
+    getCurrentScrollY: state => state.currentScrollY
   },
   actions: {
     setCurrentScrollY(y: number) {

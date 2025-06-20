@@ -17,7 +17,7 @@ import { BCol, BContainer } from 'bootstrap-vue-next';
  * ───────────────────────────── */
 const props = withDefaults(
   defineProps<{
-    msg?: string
+    msg?: string;
   }>(),
   {
     msg: ''

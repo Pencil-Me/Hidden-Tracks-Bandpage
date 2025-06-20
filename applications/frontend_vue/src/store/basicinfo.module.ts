@@ -1,40 +1,40 @@
 import { defineStore } from 'pinia';
 
 interface Member {
-  name: string
-  instruments: string[]
+  name: string;
+  instruments: string[];
   image: {
-    url: string
-  }
+    url: string;
+  };
 }
 
 interface SocialLink {
-  name: string
-  url: string
-  type: string
-  icon: string
+  name: string;
+  url: string;
+  type: string;
+  icon: string;
 }
 
 interface ImpressumInfo {
-  company: string
-  inhaber: string
-  winhaber: string[]
-  street: string
-  zip: string
-  town: string
-  phone: string
-  fax: string
-  email: string
-  umstid: string
-  wirtid: string
-  aufsicht: string
+  company: string;
+  inhaber: string;
+  winhaber: string[];
+  street: string;
+  zip: string;
+  town: string;
+  phone: string;
+  fax: string;
+  email: string;
+  umstid: string;
+  wirtid: string;
+  aufsicht: string;
 }
 
 interface BandState {
-  modalimg?: string
-  impressuminfo: Partial<ImpressumInfo>
-  social: SocialLink[]
-  bandmembers: Member[]
+  modalimg?: string;
+  impressuminfo: Partial<ImpressumInfo>;
+  social: SocialLink[];
+  bandmembers: Member[];
 }
 
 export const useBandStore = defineStore('band', {
@@ -46,10 +46,10 @@ export const useBandStore = defineStore('band', {
   }),
 
   getters: {
-    modalImg: (state) => state.modalimg,
-    getImpressuminfo: (state) => state.impressuminfo,
-    getBandmembers: (state) => state.bandmembers,
-    getSocial: (state) => state.social
+    modalImg: state => state.modalimg,
+    getImpressuminfo: state => state.impressuminfo,
+    getBandmembers: state => state.bandmembers,
+    getSocial: state => state.social
   },
 
   actions: {

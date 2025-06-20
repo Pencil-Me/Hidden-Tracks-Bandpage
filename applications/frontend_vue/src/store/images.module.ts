@@ -5,30 +5,30 @@ import polaroid from './jsons/polaroids.json';
 import breaker from './jsons/breakerimage.json';
 
 interface ImageItem {
-  url: string
-  lg: string
-  md: string
-  sm: string
-  thumb: string
-  lazy: string
+  url: string;
+  lg: string;
+  md: string;
+  sm: string;
+  thumb: string;
+  lazy: string;
 }
 
 interface ImageGroup {
-  type: string
-  images: ImageItem[]
+  type: string;
+  images: ImageItem[];
 }
 
 interface ImagesState {
-  modalimg: string | null
-  sliderimages: ImageGroup
-  breakerimages: ImageGroup
-  galleryimages: ImageGroup
-  polaroidimages: ImageGroup
+  modalimg: string | null;
+  sliderimages: ImageGroup;
+  breakerimages: ImageGroup;
+  galleryimages: ImageGroup;
+  polaroidimages: ImageGroup;
 }
 
 const convertData = (data: ImageItem[]) => {
   const baseUrl = import.meta.env.VITE_IMAGE_BASE_URL;
-  return data.map((e) => ({
+  return data.map(e => ({
     url: baseUrl + e.url,
     lg: baseUrl + e.lg,
     md: baseUrl + e.md,
@@ -48,11 +48,11 @@ export const useImagesStore = defineStore('images', {
   }),
 
   getters: {
-    modalImg: (state) => state.modalimg,
-    allSliderimages: (state) => state.sliderimages,
-    allBreakerimages: (state) => state.breakerimages,
-    allGalleryimages: (state) => state.galleryimages,
-    allPolaroidimages: (state) => state.polaroidimages
+    modalImg: state => state.modalimg,
+    allSliderimages: state => state.sliderimages,
+    allBreakerimages: state => state.breakerimages,
+    allGalleryimages: state => state.galleryimages,
+    allPolaroidimages: state => state.polaroidimages
   },
 
   actions: {

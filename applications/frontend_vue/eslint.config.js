@@ -4,10 +4,14 @@ import tseslint from 'typescript-eslint';
 import pluginVue from 'eslint-plugin-vue';
 import prettier from 'eslint-config-prettier';
 import vueParser from 'vue-eslint-parser';
+import pluginSecurity from 'eslint-plugin-security';
+import pluginSonar from 'eslint-plugin-sonarjs';
+
 
 export default [
+  // Globale Settings
   {
-    files: ['src/**/*.{js,mjs,cjs,ts,vue}'],
+    files: ['src/**/*.{js,ts,vue}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -17,15 +21,24 @@ export default [
       }
     }
   },
+
+  // Für .js speziell CommonJS
   {
     files: ['src/**/*.js'],
     languageOptions: {
       sourceType: 'commonjs'
     }
   },
+
+  // Basis-Konfigurationen
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  ...pluginVue.configs['flat/essential'],
+  ...tseslint.configs.recommendedTypeChecked,
+  ...pluginVue.configs['flat/recommended'],
+  pluginSecurity.configs.recommended,
+  pluginSonar.configs.recommended,
+
+  // Vue-Spezifischer Parser + TS als Subparser
   {
     files: ['src/**/*.vue'],
     languageOptions: {
@@ -41,16 +54,30 @@ export default [
     }
   },
   {
+    files: ['src/**/*.ts'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: process.cwd(),
+        ecmaVersion: 'latest',
+        sourceType: 'module'
+      }
+    }
+  },
+
+  // Eigene Regeln und Prettier
+  {
     rules: {
       ...prettier.rules,
-      // 'no-console': ['warn', {allow: ['warn', 'error']}],
-      // 'no-debugger': 'warn',
       'semi': ['error', 'always'],
       'quotes': ['error', 'single'],
       'no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
       'consistent-return': 'error',
       'prefer-const': 'error',
-      'no-magic-numbers': ['warn', {ignore: [0, 1]}]
+      'no-magic-numbers': ['warn', {ignore: [0, 1], ignoreArrayIndexes: true}],
+      'vue/multi-word-component-names': 'warn',
+      'vue/no-v-html': 'error',
     }
   }
 ];

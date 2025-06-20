@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia';
 
 interface Gig {
-  date?: string
-  location?: string
+  date?: string;
+  location?: string;
 
-  [key: string]: unknown
+  [key: string]: unknown;
 }
 
 interface GigsState {
-  gigs: Gig[]
+  gigs: Gig[];
 }
 
 export const useGigsStore = defineStore('gigs', {
@@ -17,7 +17,7 @@ export const useGigsStore = defineStore('gigs', {
   }),
 
   getters: {
-    getNextGigs: (state) => state.gigs
+    getNextGigs: state => state.gigs
   },
 
   actions: {
